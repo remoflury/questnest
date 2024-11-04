@@ -9,9 +9,9 @@ const config: Config = {
 	theme: {
 		container: {
 			center: true,
-			padding: "2rem",
+			padding: "1rem",
 			screens: {
-				"2xl": "1400px"
+				"sm": "640px"
 			}
 		},
 		extend: {
@@ -67,7 +67,9 @@ const config: Config = {
 				sm: "calc(var(--radius) - 4px)"
 			},
 			fontFamily: {
-				sans: [...fontFamily.sans]
+				sans: [...fontFamily.sans],
+				atkinson: ["Atkinson", "Georgia", "serif"],
+				"dm-serif": ["DM Serif Display", "sans-serif"]
 			},
 			keyframes: {
 				"accordion-down": {

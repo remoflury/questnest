@@ -5,25 +5,52 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '../ui/input';
 
-	export let data: SuperValidated<Infer<SignupSchema>>;
+	let data: SuperValidated<Infer<SignupSchema>> = $props();
 
-	const form = superForm(data, {
-		validators: zodClient(signupSchema)
+	let form = superForm(data, {
+		validators: zodClient(signupSchema),
+		dataType: 'json'
 	});
 
-	const { form: formData, enhance } = form;
+	let { form: formData, enhance } = form;
 </script>
 
 <form method="POST" use:enhance>
+	<Form.Field {form} name="email">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Email <sup>*</sup></Form.Label>
+				<Input {...props} bind:value={$formData.email} type="email" />
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
 	<Form.Field {form} name="username">
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>Username</Form.Label>
+				<Form.Label>Username <sup>*</sup></Form.Label>
 				<Input {...props} bind:value={$formData.username} />
 			{/snippet}
 		</Form.Control>
-		<Form.Description>This is your public display name.</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Button>Submit</Form.Button>
+	<Form.Field {form} name="password">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Password <sup>*</sup></Form.Label>
+				<Input {...props} bind:value={$formData.password} type="password" />
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+	<Form.Field {form} name="passwordConfirm">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Confirm password <sup>*</sup></Form.Label>
+				<Input {...props} bind:value={$formData.passwordConfirm} type="password" />
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+	<Form.Button>Sign Up</Form.Button>
 </form>
