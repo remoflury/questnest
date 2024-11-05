@@ -4,18 +4,19 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '../ui/input';
+	import Button from '../ui/button/button.svelte';
 
-	let data: SuperValidated<Infer<SignupSchema>> = $props();
+	let { data, action }: { data: SuperValidated<Infer<SignupSchema>>; action: string } = $props();
 
 	let form = superForm(data, {
 		validators: zodClient(signupSchema),
 		dataType: 'json'
 	});
 
-	let { form: formData, enhance } = form;
+	let { form: formData, enhance, delayed } = form;
 </script>
 
-<form method="POST" use:enhance>
+<form method="POST" use:enhance {action}>
 	<Form.Field {form} name="email">
 		<Form.Control>
 			{#snippet children({ props })}
@@ -52,5 +53,8 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Button>Sign Up</Form.Button>
+	<Form.Button loading={$delayed} disabled={$delayed}>Sign Up</Form.Button>
+	<Button variant="link" href="/signin" size="sm" class="mt-2 block px-0 opacity-50"
+		>Already have an Account? Sign in here.</Button
+	>
 </form>
