@@ -2,6 +2,8 @@
 	import '../css/main.css';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { Toaster } from '$lib/components/ui/sonner';
+
 	let { children, data } = $props();
 	let supabase = $state(data.supabase);
 	let session = $state(data.session);
@@ -17,4 +19,5 @@
 	});
 </script>
 
+<Toaster />
 {@render children()}

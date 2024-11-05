@@ -5,12 +5,17 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '../ui/input';
 	import Button from '../ui/button/button.svelte';
+	import * as flashModule from 'sveltekit-flash-message/client';
+	import { toast } from 'svelte-sonner';
 
 	let { data, action }: { data: SuperValidated<Infer<SignupSchema>>; action: string } = $props();
 
 	let form = superForm(data, {
 		validators: zodClient(signupSchema),
-		dataType: 'json'
+		dataType: 'json',
+		onUpdate: ({ result }) => {
+			if (result.type == 'failure') toast.error(result.data.form.message);
+		}
 	});
 
 	let { form: formData, enhance, delayed } = form;
