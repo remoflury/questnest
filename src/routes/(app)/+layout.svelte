@@ -23,14 +23,14 @@
 		}
 	]);
 
-	$inspect($page.url.pathname);
+	$inspect($page.url.pathname.split('/')[1]);
 </script>
 
 {@render children()}
 <nav class="shadow-top fixed bottom-0 left-0 right-0 py-4">
 	<div class="container flex items-center justify-around">
 		{#each navItems as item (crypto.randomUUID())}
-			{@const current = $page.url.pathname === item.href}
+			{@const current = $page.url.pathname.split('/')[1] === item.href.split('/')[1]}
 			<Button
 				class="aspect-square h-10 w-10 "
 				variant={current ? 'default' : 'ghost'}

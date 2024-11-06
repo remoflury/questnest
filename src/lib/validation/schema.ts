@@ -45,3 +45,22 @@ export const signinSchema = z.object({
 })
 
 export type SigninSchema = typeof signinSchema
+
+const groupUsersSchema = z.object({
+	user: z
+		.string({ required_error: "A user is required"})
+		.uuid()
+})
+
+export const addGroupSchema = z.object({
+	name: z
+		.string({ required_error: "A group name is required"})
+		.min(2, { message: 'Group name must contain at least 2 characters.' })
+		.max(30, { message: 'Group name can not contain more than 30 characters.' })
+		.trim(),
+	// users: z
+	// 	.array(groupUsersSchema)
+	// 	.min(1)
+})
+
+export type AddGroupSchema = typeof addGroupSchema

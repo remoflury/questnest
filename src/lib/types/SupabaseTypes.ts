@@ -34,6 +34,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      group: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
       user: {
         Row: {
           created_at: string
@@ -54,6 +72,35 @@ export type Database = {
           username?: string
         }
         Relationships: []
+      }
+      user_group: {
+        Row: {
+          created_at: string
+          group: number
+          id: number
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          group: number
+          id?: number
+          user: string
+        }
+        Update: {
+          created_at?: string
+          group?: number
+          id?: number
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_group_group_fkey"
+            columns: ["group"]
+            isOneToOne: false
+            referencedRelation: "group"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
