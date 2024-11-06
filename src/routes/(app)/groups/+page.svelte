@@ -4,13 +4,17 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Plus } from 'lucide-svelte';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
+	import * as Card from '$lib/components/ui/card/index.js';
 	import AddGroupForm from '$lib/components/form/addGroupForm.svelte';
+	import { ChevronRight } from 'lucide-svelte/icons';
 
 	let { data } = $props();
-	let open = $state(true);
+	let open = $state(false);
+
+	let groups = $derived(data.groups);
 </script>
 
-<FadeInWrapper class="section-spacing container" tag="section">
+<FadeInWrapper class="section-t-spacing container" tag="section">
 	<TitleWrapper tag="h1">
 		{#snippet text()}
 			Groups
@@ -27,16 +31,28 @@
 		{/snippet}
 	</TitleWrapper>
 </FadeInWrapper>
+
+<section class="grid-content grid-spacing section-b-spacing container">
+	{#each groups as group (crypto.randomUUID())}
+		<FadeInWrapper tag="a" href="/groups/{group.id}">
+			<Card.Root>
+				<Card.Content>
+					<p class="flex items-center justify-between gap-x-4 font-bold">
+						{group.name}
+						<ChevronRight />
+					</p>
+				</Card.Content>
+			</Card.Root>
+		</FadeInWrapper>
+	{/each}
+</section>
 <Drawer.Root bind:open>
-	<!-- <Drawer.Trigger>Open</Drawer.Trigger> -->
 	<Drawer.Content>
 		<Drawer.Header>
 			<Drawer.Title>Add new Group</Drawer.Title>
 		</Drawer.Header>
 		<Drawer.Footer>
 			<AddGroupForm data={data.addGroupForm} action="?/addgroup" success={() => (open = false)} />
-			<!-- <Button>Submit</Button>
-			<Drawer.Close>Cancel</Drawer.Close> -->
 		</Drawer.Footer>
 	</Drawer.Content>
 </Drawer.Root>

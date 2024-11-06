@@ -4,15 +4,42 @@ import { fail, message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { addGroupSchema } from "$lib/validation/schema";
 
-export const load: PageServerLoad = async ({ locals: { safeGetSession }}) => {
+export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase }}) => {
   const { session } = await safeGetSession()
   if (!session) {
     error(401)
   }
 
+  // get groups related to user
+  // TODO: replace with RLS!
+  const { data, error: groupErr} = await supabase 
+    .from('user_group')
+    .select(`
+      group(
+        id,
+        name
+      )
+      `)
+    .eq('user', session.user.id)
+
+  if (groupErr) {
+    console.error(groupErr)
+    error(500)
+  }
+
+  const groups = data.map(row => {
+    return {
+      // @ts-expect-error wrong generated sb-types
+      id: row.group.id,
+      // @ts-expect-error wrong generated sb-types
+      name: row.group.name
+    }
+  })
+
   const addGroupForm = await superValidate(zod(addGroupSchema))
   return {
-    addGroupForm
+    addGroupForm,
+    groups
   }
 };
 
@@ -29,27 +56,43 @@ export const actions: Actions = {
       return message(form, 'Something went wrong. Try again.', { status: 400 });
     }
 
-    const { data: groupData, error: groupErr } = await supabase
+    const { error: groupErr } = await supabase
       .from('group')
       .insert({name: form.data.name})
-      .select('id')
 
     if (groupErr) {
       console.log(groupErr)
       return message(form, 'Something went wrong. Try again.', { status: 500 });
     }
 
-    const { error: userGroupErr } = await supabase
-      .from('user_group')
-      .insert({
-        group: groupData[0].id,
-        user: session.user.id
-      })
-    
-    if (userGroupErr) {
-      console.log(userGroupErr)
-      return message(form, 'Something went wrong. Try again.', { status: 500 });
-    }
+    // n:m relationship of current user and newly created group will be inserted via trigger function in supabase
+    // ========
+    /**
+     * -- Create the trigger function to auto-insert the user into the group
+        CREATE OR REPLACE FUNCTION add_creator_to_user_group()
+        RETURNS TRIGGER AS $$
+        DECLARE
+            user_id uuid;
+        BEGIN
+            -- Get the ID of the currently authenticated user
+            user_id := auth.uid();
+
+            -- Insert a new entry into user_group with the current user and the new group
+            INSERT INTO user_group ("user", "group")
+            VALUES (user_id, NEW.id);
+
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;
+     */
+
+  /**
+     * -- Create the trigger that calls the function after a new group is inserted
+    CREATE TRIGGER add_user_to_group_after_insert
+    AFTER INSERT ON "group"
+    FOR EACH ROW
+    EXECUTE FUNCTION add_creator_to_user_group();
+  */
 
     return message(form, `${form.data.name} saved succesfully.`);
   }
