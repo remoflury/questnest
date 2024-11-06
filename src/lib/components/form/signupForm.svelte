@@ -6,6 +6,7 @@
 	import { Input } from '../ui/input';
 	import Button from '../ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 
 	let { data, action }: { data: SuperValidated<Infer<SignupSchema>>; action: string } = $props();
 
@@ -14,6 +15,10 @@
 		dataType: 'json',
 		onUpdate: ({ result }) => {
 			if (result.type == 'failure') toast.error(result.data.form.message);
+			toast.success(result.data.form.message);
+			setTimeout(() => {
+				goto('/signin');
+			}, 1000);
 		}
 	});
 

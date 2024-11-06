@@ -2,8 +2,6 @@ import type { Actions, PageServerLoad } from './$types.js';
 import { signupSchema } from '$lib/validation/schema.js';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { setFlash } from 'sveltekit-flash-message/server';
-import { redirect } from 'sveltekit-flash-message/server';
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -12,10 +10,9 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	signup: async ({ request, cookies, locals: { supabase } }) => {
+	signup: async ({ request, locals: { supabase } }) => {
 		const form = await superValidate(request, zod(signupSchema));
 		if (!form.valid) {
-			setFlash({ type: 'error', message: 'Something went wrong. Try again later.' }, cookies);
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
 
@@ -66,6 +63,6 @@ export const actions: Actions = {
 			console.error(insertErr) 
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
-		redirect('/signin', { type: 'success', message: 'Succesfully signed up.' }, cookies);
+		return message(form, "You registered successfully.")
 	}
 };
