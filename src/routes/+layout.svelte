@@ -20,4 +20,6 @@
 </script>
 
 <Toaster />
-{@render children()}
+<main class="min-h-dvh">
+	{@render children()}
+</main>
