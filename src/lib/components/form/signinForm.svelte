@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form/index.js';
-	import { signupSchema, type SignupSchema } from '$lib/validation/schema';
+	import { signinSchema, type SigninSchema } from '$lib/validation/schema';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '../ui/input';
@@ -8,17 +8,17 @@
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
 
-	let { data, action }: { data: SuperValidated<Infer<SignupSchema>>; action: string } = $props();
+	let { data, action }: { data: SuperValidated<Infer<SigninSchema>>; action: string } = $props();
 
 	let form = superForm(data, {
-		validators: zodClient(signupSchema),
+		validators: zodClient(signinSchema),
 		dataType: 'json',
 		onUpdate: ({ result }) => {
 			if (result.type == 'failure') toast.error(result.data.form.message);
 			toast.success(result.data.form.message);
-			setTimeout(() => {
-				goto('/signin');
-			}, 1000);
+			// setTimeout(() => {
+			// 	goto('/signin');
+			// }, 1000);
 		}
 	});
 
@@ -35,15 +35,6 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Field {form} name="username">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Username <sup>*</sup></Form.Label>
-				<Input {...props} bind:value={$formData.username} />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
 	<Form.Field {form} name="password">
 		<Form.Control>
 			{#snippet children({ props })}
@@ -53,17 +44,8 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Field {form} name="passwordConfirm">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Confirm password <sup>*</sup></Form.Label>
-				<Input {...props} bind:value={$formData.passwordConfirm} type="password" />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Button loading={$delayed} disabled={$delayed}>Sign Up</Form.Button>
-	<Button variant="link" href="/signin" size="sm" class="mt-2 block px-0 opacity-50">
-		Already have an account? Sign in here.
+	<Form.Button loading={$delayed} disabled={$delayed}>Sign In</Form.Button>
+	<Button variant="link" href="/signup" size="sm" class="mt-2 block px-0 opacity-50">
+		Don't have an account? Sign up here.
 	</Button>
 </form>

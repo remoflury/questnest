@@ -1,19 +1,23 @@
 import { z } from 'zod';
 
+const emailSchema = z
+	.string({ required_error: 'Email is required.' })
+	.email({ message: 'Invalid Email format.' })
+	.trim()
+
+const passwordSchema = z
+.string({ required_error: 'Password is required.' })
+.min(6, { message: 'Password must contain at least 6 characters.' })
+
 export const signupSchema = z
 	.object({
-		email: z
-			.string({ required_error: 'Email is required.' })
-			.email({ message: 'Invalid Email format.' })
-			.trim(),
+		email: emailSchema,
 		username: z
 			.string({ required_error: 'Username is required.' })
 			.min(2, { message: 'Username must consist of at least two characters.' })
 			.max(50, { message: 'Username can not contain more than 50 characters.' })
 			.trim(),
-		password: z
-			.string({ required_error: 'Password is required.' })
-			.min(6, { message: 'Password must contain at least 6 characters.' }),
+		password: passwordSchema,
 		passwordConfirm: z
 			.string({ required_error: 'Password confirm is required.' })
 			.min(6, { message: 'Password confirm must contain at least 6 characters.' })
@@ -34,3 +38,10 @@ export const signupSchema = z
 	});
 
 export type SignupSchema = typeof signupSchema;
+
+export const signinSchema = z.object({
+	email: emailSchema,
+	password: passwordSchema
+})
+
+export type SigninSchema = typeof signinSchema
