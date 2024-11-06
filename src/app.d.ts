@@ -4,15 +4,15 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-      supabase: SupabaseClient
-      safeGetSession: () => Promise<{ session: Session | null; user: User | null }>
-      session: Session | null
-      user: User | null
-    }
-    interface PageData {
-      session: Session | null,
-      flash?: { type: 'success' | 'error'; message: string };
-    }
+			supabase: SupabaseClient;
+			safeGetSession: () => Promise<{ session: Session | null; user: User | null }>;
+			session: Session | null;
+			user: User | null;
+		}
+		interface PageData {
+			session: Session | null;
+			flash?: { type: 'success' | 'error'; message: string };
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}
