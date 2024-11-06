@@ -5,7 +5,6 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '../ui/input';
 	import Button from '../ui/button/button.svelte';
-	import * as flashModule from 'sveltekit-flash-message/client';
 	import { toast } from 'svelte-sonner';
 
 	let { data, action }: { data: SuperValidated<Infer<SignupSchema>>; action: string } = $props();
