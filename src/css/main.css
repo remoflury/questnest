@@ -6,13 +6,13 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 10% 3.9%; /* #09090b */
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: var(--foreground);
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: var(--foreground);
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --primary: 179 84% 10%; /* #042f2e */
@@ -24,7 +24,7 @@
     --accent-foreground: var(--primary);
     --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 210 40% 98%;
-    --ring: 222.2 84% 4.9%;
+    --ring: var(--foreground);
     --radius: 0.5rem;
 	  --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -72,8 +72,30 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground scroll-smooth min-h-dvh ;
+    @apply bg-background text-foreground scroll-smooth min-h-dvh font-atkinson;
   }
 
+  h1, .h1,
+  h2, .h2,
+  h3, .h3,
+  h4, .h4 {
+    @apply font-dm-serif
+  }
+
+  h1, .h1 {
+    @apply text-4xl
+  }
+
+  h2, .h2 {
+    @apply text-3xl
+  }
+
+  h3, .h3 {
+    @apply text-2xl
+  }
+
+  h4, .h4 {
+    @apply text-xl
+  }
 
 }
