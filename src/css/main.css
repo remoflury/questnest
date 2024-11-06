@@ -18,14 +18,14 @@
 		--primary: 179 84% 10%; /* #042f2e */
 		/* --primary-foreground: 210 40% 98%; */
 		--primary-foreground: var(--background);
-		--secondary: 210 40% 96.1%;
+		--secondary: 179 0% 95%;
 		--secondary-foreground: var(--primary);
-		--accent: 210 40% 96.1%;
+		--accent: var(--secondary);
 		--accent-foreground: var(--primary);
 		--destructive: 0 72.2% 50.6%;
 		--destructive-foreground: 210 40% 98%;
 		--ring: var(--foreground);
-		--radius: 0.5rem;
+		--radius: 100vmax;
 		--sidebar-background: 0 0% 98%;
 		--sidebar-foreground: 240 5.3% 26.1%;
 		--sidebar-primary: 240 5.9% 10%;
@@ -72,7 +72,7 @@
 		@apply border-border;
 	}
 	body {
-		@apply min-h-dvh scroll-smooth bg-background font-atkinson text-foreground;
+		@apply min-h-dvh scroll-smooth bg-background font-atkinson text-foreground tracking-wide;
 	}
 
 	h1,
@@ -88,21 +88,55 @@
 
 	h1,
 	.h1 {
-		@apply text-4xl;
+		@apply text-4xl mb-4;
 	}
 
 	h2,
 	.h2 {
-		@apply text-3xl;
+		@apply text-3xl mb-3;
 	}
 
 	h3,
 	.h3 {
-		@apply text-2xl;
+		@apply text-2xl mb-2;
 	}
 
 	h4,
 	.h4 {
-		@apply text-xl;
+		@apply text-xl mb-1;
+	}
+
+	/* Layout */
+	.section-t-spacing,
+	.section-spacing {
+		@apply pt-8 md:pt-10 xl:pt-14;
+	}
+	.section-b-spacing,
+	.section-spacing {
+		@apply pb-8 md:pb-10 xl:pb-14;
+	}
+
+	.grid-content {
+		@apply grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12;
+	}
+
+	.grid-content > * {
+		@apply col-span-full;
+	}
+
+	.grid-x-spacing,
+	.grid-spacing {
+		@apply gap-x-4 md:gap-x-6 xl:gap-x-8 2xl:gap-x-10;
+	}
+
+	.grid-y-spacing,
+	.grid-spacing {
+		@apply gap-y-4 md:gap-y-6 xl:gap-y-7;
+	}
+}
+
+@layer components {
+	form button[type="submit"] {
+		@apply mt-2
 	}
 }

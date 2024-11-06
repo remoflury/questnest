@@ -5,7 +5,7 @@
 	let { data } = $props();
 </script>
 
-<FadeInWrapper class="container" tag="section">
+<FadeInWrapper class="section-spacing container" tag="section">
 	<h1>Sign Up</h1>
 	<SignupForm data={data.signUpForm} action="?/signup" />
 </FadeInWrapper>
