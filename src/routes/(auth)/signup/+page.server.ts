@@ -19,22 +19,53 @@ export const actions: Actions = {
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
 
-		const { error } = await supabase.auth.signUp({
+		// check if user already exists
+		const { data: user, error: userErr } = await supabase
+			.from('user')
+			.select('email, username')
+			.or(`email.eq.${form.data.email},username.eq.${form.data.username}`)
+
+		if (userErr) {
+			console.error(userErr)
+			return message(form, userErr.message, { status: 400 });
+		}
+
+		if (user.length) {
+			if (user[0].email == form.data.email) {
+				setError(form, 'email', `User with email ${form.data.email} already exists.`);
+			}
+			if (user[0].username == form.data.username) {
+				setError(form, 'username', `User with username ${form.data.username} already exists.`);
+			}
+			return message(form, 'Something went wrong.', { status: 400 }); 
+		}
+
+		const { data, error } = await supabase.auth.signUp({
 			email: form.data.email,
 			password: form.data.password
 		});
-
 		if (error) {
 			console.error('eeeerr', error);
-			if (error.code == 'user_already_exists') {
-				setFlash({ type: 'error', message: 'User with this email already exists.' }, cookies);
+			if (error?.code == 'user_already_exists') {
 				setError(form, 'email', 'User with this email already exists.');
 				return message(form, 'User with this email already exists.', { status: 400 });
 			}
-
-			setFlash({ type: 'error', message: 'Something went wrong. Try again later.' }, cookies);
+			
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
-		redirect('/signin', { type: 'error', message: 'Succesfully signed up.' }, cookies);
+
+		const { error: insertErr } = await supabase
+			.from('user')
+			.insert({
+				id: data.user!.id,
+				username: form.data.username,
+				email: form.data.email
+			})
+
+		if (insertErr) {
+			console.error(insertErr) 
+			return message(form, 'Something went wrong. Try again later.', { status: 400 });
+		}
+		redirect('/signin', { type: 'success', message: 'Succesfully signed up.' }, cookies);
 	}
 };
