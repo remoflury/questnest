@@ -13,7 +13,7 @@
 	export { className as class };
 	export let tag: $$Props['tag'] = 'div';
 	export let delayInMs: $$Props['delayInMs'] = 0;
-	export let href = undefined;
+	export let href: $$Props['href'] = undefined;
 	export let options: $$Props['options'] = {
 		root: null, // Use the viewport
 		rootMargin: '0px',

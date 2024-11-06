@@ -46,11 +46,11 @@ export const signinSchema = z.object({
 
 export type SigninSchema = typeof signinSchema
 
-const groupUsersSchema = z.object({
-	user: z
-		.string({ required_error: "A user is required"})
-		.uuid()
-})
+// const groupUsersSchema = z.object({
+// 	user: z
+// 		.string({ required_error: "A user is required"})
+// 		.uuid()
+// })
 
 export const addGroupSchema = z.object({
 	name: z

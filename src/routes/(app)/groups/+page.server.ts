@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from "./$types";
-import { error } from "@sveltejs/kit";
-import { fail, message, superValidate } from "sveltekit-superforms";
+import { error, redirect } from "@sveltejs/kit";
+import { fail, message, setMessage, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { addGroupSchema } from "$lib/validation/schema";
 
@@ -56,9 +56,10 @@ export const actions: Actions = {
       return message(form, 'Something went wrong. Try again.', { status: 400 });
     }
 
-    const { error: groupErr } = await supabase
+    const { data: groupData, error: groupErr } = await supabase
       .from('group')
       .insert({name: form.data.name})
+      .select('id')
 
     if (groupErr) {
       console.log(groupErr)
@@ -93,7 +94,8 @@ export const actions: Actions = {
     FOR EACH ROW
     EXECUTE FUNCTION add_creator_to_user_group();
   */
+    setMessage(form, `${form.data.name} saved succesfully`)
 
-    return message(form, `${form.data.name} saved succesfully.`);
+    redirect(301, `/groups/${groupData[0].id}`)
   }
 };

@@ -8,18 +8,19 @@
 
 	let {
 		data,
-		action,
-		success
-	}: { data: SuperValidated<Infer<AddGroupSchema>>; action: string; success: () => void } =
-		$props();
+		action
+	}: {
+		data: SuperValidated<Infer<AddGroupSchema>>;
+		action: string;
+	} = $props();
 
 	let form = superForm(data, {
 		validators: zodClient(addGroupSchema),
 		dataType: 'json',
 		onUpdate: ({ result }) => {
+			console.log(result);
 			if (result.type == 'failure') toast.error(result.data.form.message);
 			toast.success(result.data.form.message);
-			success();
 		}
 	});
 

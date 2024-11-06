@@ -7,6 +7,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import AddGroupForm from '$lib/components/form/addGroupForm.svelte';
 	import { ChevronRight } from 'lucide-svelte/icons';
+	import { goto } from '$app/navigation';
 
 	let { data } = $props();
 	let open = $state(false);
@@ -52,7 +53,7 @@
 			<Drawer.Title>Add new Group</Drawer.Title>
 		</Drawer.Header>
 		<Drawer.Footer>
-			<AddGroupForm data={data.addGroupForm} action="?/addgroup" success={() => (open = false)} />
+			<AddGroupForm data={data.addGroupForm} action="?/addgroup" />
 		</Drawer.Footer>
 	</Drawer.Content>
 </Drawer.Root>
