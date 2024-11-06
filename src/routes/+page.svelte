@@ -1,6 +1,7 @@
 <script>
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { page } from '$app/stores';
 </script>
 
 <FadeInWrapper tag="section" class="section-spacing grid-content grid-spacing container">
@@ -15,18 +16,22 @@
 <FadeInWrapper tag="section" class="section-spacing container">
 	<article class="grid-content grid-spacing">
 		<p>Ready to start the fun?</p>
-		<div class="flex flex-wrap gap-x-8 gap-y-2">
-			<Button
-				href="/signup"
-				title="Sign up for a new account"
-				aria-label="Sign up for a new account">Sign Up</Button
-			>
-			<Button
-				href="/signin"
-				variant="secondary"
-				title="login to your account"
-				aria-label="login in your account">Sign In</Button
-			>
-		</div>
+		{#if !$page.data.session}
+			<div class="flex flex-wrap gap-x-8 gap-y-2">
+				<Button
+					href="/signup"
+					title="Sign up for a new account"
+					aria-label="Sign up for a new account">Sign Up</Button
+				>
+				<Button
+					href="/signin"
+					variant="secondary"
+					title="login to your account"
+					aria-label="login in your account">Sign In</Button
+				>
+			</div>
+		{:else}
+			<Button href="/quests" title="to the app" class="max-w-max">Zur App</Button>
+		{/if}
 	</article>
 </FadeInWrapper>

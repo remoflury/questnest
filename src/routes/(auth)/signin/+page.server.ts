@@ -2,8 +2,13 @@ import type { Actions, PageServerLoad } from "./$types";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { signinSchema } from "$lib/validation/schema";
+import { redirect } from "@sveltejs/kit";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals: { safeGetSession }}) => {
+  const { session } = await safeGetSession()
+  if (session) {
+    redirect(300, '/quests')
+  }
   return {
 		signinForm: await superValidate(zod(signinSchema))
 	};

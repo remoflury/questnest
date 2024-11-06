@@ -16,9 +16,7 @@
 		onUpdate: ({ result }) => {
 			if (result.type == 'failure') toast.error(result.data.form.message);
 			toast.success(result.data.form.message);
-			// setTimeout(() => {
-			// 	goto('/signin');
-			// }, 1000);
+			goto('/');
 		}
 	});
 
