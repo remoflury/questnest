@@ -38,15 +38,14 @@ export type HttpStatus =
 	| 504
 	| 505;
 
-
-export type ApiResponse<T = undefined> = T extends undefined ?
-{
-  payload?: T,
-  message?: string,
-  status: HttpStatus
-} : 
-{
-  payload: T,
-  message?: string,
-  status: HttpStatus
-}
+export type ApiResponse<T = undefined> = T extends undefined
+	? {
+			payload?: T;
+			message?: string;
+			status: HttpStatus;
+		}
+	: {
+			payload: T;
+			message?: string;
+			status: HttpStatus;
+		};

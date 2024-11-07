@@ -27,7 +27,7 @@
 </script>
 
 {@render children()}
-<nav class="shadow-top fixed bottom-0 left-0 right-0 bg-white py-4">
+<nav class="fixed bottom-0 left-0 right-0 bg-white py-4 shadow-top">
 	<div class="container flex items-center justify-around">
 		{#each navItems as item (crypto.randomUUID())}
 			{@const current = $page.url.pathname.split('/')[1] === item.href.split('/')[1]}

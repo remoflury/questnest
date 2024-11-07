@@ -1,74 +1,76 @@
-import type { Actions, PageServerLoad } from "./$types";
-import { error, redirect } from "@sveltejs/kit";
-import { fail, message, setMessage, superValidate } from "sveltekit-superforms";
-import { zod } from "sveltekit-superforms/adapters";
-import { addGroupSchema } from "$lib/validation/schema";
+import type { Actions, PageServerLoad } from './$types';
+import { error, redirect } from '@sveltejs/kit';
+import { fail, message, setMessage, superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { addGroupSchema } from '$lib/validation/schema';
 
-export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase }}) => {
-  const { session } = await safeGetSession()
-  if (!session) {
-    error(401)
-  }
+export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase } }) => {
+	const { session } = await safeGetSession();
+	if (!session) {
+		error(401);
+	}
 
-  // get groups related to user
-  // TODO: replace with RLS!
-  const { data, error: groupErr} = await supabase 
-    .from('user_group')
-    .select(`
+	// get groups related to user
+	// TODO: replace with RLS!
+	const { data, error: groupErr } = await supabase
+		.from('user_group')
+		.select(
+			`
       group(
         id,
         name
       )
-      `)
-    .eq('user', session.user.id)
+      `
+		)
+		.eq('user', session.user.id);
 
-  if (groupErr) {
-    console.error(groupErr)
-    error(500)
-  }
+	if (groupErr) {
+		console.error(groupErr);
+		error(500);
+	}
 
-  const groups = data.map(row => {
-    return {
-      // @ts-expect-error wrong generated sb-types
-      id: row.group.id,
-      // @ts-expect-error wrong generated sb-types
-      name: row.group.name
-    }
-  })
+	const groups = data.map((row) => {
+		return {
+			// @ts-expect-error wrong generated sb-types
+			id: row.group.id,
+			// @ts-expect-error wrong generated sb-types
+			name: row.group.name
+		};
+	});
 
-  const addGroupForm = await superValidate(zod(addGroupSchema))
-  return {
-    addGroupForm,
-    groups
-  }
+	const addGroupForm = await superValidate(zod(addGroupSchema));
+	return {
+		addGroupForm,
+		groups
+	};
 };
 
 export const actions: Actions = {
-  addgroup: async ({ locals: { safeGetSession, supabase }, request}) => {
-    const { session } = await safeGetSession()
-    if (!session) {
-      return fail(401)
-    }
+	addgroup: async ({ locals: { safeGetSession, supabase }, request }) => {
+		const { session } = await safeGetSession();
+		if (!session) {
+			return fail(401);
+		}
 
-    const form = await superValidate(request, zod(addGroupSchema))
+		const form = await superValidate(request, zod(addGroupSchema));
 
-    if (!form.valid) {
-      return message(form, 'Something went wrong. Try again.', { status: 400 });
-    }
+		if (!form.valid) {
+			return message(form, 'Something went wrong. Try again.', { status: 400 });
+		}
 
-    const { data: groupData, error: groupErr } = await supabase
-      .from('group')
-      .insert({name: form.data.name})
-      .select('id')
+		const { data: groupData, error: groupErr } = await supabase
+			.from('group')
+			.insert({ name: form.data.name })
+			.select('id');
 
-    if (groupErr) {
-      console.log(groupErr)
-      return message(form, 'Something went wrong. Try again.', { status: 500 });
-    }
+		if (groupErr) {
+			console.log(groupErr);
+			return message(form, 'Something went wrong. Try again.', { status: 500 });
+		}
 
-    // n:m relationship of current user and newly created group will be inserted via trigger function in supabase
-    // ========
-    /**
+		// n:m relationship of current user and newly created group will be inserted via trigger function in supabase
+		// ========
+		/**
      * -- Create the trigger function to auto-insert the user into the group
         CREATE OR REPLACE FUNCTION add_creator_to_user_group()
         RETURNS TRIGGER AS $$
@@ -87,15 +89,15 @@ export const actions: Actions = {
         $$ LANGUAGE plpgsql;
      */
 
-  /**
+		/**
      * -- Create the trigger that calls the function after a new group is inserted
     CREATE TRIGGER add_user_to_group_after_insert
     AFTER INSERT ON "group"
     FOR EACH ROW
     EXECUTE FUNCTION add_creator_to_user_group();
   */
-    setMessage(form, `${form.data.name} saved succesfully`)
+		setMessage(form, `${form.data.name} saved succesfully`);
 
-    redirect(301, `/groups/${groupData[0].id}`)
-  }
+		redirect(301, `/groups/${groupData[0].id}`);
+	}
 };

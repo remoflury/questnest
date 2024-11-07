@@ -3,11 +3,11 @@ import { z } from 'zod';
 const emailSchema = z
 	.string({ required_error: 'Email is required.' })
 	.email({ message: 'Invalid Email format.' })
-	.trim()
+	.trim();
 
 const passwordSchema = z
-.string({ required_error: 'Password is required.' })
-.min(6, { message: 'Password must contain at least 6 characters.' })
+	.string({ required_error: 'Password is required.' })
+	.min(6, { message: 'Password must contain at least 6 characters.' });
 
 export const signupSchema = z
 	.object({
@@ -42,24 +42,22 @@ export type SignupSchema = typeof signupSchema;
 export const signinSchema = z.object({
 	email: emailSchema,
 	password: passwordSchema
-})
+});
 
-export type SigninSchema = typeof signinSchema
+export type SigninSchema = typeof signinSchema;
 
 export const addGroupSchema = z.object({
 	name: z
-		.string({ required_error: "A group name is required"})
+		.string({ required_error: 'A group name is required' })
 		.min(2, { message: 'Group name must contain at least 2 characters.' })
 		.max(30, { message: 'Group name can not contain more than 30 characters.' })
-		.trim(),
-})
+		.trim()
+});
 
-export type AddGroupSchema = typeof addGroupSchema
+export type AddGroupSchema = typeof addGroupSchema;
 
 export const groupUsersSchema = z.object({
-	user: z
-		.string({ required_error: "A user is required"})
-		.uuid()
-})
+	user: z.string({ required_error: 'A user is required' }).uuid()
+});
 
-export type GroupUsersSchema = typeof groupUsersSchema
+export type GroupUsersSchema = typeof groupUsersSchema;

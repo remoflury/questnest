@@ -16,7 +16,7 @@ const config: Config = {
 		},
 		extend: {
 			boxShadow: {
-				top: "0px -5px 10px 0px rgba(0, 0, 0, 0.05)"
+				top: '0px -5px 10px 0px rgba(0, 0, 0, 0.05)'
 			},
 			colors: {
 				border: 'hsl(var(--border) / <alpha-value>)',

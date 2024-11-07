@@ -6,4 +6,4 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 		session,
 		cookies: cookies.getAll()
 	};
-}
+};

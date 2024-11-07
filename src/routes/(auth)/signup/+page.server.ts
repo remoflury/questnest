@@ -4,11 +4,11 @@ import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({locals: { safeGetSession }}) => {
-	const { session } = await safeGetSession()
-  if (session) {
-    redirect(300, '/quests')
-  }
+export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
+	const { session } = await safeGetSession();
+	if (session) {
+		redirect(300, '/quests');
+	}
 	return {
 		signUpForm: await superValidate(zod(signupSchema))
 	};
@@ -25,10 +25,10 @@ export const actions: Actions = {
 		const { data: user, error: userErr } = await supabase
 			.from('user')
 			.select('email, username')
-			.or(`email.eq.${form.data.email},username.eq.${form.data.username}`)
+			.or(`email.eq.${form.data.email},username.eq.${form.data.username}`);
 
 		if (userErr) {
-			console.error(userErr)
+			console.error(userErr);
 			return message(form, userErr.message, { status: 400 });
 		}
 
@@ -39,7 +39,7 @@ export const actions: Actions = {
 			if (user[0].username == form.data.username) {
 				setError(form, 'username', `User with username ${form.data.username} already exists.`);
 			}
-			return message(form, 'Something went wrong.', { status: 400 }); 
+			return message(form, 'Something went wrong.', { status: 400 });
 		}
 
 		const { data, error } = await supabase.auth.signUp({
@@ -52,22 +52,20 @@ export const actions: Actions = {
 				setError(form, 'email', 'User with this email already exists.');
 				return message(form, 'User with this email already exists.', { status: 400 });
 			}
-			
+
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
 
-		const { error: insertErr } = await supabase
-			.from('user')
-			.insert({
-				id: data.user!.id,
-				username: form.data.username,
-				email: form.data.email
-			})
+		const { error: insertErr } = await supabase.from('user').insert({
+			id: data.user!.id,
+			username: form.data.username,
+			email: form.data.email
+		});
 
 		if (insertErr) {
-			console.error(insertErr) 
+			console.error(insertErr);
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
-		return message(form, "You registered successfully.")
+		return message(form, 'You registered successfully.');
 	}
 };

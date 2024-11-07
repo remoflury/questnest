@@ -7,17 +7,15 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-
-
 export const genApiRes = <T>(payload?: T, message?: string, status: HttpStatus = 200) => {
 	return json(
 		{
 			payload,
 			message,
 			status
-		}, 
+		},
 		{
 			status
 		}
-	)
-}
+	);
+};
