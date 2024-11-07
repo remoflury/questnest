@@ -1,8 +1,7 @@
 <script lang="ts">
+	import SearchPersons from '$lib/components/form/searchPersons.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import { Plus } from 'lucide-svelte';
 
 	let { data } = $props();
 </script>
@@ -13,4 +12,8 @@
 			{data.group.name}
 		{/snippet}
 	</TitleWrapper>
+</FadeInWrapper>
+
+<FadeInWrapper tag="section" class="section-spacing container">
+	<SearchPersons />
 </FadeInWrapper>

@@ -18,7 +18,7 @@
 		--primary: 179 84% 10%; /* #042f2e */
 		/* --primary-foreground: 210 40% 98%; */
 		--primary-foreground: var(--background);
-		--secondary: 179 0% 95%;
+		--secondary: 179 0% 90%;
 		--secondary-foreground: var(--primary);
 		--accent: var(--secondary);
 		--accent-foreground: var(--primary);
