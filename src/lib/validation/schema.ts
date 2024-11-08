@@ -56,8 +56,14 @@ export const addGroupSchema = z.object({
 
 export type AddGroupSchema = typeof addGroupSchema;
 
-export const groupUsersSchema = z.object({
-	user: z.string({ required_error: 'A user is required' }).uuid()
+export const addUserToGroupSchema = z.object({
+	group: z
+		.number({ required_error: "A Group ID is required"})
+		.int()
+		.positive(),
+	user: z
+		.string({ required_error: 'A user is required' })
+		.uuid()
 });
 
-export type GroupUsersSchema = typeof groupUsersSchema;
+export type AddUserToGroupSchema = typeof addUserToGroupSchema;

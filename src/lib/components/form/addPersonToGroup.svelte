@@ -1,33 +1,62 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { Plus } from 'lucide-svelte';
-	import { Badge } from '../ui/badge';
 	import Button from '../ui/button/button.svelte';
+	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
+	import { addUserToGroupSchema, type AddUserToGroupSchema } from '$lib/validation/schema';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { toast } from 'svelte-sonner';
 
-	let {
-		username,
-		userUid,
-		isAlreadyInGroup,
-		action
-	}: { username: string; userUid: string; isAlreadyInGroup: boolean; action: string } = $props();
+	type Props = {
+		username: string;
+		groupId: number;
+		userUid: string;
+		isAlreadyInGroup: boolean;
+		action: string;
+		data: SuperValidated<Infer<AddUserToGroupSchema>>;
+	};
+
+	let { username, groupId, userUid, isAlreadyInGroup, action, data }: Props = $props();
+
+	let form = superForm(data, {
+		id: crypto.randomUUID(),
+		onSubmit: ({ formData }) => {
+			formData.set('group', groupId.toString());
+			formData.set('user', userUid);
+		},
+		onUpdate: ({ result }) => {
+			console.log(result);
+			if (result.type == 'failure') return toast.error(result.data.form.message);
+			toast.success(result.data.form.message);
+		}
+	});
+
+	let { form: formData, enhance, delayed } = form;
 </script>
 
-<svelte:element
-	this={isAlreadyInGroup ? 'div' : 'form'}
-	class="flex justify-between"
-	use:enhance
-	method={isAlreadyInGroup ? undefined : 'POST'}
-	action={isAlreadyInGroup ? undefined : action}
->
+{#snippet content(isAlreadyInGroup: boolean)}
 	<small>{username}</small>
 	{#if !isAlreadyInGroup}
 		<Button
 			type="submit"
-			class="!aspect-square h-6 w-6 p-2"
+			class="!mt-0 !aspect-square h-6 w-6 p-2"
 			title="add {username} to group"
 			aria-label="add {username} to group"
+			disabled={$delayed}
+			loading={$delayed}
 		>
-			<Plus />
+			{#if !$delayed}
+				<Plus />
+			{/if}
 		</Button>
 	{/if}
-</svelte:element>
+{/snippet}
+
+{#if isAlreadyInGroup}
+	<div>
+		{@render content(isAlreadyInGroup)}
+	</div>
+{:else}
+	<form {action} use:enhance method="POST" class="flex items-center justify-between">
+		{@render content(isAlreadyInGroup)}
+	</form>
+{/if}

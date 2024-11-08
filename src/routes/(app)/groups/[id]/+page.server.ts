@@ -2,7 +2,7 @@ import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { groupUsersSchema } from '$lib/validation/schema';
+import { addUserToGroupSchema, groupUsersSchema } from '$lib/validation/schema';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase }, params }) => {
 	const { session } = await safeGetSession();
@@ -44,8 +44,11 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		error(404);
 	}
 
+	const addUserToGroupForm = await superValidate(zod(addUserToGroupSchema))
+
 	return {
-		group: group[0]
+		group: group[0],
+		addUserToGroupForm
 	};
 };
 
@@ -56,16 +59,28 @@ export const actions: Actions = {
 			return fail(401);
 		}
 
-		const body = await request.json();
-		console.log(body);
+		const form = await superValidate(request, zod(addUserToGroupSchema))
 
-		// const form = await superValidate(request, zod(groupUsersSchema))
+		if (!form.valid) {
+			console.error(form)
+			return message(form, 'Something went wrong. Try again later.', { status: 400 });
+		}
 
-		// if (!form.valid) {
-		//   console.error(form)
-		//   return message(form, 'Something went wrong. Try again later.', { status: 400 });
-		// }
+		const { error: insertErr } = await supabase
+			.from('user_group')
+			.insert({
+				user: form.data.user,
+				group: form.data.group
+			})
 
-		// console.log(form)
+		if (insertErr) {
+			console.error(insertErr)
+			if (insertErr.code == "23505"){
+				return message(form, 'User is already in group.', { status: 400 });
+			}
+			return message(form, 'Something went wrong. Try again later.', { status: 500 });
+		}
+
+		return message(form, 'User added to group.');
 	}
 };

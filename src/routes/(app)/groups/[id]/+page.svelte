@@ -15,5 +15,5 @@
 </FadeInWrapper>
 
 <FadeInWrapper tag="section" class="section-spacing container">
-	<SearchPersons />
+	<SearchPersons addUserToGroupForm={data.addUserToGroupForm} groupId={data.group.id} />
 </FadeInWrapper>
