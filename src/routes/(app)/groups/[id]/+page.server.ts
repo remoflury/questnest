@@ -47,7 +47,12 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	// get all users assigned to this group
 	const { data: groupUsers, error: groupUsersErr } = await supabase
 		.from('user_group')
-		.select('user')
+		.select(`
+			user(
+				id,
+				username
+			)
+			`)
 		.eq('group', params.id)
 
 	if (groupUsersErr) {
@@ -61,7 +66,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		group: {
 			id: group[0].id as number,
 			name: group[0].name as string,
-			users: groupUsers.map(user => {return user.user}) as string[]
+			users: groupUsers.flatMap(user => {return user.user}) as { id: string, username: string }[]
 		},
 		addUserToGroupForm
 	};

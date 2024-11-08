@@ -93,17 +93,17 @@
 
 	h2,
 	.h2 {
-		@apply mb-3 text-3xl;
+		@apply mb-3 text-2xl;
 	}
 
 	h3,
 	.h3 {
-		@apply mb-2 text-2xl;
+		@apply mb-2 text-xl;
 	}
 
 	h4,
 	.h4 {
-		@apply mb-1 text-xl;
+		@apply mb-1 text-lg;
 	}
 
 	/* Layout */

@@ -3,7 +3,6 @@
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import type { AddUserToGroupSchema } from '$lib/validation/schema';
 	import type { Tables } from '$lib/types/SupabaseTypes';
-	import { onMount } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { slide } from 'svelte/transition';
 	import { TRANSITION_CONFIG } from '$lib/utils/constants';
@@ -11,11 +10,11 @@
 	import * as Command from '$lib/components/ui/command/index.js';
 	type Props = {
 		addUserToGroupForm: SuperValidated<Infer<AddUserToGroupSchema>>;
-		usersOfGroup: string[];
+		userIdsOfGroup: string[];
 		groupId: number;
 	};
-	let { addUserToGroupForm, groupId, usersOfGroup }: Props = $props();
-	let query = $state('testuser');
+	let { addUserToGroupForm, groupId, userIdsOfGroup }: Props = $props();
+	let query = $state('');
 
 	const fetchUsers = async () => {
 		if (!query) return [];
@@ -28,8 +27,6 @@
 	};
 
 	let users: Tables<'user'>[] = $state([]);
-
-	onMount(async () => await fetchUsers());
 </script>
 
 <h2>Add new user to group</h2>
@@ -42,10 +39,10 @@
 			placeholder="Search for username or email..."
 		/>
 	</Command.Root>
-	{#if users.length}
+	{#if users.length && query.length}
 		<div class="space-y-3 border-b border-secondary pb-4 pt-3" transition:slide={TRANSITION_CONFIG}>
 			{#each users as user (user.id)}
-				{@const isAlreadyInGroup = !!usersOfGroup.find((id) => id == user.id)}
+				{@const isAlreadyInGroup = !!userIdsOfGroup.find((id) => id == user.id)}
 				<div animate:flip={TRANSITION_CONFIG} class="px-8">
 					<AddPersonToGroup
 						username={user.username}
@@ -60,7 +57,3 @@
 		</div>
 	{/if}
 </article>
-<p>
-	Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquam qui itaque odio? Aperiam facere
-	nihil neque nulla, illo nostrum hic!
-</p>

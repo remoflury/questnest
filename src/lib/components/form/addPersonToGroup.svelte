@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Plus } from 'lucide-svelte';
+	import { Plus, Check } from 'lucide-svelte';
 	import Button from '../ui/button/button.svelte';
 	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { type AddUserToGroupSchema } from '$lib/validation/schema';
 	import { toast } from 'svelte-sonner';
+	import Badge from '../ui/badge/badge.svelte';
 
 	type Props = {
 		username: string;
@@ -47,11 +48,13 @@
 				<Plus />
 			{/if}
 		</Button>
+	{:else}
+		<Badge variant="outline" class="!aspect-square h-6 w-6 p-1 font-normal"><Check /></Badge>
 	{/if}
 {/snippet}
 
 {#if isAlreadyInGroup}
-	<div>
+	<div class="flex items-center justify-between">
 		{@render content(isAlreadyInGroup)}
 	</div>
 {:else}
