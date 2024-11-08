@@ -29,7 +29,7 @@
 	let users: Tables<'user'>[] = $state([]);
 </script>
 
-<h2>Add new user to group</h2>
+<h2>Add member</h2>
 
 <article>
 	<Command.Root>
