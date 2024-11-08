@@ -1,8 +1,8 @@
-import { error, fail } from '@sveltejs/kit';
+import { error , fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { addUserToGroupSchema, groupUsersSchema } from '$lib/validation/schema';
+import { addUserToGroupSchema } from '$lib/validation/schema';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase }, params }) => {
 	const { session } = await safeGetSession();
@@ -44,10 +44,25 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		error(404);
 	}
 
+	// get all users assigned to this group
+	const { data: groupUsers, error: groupUsersErr } = await supabase
+		.from('user_group')
+		.select('user')
+		.eq('group', params.id)
+
+	if (groupUsersErr) {
+		console.error(groupUsersErr)
+		error(500)
+	}
+
 	const addUserToGroupForm = await superValidate(zod(addUserToGroupSchema))
 
 	return {
-		group: group[0],
+		group: {
+			id: group[0].id as number,
+			name: group[0].name as string,
+			users: groupUsers.map(user => {return user.user}) as string[]
+		},
 		addUserToGroupForm
 	};
 };

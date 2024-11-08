@@ -11,9 +11,10 @@
 	import * as Command from '$lib/components/ui/command/index.js';
 	type Props = {
 		addUserToGroupForm: SuperValidated<Infer<AddUserToGroupSchema>>;
+		usersOfGroup: string[];
 		groupId: number;
 	};
-	let { addUserToGroupForm, groupId }: Props = $props();
+	let { addUserToGroupForm, groupId, usersOfGroup }: Props = $props();
 	let query = $state('testuser');
 
 	const fetchUsers = async () => {
@@ -44,11 +45,12 @@
 	{#if users.length}
 		<div class="space-y-3 border-b border-secondary pb-4 pt-3" transition:slide={TRANSITION_CONFIG}>
 			{#each users as user (user.id)}
+				{@const isAlreadyInGroup = !!usersOfGroup.find((id) => id == user.id)}
 				<div animate:flip={TRANSITION_CONFIG} class="px-8">
 					<AddPersonToGroup
 						username={user.username}
 						userUid={user.id}
-						isAlreadyInGroup={false}
+						{isAlreadyInGroup}
 						action="/groups/{groupId}?/addtogroup"
 						data={addUserToGroupForm}
 						{groupId}
@@ -58,7 +60,6 @@
 		</div>
 	{/if}
 </article>
-
 <p>
 	Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquam qui itaque odio? Aperiam facere
 	nihil neque nulla, illo nostrum hic!
