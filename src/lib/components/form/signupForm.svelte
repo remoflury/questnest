@@ -14,7 +14,7 @@
 		validators: zodClient(signupSchema),
 		dataType: 'json',
 		onUpdate: ({ result }) => {
-			if (result.type == 'failure') toast.error(result.data.form.message);
+			if (result.type == 'failure') return toast.error(result.data.form.message);
 			toast.success(result.data.form.message);
 			setTimeout(() => {
 				goto('/signin');

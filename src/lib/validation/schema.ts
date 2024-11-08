@@ -54,9 +54,21 @@ export const addGroupSchema = z.object({
 		.trim()
 });
 
+
 export type AddGroupSchema = typeof addGroupSchema;
 
 export const addUserToGroupSchema = z.object({
+	group: z
+		.number({ required_error: "A Group ID is required"})
+		.int() 
+		.positive(),
+	user: z
+		.string({ required_error: 'A user is required' })
+		.uuid()
+});
+export type AddUserToGroupSchema = typeof addUserToGroupSchema;
+
+export const removeUserFromGroupSchema = z.object({
 	group: z
 		.number({ required_error: "A Group ID is required"})
 		.int()
@@ -66,4 +78,4 @@ export const addUserToGroupSchema = z.object({
 		.uuid()
 });
 
-export type AddUserToGroupSchema = typeof addUserToGroupSchema;
+export type RemoveUserFromGroupSchema = typeof removeUserFromGroupSchema;

@@ -2,9 +2,9 @@
 	import { Plus, Check } from 'lucide-svelte';
 	import Button from '../ui/button/button.svelte';
 	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
-	import { type AddUserToGroupSchema } from '$lib/validation/schema';
 	import { toast } from 'svelte-sonner';
 	import Badge from '../ui/badge/badge.svelte';
+	import type { AddUserToGroupSchema } from '$lib/validation/schema';
 
 	type Props = {
 		username: string;
