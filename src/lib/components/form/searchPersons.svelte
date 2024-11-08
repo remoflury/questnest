@@ -3,7 +3,6 @@
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import type { AddUserToGroupSchema } from '$lib/validation/schema';
 	import type { Tables } from '$lib/types/SupabaseTypes';
-	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { slide } from 'svelte/transition';

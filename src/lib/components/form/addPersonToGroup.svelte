@@ -2,8 +2,7 @@
 	import { Plus } from 'lucide-svelte';
 	import Button from '../ui/button/button.svelte';
 	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
-	import { addUserToGroupSchema, type AddUserToGroupSchema } from '$lib/validation/schema';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { type AddUserToGroupSchema } from '$lib/validation/schema';
 	import { toast } from 'svelte-sonner';
 
 	type Props = {
