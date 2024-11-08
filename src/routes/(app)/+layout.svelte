@@ -25,13 +25,9 @@
 		}
 	]);
 
-	$inspect($page.url.pathname.split('/')[1]);
-
 	$effect(() => {
 		$menu.heightAppNav = navAppElemClientHeight;
 	});
-
-	$inspect($menu.heightAppNav);
 </script>
 
 {@render children()}

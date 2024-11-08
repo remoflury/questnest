@@ -9,6 +9,11 @@ const passwordSchema = z
 	.string({ required_error: 'Password is required.' })
 	.min(6, { message: 'Password must contain at least 6 characters.' });
 
+const groupIdSchema = z
+		.number({ required_error: "A Group ID is required"})
+		.int()
+		.positive()
+
 export const signupSchema = z
 	.object({
 		email: emailSchema,
@@ -69,13 +74,30 @@ export const addUserToGroupSchema = z.object({
 export type AddUserToGroupSchema = typeof addUserToGroupSchema;
 
 export const removeUserFromGroupSchema = z.object({
-	group: z
-		.number({ required_error: "A Group ID is required"})
-		.int()
-		.positive(),
+	group: groupIdSchema,
 	user: z
 		.string({ required_error: 'A user is required' })
 		.uuid()
 });
 
 export type RemoveUserFromGroupSchema = typeof removeUserFromGroupSchema;
+
+export const addQuestboardSchema = z.object({
+	name: z
+		.string({ required_error: 'A name is required' })
+		.min(2, { message: 'Name must contain at least 2 characters.' })
+		.max(30, { message: 'Name can not contain more than 30 characters.' })
+		.trim(),
+	description: z
+		.string()
+		.min(5, { message: 'Description must contain at least 5 characters.' })
+		.max(100, { message: 'Description can not contain more than 100 characters.' })
+		.trim()
+		.optional(),
+	group: z
+		.string({ required_error: 'A Group is required' })
+		.min(1, { message: 'A Group is required' })
+		.trim()
+})
+
+export type AddQuestboardSchema = typeof addQuestboardSchema
