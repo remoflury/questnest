@@ -6,6 +6,7 @@
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { X } from 'lucide-svelte';
 
 	type User = {
@@ -74,6 +75,15 @@
 		groupId={data.group.id}
 		{userIdsOfGroup}
 	/>
+</FadeInWrapper>
+
+<Separator />
+<FadeInWrapper tag="section" class="section-spacing container">
+	<TitleWrapper>
+		{#snippet text()}
+			Quests
+		{/snippet}
+	</TitleWrapper>
 </FadeInWrapper>
 
 <RemoveFromGroup

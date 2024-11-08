@@ -40,7 +40,7 @@
 		/>
 	</Command.Root>
 	{#if users.length && query.length}
-		<div class="space-y-3 border-b border-secondary pb-4 pt-3" transition:slide={TRANSITION_CONFIG}>
+		<div class="space-y-3 pb-4 pt-3" transition:slide={TRANSITION_CONFIG}>
 			{#each users as user (user.id)}
 				{@const isAlreadyInGroup = !!userIdsOfGroup.find((id) => id == user.id)}
 				<div animate:flip={TRANSITION_CONFIG} class="px-8">
