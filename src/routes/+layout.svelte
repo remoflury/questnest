@@ -3,6 +3,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
+	import { menu } from '$lib/store/store';
 
 	let { children, data } = $props();
 	let supabase = $state(data.supabase);
@@ -20,6 +21,6 @@
 </script>
 
 <Toaster position="top-center" />
-<main class="min-h-dvh">
+<main class="min-h-dvh" style="padding-bottom: {$menu.heightAppNav}px">
 	{@render children()}
 </main>

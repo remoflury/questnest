@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { menu } from '$lib/store/store';
 	import { Users, Logs, Settings } from 'lucide-svelte';
 
 	let { children } = $props();
+	let navAppElemClientHeight: number = $state(0);
 
 	let navItems = $state([
 		{
@@ -24,10 +26,19 @@
 	]);
 
 	$inspect($page.url.pathname.split('/')[1]);
+
+	$effect(() => {
+		$menu.heightAppNav = navAppElemClientHeight;
+	});
+
+	$inspect($menu.heightAppNav);
 </script>
 
 {@render children()}
-<nav class="fixed bottom-0 left-0 right-0 bg-white py-4 shadow-top">
+<nav
+	class="fixed bottom-0 left-0 right-0 bg-white py-4 shadow-top"
+	bind:clientHeight={navAppElemClientHeight}
+>
 	<div class="container flex items-center justify-around">
 		{#each navItems as item (crypto.randomUUID())}
 			{@const current = $page.url.pathname.split('/')[1] === item.href.split('/')[1]}

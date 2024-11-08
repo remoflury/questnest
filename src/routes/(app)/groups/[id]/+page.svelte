@@ -76,8 +76,9 @@
 		{userIdsOfGroup}
 	/>
 </FadeInWrapper>
-
-<Separator />
+<FadeInWrapper tag="span" role="presentation">
+	<Separator />
+</FadeInWrapper>
 <FadeInWrapper tag="section" class="section-spacing container">
 	<TitleWrapper>
 		{#snippet text()}
