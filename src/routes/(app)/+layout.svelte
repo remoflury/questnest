@@ -37,6 +37,7 @@
 				href={item.href}
 				title="go to {item.label}"
 				aria-label="go to {item.label}"
+				draggable={false}
 			>
 				<item.icon />
 			</Button>

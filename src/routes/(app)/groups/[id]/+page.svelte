@@ -45,7 +45,10 @@
 		<div class="flex flex-wrap gap-x-4 gap-y-2">
 			{#each data.group.users as user}
 				{@const isOwnUser = $page.data.session?.user.id == user.id}
-				<Badge variant="secondary" class="flex items-center gap-x-1 {isOwnUser ? '' : 'pr-0'}"
+				<Badge
+					variant="secondary"
+					class="flex items-center gap-x-1 {isOwnUser ? '' : 'pr-0'}"
+					draggable={false}
 					>{user.username}
 					{#if !isOwnUser}
 						<Button

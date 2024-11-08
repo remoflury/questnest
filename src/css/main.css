@@ -69,8 +69,9 @@
 
 @layer base {
 	* {
-		@apply border-border;
+		@apply border-border selection:bg-primary selection:text-primary-foreground
 	}
+
 	body {
 		@apply scroll-smooth bg-background font-atkinson tracking-wide text-foreground;
 	}
