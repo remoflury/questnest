@@ -2,6 +2,7 @@
 	import AddQuestboardForm from '$lib/components/form/addQuestboardForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
+	import QuestboardCard from '$lib/components/quest/questboardCard.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import { Plus } from 'lucide-svelte';
@@ -27,20 +28,33 @@
 			</Button>
 		{/snippet}
 	</TitleWrapper>
+	{#if !data.groupsOfUser.length}
+		<p>Create groups before accessing your quests.</p>
+	{/if}
 </FadeInWrapper>
 
-<!-- Add new quest -->
-<Drawer.Root bind:open>
-	<Drawer.Content>
-		<Drawer.Header>
-			<Drawer.Title>Add new Quest</Drawer.Title>
-		</Drawer.Header>
-		<Drawer.Footer>
-			<AddQuestboardForm
-				action="?/addquestboard"
-				data={data.addQuestboardForm}
-				groupsOfUser={data.groupsOfUser}
-			/>
-		</Drawer.Footer>
-	</Drawer.Content>
-</Drawer.Root>
+{#if data.groupsOfUser.length}
+	<section class="section-spacing container">
+		{#each data.questboards as q}
+			<FadeInWrapper tag="a" href="/quests/{q.id}">
+				<QuestboardCard name={q.name} description={q.description} groupName={q.group.name} />
+			</FadeInWrapper>
+		{/each}
+	</section>
+
+	<!-- Add new quest -->
+	<Drawer.Root bind:open>
+		<Drawer.Content>
+			<Drawer.Header>
+				<Drawer.Title>Add new Quest</Drawer.Title>
+			</Drawer.Header>
+			<Drawer.Footer>
+				<AddQuestboardForm
+					action="?/addquestboard"
+					data={data.addQuestboardForm}
+					groupsOfUser={data.groupsOfUser}
+				/>
+			</Drawer.Footer>
+		</Drawer.Content>
+	</Drawer.Root>
+{/if}

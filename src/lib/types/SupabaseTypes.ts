@@ -52,6 +52,38 @@ export type Database = {
         }
         Relationships: []
       }
+      questboard: {
+        Row: {
+          created_at: string
+          description: string | null
+          group: number
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          group: number
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          group?: number
+          id?: number
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questboard_group_fkey"
+            columns: ["group"]
+            isOneToOne: false
+            referencedRelation: "group"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user: {
         Row: {
           created_at: string
@@ -98,6 +130,20 @@ export type Database = {
             columns: ["group"]
             isOneToOne: false
             referencedRelation: "group"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_group_user_fkey1"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_group_user_fkey2"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "user"
             referencedColumns: ["id"]
           },
         ]

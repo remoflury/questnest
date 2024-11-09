@@ -11,29 +11,40 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		error(401);
 	}
 
-  const { data: groupsOfUserData, error: groupsOfUserErr } = await supabase
-    .from('user_group')
-    .select(`
-      group(
-        id,
-        name
-      )
-      `)
-    .eq('user', session.user.id)
+  // get groups of user
+  const { data: groupsOfUser, error: groupsOfUserErr } = await supabase
+    .from('group')
+    .select('id, name')
 
   if (groupsOfUserErr) {
-    console.error(groupsOfUserErr)
+    console.error({groupsOfUserErr})
     error(500)
   }
-  const groupsOfUser = groupsOfUserData.flatMap((user) => {
-    return user.group
-  }) as (Pick<Tables<"group">, 'id' | 'name'>)[]
+
+  // get all quests of user
+  const { data: questboards, error: questboardsError } = await supabase
+    .from('questboard')
+    .select(`
+        id,
+        name,
+        description,
+        group(
+          name
+        )
+      `)
+    .returns<(Pick<Tables<'questboard'>, 'id' | 'name' | 'description'> & { group: Pick<Tables<"group">, 'name'>})[]>()
+
+  if (questboardsError) {
+    console.error({questboardsError})
+    error(500)
+  }
 
   const addQuestboardForm = await superValidate(zod(addQuestboardSchema))
 
   return {
     addQuestboardForm,
-    groupsOfUser
+    groupsOfUser,
+    questboards
   }
 };
 
