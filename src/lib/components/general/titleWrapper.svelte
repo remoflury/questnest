@@ -5,19 +5,19 @@
 	let {
 		text,
 		tag = 'h2',
-		classes = '',
+		className = '',
 		icon
 	}: {
 		text: Snippet;
 		tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-		classes?: string;
+		className?: string;
 		icon?: Snippet;
 	} = $props();
 </script>
 
 <svelte:element
 	this={tag}
-	class={cn(classes, {
+	class={cn(className, {
 		'flex items-center justify-between gap-x-4': icon
 	})}
 >

@@ -1,3 +1,4 @@
+import { QUESTS_PER_BOARD } from '$lib/utils/constants';
 import { z } from 'zod';
 
 const emailSchema = z
@@ -101,3 +102,26 @@ export const addQuestboardSchema = z.object({
 })
 
 export type AddQuestboardSchema = typeof addQuestboardSchema
+
+export const createQuestsSchema = z.object({
+	questboard: z
+			.number({ required_error: "Questboard ID is required"})
+			.int()
+			.positive(),
+	quests: z.object({
+		// id: z
+		// 	.number({ required_error: "ID is required"})
+		// 	.int()
+		// 	.positive(),
+		text: z
+			.string({ required_error: "Text is required."})
+			.min(2, { message: "Text must contain at least 2 characters."})
+			.max(50, { message: "Text can not contain more than 50 characters."})
+			.trim()
+			// .optional()
+	})
+	.array()
+	.length(QUESTS_PER_BOARD, {message: `Must have ${QUESTS_PER_BOARD} quests.`})
+})
+
+export type CreateQuestsSchema = typeof createQuestsSchema

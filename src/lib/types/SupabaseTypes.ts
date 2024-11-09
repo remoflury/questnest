@@ -52,6 +52,35 @@ export type Database = {
         }
         Relationships: []
       }
+      quest: {
+        Row: {
+          created_at: string
+          id: number
+          questboard: number
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          questboard: number
+          text: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          questboard?: number
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quest_questboard_fkey"
+            columns: ["questboard"]
+            isOneToOne: false
+            referencedRelation: "questboard"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       questboard: {
         Row: {
           created_at: string
