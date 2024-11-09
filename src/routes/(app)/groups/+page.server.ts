@@ -11,37 +11,19 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	}
 
 	// get groups related to user
-	// TODO: replace with RLS!
-	const { data, error: groupErr } = await supabase
-		.from('user_group')
-		.select(
-			`
-      group(
-        id,
-        name
-      )
-      `
-		)
-		.eq('user', session.user.id);
+	const { data: groupData, error: groupErr } = await supabase
+		.from('group')
+		.select('id, name')
 
 	if (groupErr) {
-		console.error(groupErr);
+		console.error({groupErr});
 		error(500);
 	}
-
-	const groups = data.map((row) => {
-		return {
-			// @ts-expect-error wrong generated sb-types
-			id: row.group.id,
-			// @ts-expect-error wrong generated sb-types
-			name: row.group.name
-		};
-	});
 
 	const addGroupForm = await superValidate(zod(addGroupSchema));
 	return {
 		addGroupForm,
-		groups
+		groups: groupData
 	};
 };
 
@@ -64,7 +46,7 @@ export const actions: Actions = {
 			.select('id');
 
 		if (groupErr) {
-			console.log(groupErr);
+			console.log('groupErr', groupErr);
 			return message(form, 'Something went wrong. Try again.', { status: 500 });
 		}
 

@@ -10,45 +10,25 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		error(401);
 	}
 
-	// TODO: replace with RLS!
-	const { data, error: groupErr } = await supabase
-		.from('user_group')
-		.select(
-			`
-      group(
-        id,
-        name
-      )
-      `
-		)
-		.eq('user', session.user.id)
-		.eq('group.id', params.id);
+	const { data: groupData, error: groupErr } = await supabase
+		.from('group')
+		.select('id, name')
+		.eq('id', params.id)
 
 	if (groupErr) {
-		console.error(groupErr);
-		error(500);
+		console.error({groupErr})
+		error(500)
 	}
 
-	const group = data
-		.filter((row) => row.group)
-		.map((row) => {
-			return {
-				// @ts-expect-error wrong generated sb-types
-				id: row.group.id,
-				// @ts-expect-error wrong generated sb-types
-				name: row.group.name
-			};
-		});
-
-	if (!group.length) {
-		error(404);
+	if (!groupData.length) {
+		error(404)
 	}
 
 	// get all users assigned to this group
 	const { data: groupUsers, error: groupUsersErr } = await supabase
 		.from('user_group')
 		.select(`
-			user(
+			user!user_group_user_fkey1(
 				id,
 				username
 			)
@@ -56,7 +36,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		.eq('group', params.id)
 
 	if (groupUsersErr) {
-		console.error(groupUsersErr)
+		console.error({groupUsersErr})
 		error(500)
 	}
 
@@ -65,11 +45,10 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		superValidate(zod(removeUserFromGroupSchema))
 	])
 
-	console.log(addUserToGroupForm)
 	return {
 		group: {
-			id: group[0].id as number,
-			name: group[0].name as string,
+			id: groupData[0].id as number,
+			name: groupData[0].name as string,
 			users: groupUsers.flatMap(user => {return user.user}) as { id: string, username: string }[]
 		},
 		addUserToGroupForm,
