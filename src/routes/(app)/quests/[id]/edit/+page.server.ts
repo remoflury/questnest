@@ -3,7 +3,6 @@ import type { Actions, PageServerLoad } from "./$types";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { createQuestsSchema } from "$lib/validation/schema";
-import { QUESTS_PER_BOARD } from "$lib/utils/constants";
 
 export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase }}) => {
   const { session } = await safeGetSession();
@@ -12,14 +11,19 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 	}
 
 	 // const check if quests are already existing
-	const { count: questCount, error: questsErr } = await supabase
+	const { data: questsData, count: questCount, error: questsErr } = await supabase
 		.from("quest")
-		.select(`*`, { count: "exact", head: true })
+		.select("id, text", { count: "exact", head: false })
 		.eq('questboard', params.id)
 
  if (questsErr) {
 	 console.error({questsErr})
 	 error(500)
+ }
+
+ if (!!questCount === false) {
+	// redirect, if no quests are available
+	return redirect(307, `/quests/${params.id}`)
  }
 
  // get questboard credentials
@@ -34,56 +38,54 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 	 error(500)
  }
 
- if (!!questCount === true) {
-	// redirect, if quests are available
-	return redirect(307, `/quests/${params.id}`)
- }
 const prepopulatedData = { 
 	questboard: parseInt(params.id),
-	quests: Array.from({ length: QUESTS_PER_BOARD}).map(() => {
-		return {
-			text: ""
-		}
-	})
+	quests: questsData
 }
-const createQuestsForm = await superValidate(prepopulatedData, zod(createQuestsSchema))
+
+const editQuestsForm = await superValidate(prepopulatedData, zod(createQuestsSchema))
 
  return {
 	questboard: questboardData,
-	createQuestsForm
+	editQuestsForm
  }
 };
 
+
 export const actions: Actions = {
-	createquests: async ({ request, locals: { safeGetSession, supabase }}) => {
+	editquests: async ({ request, locals: { safeGetSession, supabase }}) => {
 		const { session } = await safeGetSession()
 		if (!session) {
 			return fail(401)
 		}
 
 		const form = await superValidate(request, zod(createQuestsSchema))
+    console.log(form.data)
 
 		if (!form.valid) {
 			console.error(form)
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
 
-		const insertData = form.data.quests.map((quest) => {
-			return {
-				questboard: form.data.questboard,
-				text: quest.text
-			}
-		})
+    const updateData = form.data.quests.map(quest => {
+      return {
+        id: quest.id!,
+        questboard: form.data.questboard,
+        text: quest.text
+      }
+    })
 
-		const { error: insertErr } = await supabase
-			.from('quest')
-			.insert(insertData)
+    // TODO?: eventually replace with upsert, as upsert can insert many rows at once
 
-		if (insertErr) {
-			console.error({insertErr});
-			return message(form, insertErr.message, { status: 400 });
-		}
+    const { error: updateErr } = await supabase
+      .from('quest')
+      .upsert(updateData)
 
-		return message(form, 'Quests saved successfully.');
+    if (updateErr) {  
+      console.error({updateErr})
+      return message(form, 'Something went wrong. Try again later.', { status: 500 });
+    }
+
+		return message(form, 'Quests updated successfully.');
 	}
 };

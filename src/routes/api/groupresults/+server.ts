@@ -14,8 +14,6 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
     return genApiRes(null, "Invalid params.", 403)
   }
 
-  console.log(questboardId)
-
   // get all quests id's of group
   const { data: allQuests, error: allQuestsErr } = await supabase
     .from('quest')
@@ -31,8 +29,7 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
   const allQuestIds = allQuests.flatMap((q) => {
     return q.id
   })
-  console.log(allQuestIds)
-
+  
   // get completed quests of all users in current group, except current user
   const { data: questsOtherUsersCompletedData, error: questsOtherUsersCompletedErr } = await supabase
     .from('quest_done')

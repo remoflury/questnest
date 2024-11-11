@@ -8,8 +8,13 @@
 	import { goto } from '$app/navigation';
 	import { QUESTS_PER_BOARD } from '$lib/utils/constants';
 
-	let { data, action }: { data: SuperValidated<Infer<CreateQuestsSchema>>; action: string } =
-		$props();
+	type Props = {
+		data: SuperValidated<Infer<CreateQuestsSchema>>;
+		action: string;
+		redirect: string;
+	};
+
+	let { data, action, redirect }: Props = $props();
 
 	let form = superForm(data, {
 		validators: zodClient(createQuestsSchema),
@@ -19,7 +24,7 @@
 				return toast.error(result.data.form.message);
 			}
 			toast.success(result.data.form.message);
-			await goto(`/quests/${$formData.questboard}`);
+			await goto(redirect);
 		}
 	});
 

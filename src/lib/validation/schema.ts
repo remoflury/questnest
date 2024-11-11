@@ -109,10 +109,11 @@ export const createQuestsSchema = z.object({
 			.int()
 			.positive(),
 	quests: z.object({
-		// id: z
-		// 	.number({ required_error: "ID is required"})
-		// 	.int()
-		// 	.positive(),
+		id: z
+			.number({ required_error: "ID is required"})
+			.int()
+			.positive()
+			.optional(),
 		text: z
 			.string({ required_error: "Text is required."})
 			.min(2, { message: "Text must contain at least 2 characters."})

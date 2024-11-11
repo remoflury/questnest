@@ -5,7 +5,7 @@
 	import ResultsOtherGroupmembers from '$lib/components/quest/resultsOtherGroupmembers.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { Button } from '$lib/components/ui/button';
-	// import Button from "$lib/components/ui/button/button.svelte";
+	import { Edit } from 'lucide-svelte';
 
 	let { data } = $props();
 </script>
@@ -16,7 +16,17 @@
 			{#snippet text()}
 				{data.questboard.name}
 			{/snippet}
-			<!-- TODO: Enable editing -->
+			{#snippet icon()}
+				<Button
+					class="!aspect-square p-2"
+					title="edit quest"
+					aria-label="edit quest"
+					variant="secondary"
+					href={`/quests/${data.questboard.id}/edit`}
+				>
+					<Edit class="stroke-primary" />
+				</Button>
+			{/snippet}
 		</TitleWrapper>
 		<Badge class="max-w-max text-sm font-normal" variant="outline"
 			>{data.questboard.group.name}</Badge
