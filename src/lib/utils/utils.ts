@@ -1,4 +1,4 @@
-import type { ApiResponse, HttpStatus } from '$lib/types/GeneralTypes';
+import type { HttpStatus } from '$lib/types/GeneralTypes';
 import { json } from '@sveltejs/kit';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';

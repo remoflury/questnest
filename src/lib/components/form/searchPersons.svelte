@@ -22,6 +22,7 @@
 		const { payload, message, status }: ApiResponse<Tables<'user'>[]> = await res.json();
 		if (status >= 400) {
 			throw new Error(message);
+			// TODO catch error in html code
 		}
 		users = payload;
 	};

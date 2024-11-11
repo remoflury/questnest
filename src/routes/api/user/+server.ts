@@ -21,5 +21,5 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 		return genApiRes(undefined, usersErr.message, 500);
 	}
 
-	return genApiRes(users, 'test');
+	return genApiRes(users);
 };

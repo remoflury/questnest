@@ -18,6 +18,7 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
         name,
         description,
         group(
+          id,
           name
         ),
         quest(
@@ -28,7 +29,7 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
     .eq('id', params.id)
     .returns<(
       Pick<Tables<'questboard'>, 'id' | 'name' | 'description'> & 
-      { group: Pick<Tables<"group">, 'name'>} &
+      { group: Pick<Tables<"group">, 'id' | 'name'>} &
       { quest: Pick<Tables<"quest">, 'id' | 'text'>[]}
     )[]>()
     .single()
@@ -46,11 +47,12 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
     return q.id
   })
 
+  // get all completed quests of current user
   const { data: questsCompleted, error: questsCompletedErr } = await supabase
-    .from('user_accessible_quests')
-    .select('quest_id')
-    .in('quest_id', allQuestIds)
-    .eq('user_id', session.user.id)
+    .from('quest_done')
+    .select('quest')
+    .in('quest', allQuestIds)
+    .eq('user', session.user.id)
     // .returns<Pick<Tables<"user_accessible_quests">, "quest_id">[]>()
 
   if (questsCompletedErr) {
@@ -59,15 +61,27 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
   }
 
   const questIdsCompleted = questsCompleted.map((q) => {
-    return q.quest_id as number
+    return q.quest as number
   })
+
+  const { count: countOtherMembers, error: groupMembersErr } = await supabase
+    .from('user_group')
+    .select('*', { head: true, count: "exact"})
+    .eq('group', questboard.group.id)
+    .neq('user', session.user.id)
+
+  if (groupMembersErr) {
+    console.error({groupMembersErr})
+    error(500)
+  }
 
   const toggleQuestForm = await superValidate(zod(toggleQuestSchema))
 
   return {
     questboard,
     toggleQuestForm,
-    questIdsCompleted
+    questIdsCompleted,
+    countOtherMembers: countOtherMembers as number
   }
 };
 

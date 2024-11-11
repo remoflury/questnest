@@ -2,6 +2,7 @@
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import Questboard from '$lib/components/quest/questboard.svelte';
+	import ResultsOtherGroupmembers from '$lib/components/quest/resultsOtherGroupmembers.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { Button } from '$lib/components/ui/button';
 	// import Button from "$lib/components/ui/button/button.svelte";
@@ -16,16 +17,6 @@
 				{data.questboard.name}
 			{/snippet}
 			<!-- TODO: Enable editing -->
-			<!-- {#snippet icon()}
-			<Button
-      class="!aspect-square p-2"
-      title="add quest"
-      aria-label="add quest"
-      onclick={() => (open = true)}
-			>
-      <Plus />
-			</Button>
-      {/snippet} -->
 		</TitleWrapper>
 		<Badge class="max-w-max text-sm font-normal" variant="outline"
 			>{data.questboard.group.name}</Badge
@@ -49,5 +40,20 @@
 				action="?/togglequest"
 			/>
 		{/if}
+	</article>
+</FadeInWrapper>
+
+<FadeInWrapper tag="section" class="section-spacing container">
+	<article class="grid-content grid-spacing">
+		<TitleWrapper tag="h2" className="mb-0">
+			{#snippet text()}
+				Other Groupmembers
+			{/snippet}
+		</TitleWrapper>
+
+		<ResultsOtherGroupmembers
+			countOtherMembers={data.countOtherMembers}
+			questboardId={data.questboard.id}
+		/>
 	</article>
 </FadeInWrapper>
