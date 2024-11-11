@@ -65,8 +65,5 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
   // Convert the result to the desired array format
   const result = Object.values(groupedByUser);
 
-  console.log(result);
-
-
 	return genApiRes({allQuestIds, resultsPerUser: result});
 };

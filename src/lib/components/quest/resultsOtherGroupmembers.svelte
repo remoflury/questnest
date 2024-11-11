@@ -31,13 +31,24 @@
 {#await fetchResults()}
 	loading
 {:then { resultsPerUser, allQuestIds }}
-	{#each resultsPerUser as user}
-		{user.username}
+	{#if resultsPerUser.length}
+		<article class="grid-spacing grid grid-cols-4">
+			<div class="col-span-2 flex items-start gap-x-4">
+				{#each resultsPerUser as user}
+					{user.username}
 
-		<div class="grid max-w-max grid-cols-4">
-			{#each Array.from({ length: allQuestIds.length }) as _}
-				<span class="h-3 w-3 border"></span>
-			{/each}
-		</div>
-	{/each}
+					<div class="grid max-w-max grid-cols-4">
+						{#each allQuestIds as id}
+							{@const completed = user.questIdsCompleted.includes(id)}
+							<span
+								class="h-3 w-3 border"
+								class:bg-primary={completed}
+								class:border-primary={completed}
+							></span>
+						{/each}
+					</div>
+				{/each}
+			</div>
+		</article>
+	{/if}
 {/await}
