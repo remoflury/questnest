@@ -122,6 +122,7 @@ export const actions: Actions = {
         return message(form, "Something went wrong. Try again later.", { status: 500 })
 
       }
+
       return message(form, "You have to be more eager 🤓!")
     }
   }

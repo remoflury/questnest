@@ -48,11 +48,13 @@
 >
 	<button class="p-1" aria-label="toggle quest number {index + 1}">
 		{#if $delayed}
-			<figure transition:scale={TRANSITION_CONFIG}>
+			<figure in:scale={TRANSITION_CONFIG}>
 				<LoaderCircle class="mx-auto animate-spin stroke-secondary" />
 			</figure>
 		{:else}
-			<small class="text-center" transition:scale={TRANSITION_CONFIG}>{quest.text}</small>
+			<small class="text-center" class:text-white={completed} in:scale={TRANSITION_CONFIG}
+				>{quest.text}</small
+			>
 		{/if}
 	</button>
 </form>
