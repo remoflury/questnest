@@ -4,7 +4,6 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '../ui/input';
-	import Button from '../ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
 	import { QUESTS_PER_BOARD } from '$lib/utils/constants';
@@ -15,17 +14,16 @@
 	let form = superForm(data, {
 		validators: zodClient(createQuestsSchema),
 		dataType: 'json',
-		onUpdate: ({ result }) => {
-			console.log(result);
-			// if (result.type == 'failure') return toast.error(result.data.form.message);
-			// toast.success(result.data.form.message);
-			// goto('/');
+		onUpdate: async ({ result }) => {
+			if (result.type == 'failure') {
+				return toast.error(result.data.form.message);
+			}
+			toast.success(result.data.form.message);
+			await goto(`/quests/${$formData.questboard}`);
 		}
 	});
 
 	let { form: formData, enhance, delayed, constraints } = form;
-
-	$inspect($formData);
 </script>
 
 <form method="POST" use:enhance {action} class="space-y-3">

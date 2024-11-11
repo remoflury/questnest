@@ -84,12 +84,10 @@ export const actions: Actions = {
 			.insert(insertData)
 
 		if (insertErr) {
-			console.error(insertErr);
+			console.error({insertErr});
 			return message(form, insertErr.message, { status: 400 });
 		}
 
-		return {
-			form
-		}
+		return message(form, 'Quests saved successfully.');
 	}
 };
