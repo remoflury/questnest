@@ -10,23 +10,27 @@ const passwordSchema = z
 	.string({ required_error: 'Password is required.' })
 	.min(6, { message: 'Password must contain at least 6 characters.' });
 
+const passwordConfirmSchema = z
+	.string({ required_error: 'Password confirm is required.' })
+	.min(6, { message: 'Password confirm must contain at least 6 characters.' })
+
 const groupIdSchema = z
 		.number({ required_error: "A Group ID is required"})
 		.int()
 		.positive()
 
+const usernameSchema = z
+	.string({ required_error: 'Username is required.' })
+	.min(2, { message: 'Username must consist of at least two characters.' })
+	.max(50, { message: 'Username can not contain more than 50 characters.' })
+	.trim()
+
 export const signupSchema = z
 	.object({
 		email: emailSchema,
-		username: z
-			.string({ required_error: 'Username is required.' })
-			.min(2, { message: 'Username must consist of at least two characters.' })
-			.max(50, { message: 'Username can not contain more than 50 characters.' })
-			.trim(),
+		username: usernameSchema,
 		password: passwordSchema,
-		passwordConfirm: z
-			.string({ required_error: 'Password confirm is required.' })
-			.min(6, { message: 'Password confirm must contain at least 6 characters.' })
+		passwordConfirm: passwordConfirmSchema
 	})
 	.superRefine((data, context) => {
 		if (data.password !== data.passwordConfirm) {
@@ -135,3 +139,26 @@ export const toggleQuestSchema = z.object({
 })
 
 export type ToggleQuestSchema = typeof toggleQuestSchema
+
+export const editProfileSchema = z.object({
+	email: emailSchema,
+	username: usernameSchema,
+	// password: passwordSchema,
+	// passwordConfirm: passwordConfirmSchema
+})
+// .superRefine((data, context) => {
+// 	if (data.password !== data.passwordConfirm) {
+// 		context.addIssue({
+// 			code: z.ZodIssueCode.custom,
+// 			message: 'Passwords do not match.',
+// 			path: ['password'] // Error related to password field
+// 		});
+// 		context.addIssue({
+// 			code: z.ZodIssueCode.custom,
+// 			message: 'Passwords do not match.',
+// 			path: ['passwordConfirm'] // Error related to confirmPassword field
+// 		});
+// 	}
+// });
+
+export type EditProfileSchema = typeof editProfileSchema
