@@ -30,9 +30,7 @@
 		validators: zodClient(addQuestboardSchema),
 		// dataType: 'json',
 		onUpdate: ({ result }) => {
-			console.log(result);
-			if (result.type == 'failure')
-				return toast.error(result.data.form.message );
+			if (result.type == 'failure') return toast.error(result.data.form.message);
 		}
 	});
 

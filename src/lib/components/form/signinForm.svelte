@@ -13,10 +13,10 @@
 	let form = superForm(data, {
 		validators: zodClient(signinSchema),
 		dataType: 'json',
-		onUpdate: ({ result }) => {
+		onUpdate: async ({ result }) => {
 			if (result.type == 'failure') return toast.error(result.data.form.message);
 			toast.success(result.data.form.message);
-			goto('/');
+			await goto('/');
 		}
 	});
 
