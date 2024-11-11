@@ -1,6 +1,7 @@
 <script lang="ts">
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
+	import Questboard from '$lib/components/quest/questboard.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { Button } from '$lib/components/ui/button';
 	// import Button from "$lib/components/ui/button/button.svelte";
@@ -33,13 +34,20 @@
 			<p>{data.questboard.description}</p>
 		{/if}
 
-		{#if !data.questsExisting}
+		{#if !data.questboard.quest.length}
 			<Button
 				class="max-w-max"
 				href="/quests/{data.questboard.id}/create"
 				title="create quests"
 				aria-label="create quests">Create Quests</Button
 			>
+		{:else}
+			<Questboard
+				quests={data.questboard.quest}
+				formData={data.toggleQuestForm}
+				questIdsCompleted={data.questIdsCompleted}
+				action="?/togglequest"
+			/>
 		{/if}
 	</article>
 </FadeInWrapper>

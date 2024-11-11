@@ -125,3 +125,12 @@ export const createQuestsSchema = z.object({
 })
 
 export type CreateQuestsSchema = typeof createQuestsSchema
+
+export const toggleQuestSchema = z.object({
+	id: z
+		.number({ required_error: "ID is required"})
+		.int()
+		.positive()
+})
+
+export type ToggleQuestSchema = typeof toggleQuestSchema

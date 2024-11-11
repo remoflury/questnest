@@ -81,6 +81,42 @@ export type Database = {
           },
         ]
       }
+      quest_done: {
+        Row: {
+          created_at: string
+          id: number
+          quest: number
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          quest: number
+          user?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          quest?: number
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quest_done_quest_fkey"
+            columns: ["quest"]
+            isOneToOne: false
+            referencedRelation: "quest"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quest_done_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       questboard: {
         Row: {
           created_at: string
@@ -179,7 +215,44 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_accessible_quests: {
+        Row: {
+          member_user_id: string | null
+          quest_done_id: number | null
+          quest_id: number | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quest_done_quest_fkey"
+            columns: ["quest_id"]
+            isOneToOne: false
+            referencedRelation: "quest"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quest_done_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_group_user_fkey1"
+            columns: ["member_user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_group_user_fkey2"
+            columns: ["member_user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never
