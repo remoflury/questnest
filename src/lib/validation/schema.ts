@@ -106,10 +106,9 @@ export const createQuestsSchema = z.object({
 				.min(2, { message: 'Text must contain at least 2 characters.' })
 				.max(50, { message: 'Text can not contain more than 50 characters.' })
 				.trim()
-			// .optional()
 		})
 		.array()
-		.length(QUESTS_PER_BOARD, { message: `Must have ${QUESTS_PER_BOARD} quests.` })
+		.min(QUESTS_PER_BOARD, { message: `Must have ${QUESTS_PER_BOARD} quests.` })
 });
 
 export type CreateQuestsSchema = typeof createQuestsSchema;

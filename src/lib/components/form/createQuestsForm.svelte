@@ -5,8 +5,8 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '../ui/input';
 	import { toast } from 'svelte-sonner';
-	import { goto } from '$app/navigation';
 	import { QUESTS_PER_BOARD } from '$lib/utils/constants';
+	import { goto } from '$app/navigation';
 
 	type Props = {
 		data: SuperValidated<Infer<CreateQuestsSchema>>;
@@ -21,14 +21,16 @@
 		dataType: 'json',
 		onUpdate: async ({ result }) => {
 			if (result.type == 'failure') {
-				return toast.error(result.data.form.message);
+				return toast.error(result.data.form.message ?? 'Something went wrong.');
 			}
 			toast.success(result.data.form.message);
 			await goto(redirect);
 		}
 	});
 
-	let { form: formData, enhance, delayed, constraints } = form;
+	let { form: formData, enhance, delayed, constraints, errors } = form;
+
+	$inspect(redirect);
 </script>
 
 <form method="POST" use:enhance {action} class="space-y-3">
@@ -37,11 +39,20 @@
 			<Form.Control>
 				{#snippet children({ props })}
 					<Form.Label>Quest {i + 1} <sup>*</sup></Form.Label>
-					<Input {...props} bind:value={$formData.quests[i].text} {...$constraints} />
+					<Input
+						{...props}
+						bind:value={$formData.quests[i].text}
+						required
+						data-testid={`addquest-input-${i}`}
+					/>
 				{/snippet}
 			</Form.Control>
-			<Form.FieldErrors />
+			{#if $errors.quests?.[i]?.text}
+				<div class="text-sm font-medium text-destructive">{$errors.quests[i].text}</div>
+			{/if}
 		</Form.Field>
 	{/each}
-	<Form.Button loading={$delayed} disabled={$delayed}>Save Quests</Form.Button>
+	<Form.Button loading={$delayed} disabled={$delayed} data-testid="submit-addquests"
+		>Save Quests</Form.Button
+	>
 </form>

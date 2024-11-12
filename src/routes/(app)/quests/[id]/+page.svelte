@@ -24,6 +24,7 @@
 						aria-label="edit quest"
 						variant="secondary"
 						href={`/quests/${data.questboard.id}/edit`}
+						data-testid="editquest-btn"
 					>
 						<Edit class="stroke-primary" />
 					</Button>

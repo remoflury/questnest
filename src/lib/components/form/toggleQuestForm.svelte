@@ -43,15 +43,23 @@
 	class:border-r={(index + 1) % 4 === 0}
 	class:border-b={index + 1 >= 21}
 	class:bg-primary={completed}
+	data-testid="togglequest-form-{index}"
 >
-	<button class="p-1" aria-label="toggle quest number {index + 1}">
+	<button
+		class="p-1"
+		aria-label="toggle quest number {index + 1}"
+		data-testid="togglequest-submit-{index}"
+	>
 		{#if $delayed}
 			<figure in:scale={TRANSITION_CONFIG}>
 				<LoaderCircle class="mx-auto animate-spin stroke-secondary" />
 			</figure>
 		{:else}
-			<small class="text-center" class:text-white={completed} in:scale={TRANSITION_CONFIG}
-				>{quest.text}</small
+			<small
+				class="text-center"
+				class:text-white={completed}
+				in:scale={TRANSITION_CONFIG}
+				data-testid="questtext-{index}">{quest.text}</small
 			>
 		{/if}
 	</button>

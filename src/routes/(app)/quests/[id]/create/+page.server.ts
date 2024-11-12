@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 		questboard: parseInt(params.id),
 		quests: Array.from({ length: QUESTS_PER_BOARD }).map(() => {
 			return {
-				text: ''
+				text: '  '
 			};
 		})
 	};
@@ -58,6 +58,7 @@ export const actions: Actions = {
 	createquests: async ({ request, locals: { safeGetSession, supabase } }) => {
 		const { session } = await safeGetSession();
 		if (!session) {
+			console.error("not logged in")
 			return fail(401);
 		}
 
