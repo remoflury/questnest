@@ -38,12 +38,10 @@
 	{#each groups as group (crypto.randomUUID())}
 		<FadeInWrapper tag="a" href="/groups/{group.id}">
 			<Card.Root>
-				<Card.Content>
-					<p class="flex items-center justify-between gap-x-4 font-bold">
-						{group.name}
-						<ChevronRight />
-					</p>
-				</Card.Content>
+				<Card.Header class="flex flex-row items-center justify-between gap-x-4 pb-6">
+					<Card.Title level={2} class="mb-0">{group.name}</Card.Title>
+					<ChevronRight />
+				</Card.Header>
 			</Card.Root>
 		</FadeInWrapper>
 	{/each}
