@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { ApiResponse } from '$lib/types/GeneralTypes';
-	import type { Tables } from '$lib/types/SupabaseTypes';
+	import FetchError from '../general/fetchError.svelte';
+	import { Skeleton } from '../ui/skeleton';
 
 	type Props = {
 		countOtherMembers: number;
-		groupId?: number;
 		questboardId: number;
 	};
-	let { countOtherMembers, groupId, questboardId }: Props = $props();
+	let { countOtherMembers, questboardId }: Props = $props();
 
 	const fetchResults = async () => {
 		const res = await fetch(`/api/groupresults?questboard-id=${questboardId}`);
@@ -22,14 +22,20 @@
 
 		if (status >= 400) {
 			throw new Error(message);
-			// TODO catch error in html code
 		}
 		return payload;
 	};
 </script>
 
 {#await fetchResults()}
-	loading
+	<div class="grid-spacing grid grid-cols-4" aria-busy="true">
+		{#each Array.from({ length: countOtherMembers }) as _}
+			<div class="col-span-2 flex items-start gap-x-4" aria-busy="true" role="presentation">
+				<Skeleton class="h-4 w-20" />
+				<Skeleton class="aspect-[1/1.3] w-16"></Skeleton>
+			</div>
+		{/each}
+	</div>
 {:then { resultsPerUser, allQuestIds }}
 	{#if resultsPerUser.length}
 		<article class="grid-spacing grid grid-cols-4">
@@ -51,4 +57,6 @@
 			</div>
 		</article>
 	{/if}
+{:catch error}
+	<FetchError message="Something went wrong." {error} />
 {/await}

@@ -78,8 +78,6 @@ export const actions: Actions = {
 			};
 		});
 
-		// TODO?: eventually replace with upsert, as upsert can insert many rows at once
-
 		const { error: updateErr } = await supabase.from('quest').upsert(updateData);
 
 		if (updateErr) {

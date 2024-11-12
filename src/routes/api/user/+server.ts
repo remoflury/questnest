@@ -2,6 +2,7 @@ import { genApiRes } from '$lib/utils/utils';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }, url }) => {
+	return genApiRes(undefined, "upsiiie", 500);
 	const { session } = await safeGetSession();
 	if (!session) {
 		return genApiRes(undefined, undefined, 401);
