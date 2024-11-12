@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form/index.js';
-	import { editProfileSchema, type EditProfileSchema } from '$lib/validation/schema';
+	import { changePwSchema, type ChangePwSchema } from '$lib/validation/schema';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '../ui/input';
@@ -8,16 +8,17 @@
 	import { toast } from 'svelte-sonner';
 
 	type Props = {
-		data: SuperValidated<Infer<EditProfileSchema>>;
+		data: SuperValidated<Infer<ChangePwSchema>>;
 		action: string;
 		oncloseForm?: () => void;
 	};
 	let { data, action, oncloseForm }: Props = $props();
 
 	let form = superForm(data, {
-		validators: zodClient(editProfileSchema),
+		validators: zodClient(changePwSchema),
 		dataType: 'json',
 		onUpdate: async ({ result }) => {
+			console.log(result);
 			if (result.type == 'failure') return toast.error(result.data.form.message);
 			toast.success(result.data.form.message);
 			oncloseForm?.();
@@ -28,20 +29,29 @@
 </script>
 
 <form method="POST" use:enhance {action}>
-	<Form.Field {form} name="email">
+	<Form.Field {form} name="currentPassword">
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>Email <sup>*</sup></Form.Label>
-				<Input {...props} bind:value={$formData.email} type="email" />
+				<Form.Label>Current Password <sup>*</sup></Form.Label>
+				<Input {...props} bind:value={$formData.currentPassword} type="password" />
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Field {form} name="username">
+	<Form.Field {form} name="newPassword">
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>Username <sup>*</sup></Form.Label>
-				<Input {...props} bind:value={$formData.username} />
+				<Form.Label>New password <sup>*</sup></Form.Label>
+				<Input {...props} bind:value={$formData.newPassword} type="password" />
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+	<Form.Field {form} name="newPassword">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Confirm new password <sup>*</sup></Form.Label>
+				<Input {...props} bind:value={$formData.newPasswordConfirm} type="password" />
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />

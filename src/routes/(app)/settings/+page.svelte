@@ -1,12 +1,14 @@
 <script>
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
+	import Password from '$lib/components/settings/password.svelte';
 	import Profile from '$lib/components/settings/profile.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Edit } from 'lucide-svelte';
 
 	let { data } = $props();
-	let edit = $state(true);
+	let editProfile = $state(false);
+	let editPassword = $state(false);
 </script>
 
 <FadeInWrapper class="section-spacing container" tag="section">
@@ -24,13 +26,13 @@
 			Profile
 		{/snippet}
 		{#snippet icon()}
-			{#if !edit}
+			{#if !editProfile}
 				<Button
 					class="!aspect-square p-2"
 					title="edit quest"
 					aria-label="edit quest"
 					variant="secondary"
-					onclick={() => (edit = true)}
+					onclick={() => (editProfile = true)}
 				>
 					<Edit class="stroke-primary" />
 				</Button>
@@ -38,9 +40,32 @@
 		{/snippet}
 	</TitleWrapper>
 	<Profile
-		bind:edit
+		bind:edit={editProfile}
 		user={data.user}
 		editProfileForm={data.editProfileForm}
 		action="?/editprofile"
 	/>
+</FadeInWrapper>
+
+<FadeInWrapper class="section-spacing container" tag="section">
+	<TitleWrapper>
+		{#snippet text()}
+			Password
+		{/snippet}
+		{#snippet icon()}
+			{#if !editPassword}
+				<Button
+					class="!aspect-square p-2"
+					title="edit quest"
+					aria-label="edit quest"
+					variant="secondary"
+					onclick={() => (editPassword = true)}
+				>
+					<Edit class="stroke-primary" />
+				</Button>
+			{/if}
+		{/snippet}
+	</TitleWrapper>
+
+	<Password bind:edit={editPassword} editPwForm={data.editPasswordForm} action="?/changepw" />
 </FadeInWrapper>

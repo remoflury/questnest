@@ -2,7 +2,7 @@ import { error, fail } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import { message, setError, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
-import { editProfileSchema } from "$lib/validation/schema";
+import { changePwSchema, editProfileSchema } from "$lib/validation/schema";
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase }}) => {
   const { session } = await safeGetSession()
@@ -21,11 +21,15 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
     error(500)
   }
 
-  const editProfileForm = await superValidate(userData, zod(editProfileSchema))
+  const [editProfileForm, editPasswordForm] = await Promise.all([
+    superValidate(userData, zod(editProfileSchema)),
+    superValidate(zod(changePwSchema))
+  ])
 
   return {
     user: userData,
-    editProfileForm
+    editProfileForm,
+    editPasswordForm
   }
 };
 
@@ -57,10 +61,10 @@ export const actions: Actions = {
 
     if (alreadyTakenData.length) {
       if (alreadyTakenData[0].email == form.data.email) {
-				setError(form, 'email', `User with email ${form.data.email} already exists.`);
+				setError(form, 'email', `User with email already exists.`);
 			}
 			if (alreadyTakenData[0].username == form.data.username) {
-				setError(form, 'username', `User with username ${form.data.username} already exists.`);
+				setError(form, 'username', `User with username already exists.`);
 			}
 			return message(form, 'Email or Username are already taken, please try other', { status: 403 });
     }
@@ -88,5 +92,45 @@ export const actions: Actions = {
     }
 
     return message(form, 'Profile updated successfully')
+  },
+  changepw: async ({ request, locals: { safeGetSession, supabase }}) => {
+    const { session } = await safeGetSession()
+    if (!session) {
+      return fail(401)
+    }
+
+    const form = await superValidate(request, zod(changePwSchema))
+
+    if (!form.valid) {
+      console.error({form})
+      return message(form, 'Something went wrong. Try again later.', { status: 400 })
+    }
+
+    // Re-authenticate the user by signing them in again with the current password
+    const { error: signInErr } = await supabase.auth.signInWithPassword({
+      email: session.user.email!,
+      password: form.data.currentPassword,
+    })
+
+    if (signInErr) {
+      console.error({signInErr})
+      if (signInErr.code == 'invalid_credentials') {
+        setError(form, "currentPassword", "Invalid password.")
+        return message(form, "Please use your correct current password.", { status: 403 })
+      }
+      return message(form, "Something went wrong. Try again later.", { status: 500 })
+    }
+
+    // If re-authentication is successful, proceed to update the password
+    const { error: updateErr } = await supabase.auth.updateUser({
+      password: form.data.newPassword,
+    })
+
+    if (updateErr) {
+      console.error({updateErr})
+      return message(form, "Something went wrong. Try again later.", { status: 500 })
+    }
+
+    return message(form, "Password updated successfully.")
   }
 };

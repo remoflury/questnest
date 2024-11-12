@@ -37,12 +37,12 @@ export const signupSchema = z
 			context.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: 'Passwords do not match.',
-				path: ['password'] // Error related to password field
+				path: ['password'] 
 			});
 			context.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: 'Passwords do not match.',
-				path: ['passwordConfirm'] // Error related to confirmPassword field
+				path: ['passwordConfirm']
 			});
 		}
 	});
@@ -143,22 +143,41 @@ export type ToggleQuestSchema = typeof toggleQuestSchema
 export const editProfileSchema = z.object({
 	email: emailSchema,
 	username: usernameSchema,
-	// password: passwordSchema,
-	// passwordConfirm: passwordConfirmSchema
 })
-// .superRefine((data, context) => {
-// 	if (data.password !== data.passwordConfirm) {
-// 		context.addIssue({
-// 			code: z.ZodIssueCode.custom,
-// 			message: 'Passwords do not match.',
-// 			path: ['password'] // Error related to password field
-// 		});
-// 		context.addIssue({
-// 			code: z.ZodIssueCode.custom,
-// 			message: 'Passwords do not match.',
-// 			path: ['passwordConfirm'] // Error related to confirmPassword field
-// 		});
-// 	}
-// });
+
 
 export type EditProfileSchema = typeof editProfileSchema
+
+export const changePwSchema = z.object({
+	currentPassword: passwordSchema,
+	newPassword: passwordSchema,
+	newPasswordConfirm: passwordSchema
+})
+.superRefine((data, context) => {
+	if (data.newPassword !== data.newPasswordConfirm) {
+		context.addIssue({
+			code: z.ZodIssueCode.custom,
+			message: 'Passwords do not match.',
+			path: ['newPassword'] 
+		});
+		context.addIssue({
+			code: z.ZodIssueCode.custom,
+			message: 'Passwords do not match.',
+			path: ['newPasswordConfirm']
+		});
+	}
+	if (data.currentPassword == data.newPassword || data.currentPassword == data.newPasswordConfirm) {
+		context.addIssue({
+			code: z.ZodIssueCode.custom,
+			message: 'New Password can\'t be equal to current password.',
+			path: ['newPassword'] 
+		});
+		context.addIssue({
+			code: z.ZodIssueCode.custom,
+			message: 'New Password can\'t be equal to current password.',
+			path: ['newPasswordConfirm']
+		});
+	}
+})
+
+export type ChangePwSchema = typeof changePwSchema
