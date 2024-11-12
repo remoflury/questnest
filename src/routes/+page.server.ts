@@ -9,21 +9,20 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	// }
 };
 
-
 export const actions: Actions = {
-	signout: async ({ locals: { supabase, safeGetSession }}) => {
-		const { session } = await safeGetSession()
+	signout: async ({ locals: { supabase, safeGetSession } }) => {
+		const { session } = await safeGetSession();
 		if (!session) {
 			// if user is not logged in, user can not be logged out
-			return fail(401)
+			return fail(401);
 		}
 
-		const { error } = await supabase.auth.signOut()
+		const { error } = await supabase.auth.signOut();
 
 		if (error) {
-			return fail(500)
+			return fail(500);
 		}
 
-		redirect(301, '/') 
+		redirect(301, '/');
 	}
 };

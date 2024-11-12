@@ -13,7 +13,8 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 
 	const { data: groupData, error: groupErr } = await supabase
 		.from('group')
-		.select(`
+		.select(
+			`
 				id,
 				name,
 				questboards:questboard(
@@ -21,9 +22,10 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 					name,
 					description
 				)
-			`)
+			`
+		)
 		.eq('id', params.id)
-		.single()
+		.single();
 
 	if (groupErr) {
 		console.error({ groupErr });
@@ -64,7 +66,10 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 			users: groupUsers.flatMap((user) => {
 				return user.user;
 			}) as { id: string; username: string }[],
-			questboards: groupData.questboards as Pick<Tables<"questboard">, 'id' | 'name' | 'description'>[]
+			questboards: groupData.questboards as Pick<
+				Tables<'questboard'>,
+				'id' | 'name' | 'description'
+			>[]
 		},
 		addUserToGroupForm,
 		removeUserFromGroupForm
