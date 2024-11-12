@@ -35,9 +35,9 @@
 
 {#if data.groupsOfUser.length}
 	<section class="section-spacing container">
-		{#each data.questboards as q}
-			<FadeInWrapper tag="a" href="/quests/{q.id}">
-				<QuestboardCard name={q.name} description={q.description} groupName={q.group.name} />
+		{#each data.questboards as questboard}
+			<FadeInWrapper>
+				<QuestboardCard {questboard} groupName={questboard.group.name} />
 			</FadeInWrapper>
 		{/each}
 	</section>

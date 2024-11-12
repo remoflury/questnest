@@ -1,24 +1,26 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
+	import type { Tables } from '$lib/types/SupabaseTypes';
 	import Badge from '../ui/badge/badge.svelte';
 
 	type Props = {
-		name: string;
-		description: string | null;
+		questboard: Pick<Tables<'questboard'>, 'id' | 'name' | 'description'>;
 		groupName: string;
 	};
 
-	let { name, description, groupName }: Props = $props();
+	let { questboard: q, groupName }: Props = $props();
 </script>
 
-<Card.Root>
-	<Card.Header>
-		<Card.Title>{name}</Card.Title>
-		{#if description}
-			<Card.Description class="truncate">{description}</Card.Description>
-		{/if}
-	</Card.Header>
-	<Card.Content class="pt-2">
-		<Badge class="text-sm font-normal" variant="outline">{groupName}</Badge>
-	</Card.Content>
-</Card.Root>
+<a href="/quests/{q.id}" title="go to {q.name}" aria-label="go to {q.name}">
+	<Card.Root>
+		<Card.Header>
+			<Card.Title>{q.name}</Card.Title>
+			{#if q.description}
+				<Card.Description class="truncate">{q.description}</Card.Description>
+			{/if}
+		</Card.Header>
+		<Card.Content class="pt-2">
+			<Badge class="text-sm font-normal" variant="outline">{groupName}</Badge>
+		</Card.Content>
+	</Card.Root>
+</a>
