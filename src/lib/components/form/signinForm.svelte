@@ -47,7 +47,7 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Button loading={$delayed} disabled={$delayed}>Sign In</Form.Button>
+	<Form.Button loading={$delayed} disabled={$delayed} data-testid="signin-btn">Sign In</Form.Button>
 	<Button variant="link" href="/signup" size="sm" class="mt-2 block px-0 opacity-50">
 		Don't have an account? Sign up here.
 	</Button>

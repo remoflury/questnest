@@ -15,7 +15,7 @@ test.describe('homepage', () => {
   });
 
   test('cta sign up', async ({ page }) => {
-    await page.goto('localhost:5173/');
+    await page.goto('/');
 
     const signUpBtn = page.getByTestId('signup-btn')
     expect(signUpBtn).toBeVisible()
@@ -25,7 +25,7 @@ test.describe('homepage', () => {
     // expect(signInBtn).toBeVisible()
   })
   test('cta sign in', async ({ page }) => {
-    await page.goto('localhost:5173/');
+    await page.goto('/');
 
     const signInBtn = page.getByTestId('signin-btn')
     expect(signInBtn).toBeVisible()
