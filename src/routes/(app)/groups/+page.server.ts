@@ -11,12 +11,10 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	}
 
 	// get groups related to user
-	const { data: groupData, error: groupErr } = await supabase
-		.from('group')
-		.select('id, name')
+	const { data: groupData, error: groupErr } = await supabase.from('group').select('id, name');
 
 	if (groupErr) {
-		console.error({groupErr});
+		console.error({ groupErr });
 		error(500);
 	}
 

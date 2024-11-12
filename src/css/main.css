@@ -69,7 +69,7 @@
 
 @layer base {
 	* {
-		@apply border-border selection:bg-primary selection:text-primary-foreground
+		@apply border-border selection:bg-primary selection:text-primary-foreground;
 	}
 
 	body {

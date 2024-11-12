@@ -8,59 +8,62 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 		return genApiRes(undefined, undefined, 401);
 	}
 
-  const questboardId = url.searchParams.get('questboard-id')
+	const questboardId = url.searchParams.get('questboard-id');
 
-  if (!questboardId) {
-    return genApiRes(null, "Invalid params.", 403)
-  }
+	if (!questboardId) {
+		return genApiRes(null, 'Invalid params.', 403);
+	}
 
-  // get all quests id's of group
-  const { data: allQuests, error: allQuestsErr } = await supabase
-    .from('quest')
-    .select('id')
-    .eq('questboard', questboardId)
+	// get all quests id's of group
+	const { data: allQuests, error: allQuestsErr } = await supabase
+		.from('quest')
+		.select('id')
+		.eq('questboard', questboardId);
 
-  if (allQuestsErr) {
-    console.error({allQuests})
-    return genApiRes(null, allQuestsErr.message, 500)
-  }
+	if (allQuestsErr) {
+		console.error({ allQuests });
+		return genApiRes(null, allQuestsErr.message, 500);
+	}
 
-  
-  const allQuestIds = allQuests.flatMap((q) => {
-    return q.id
-  })
-  
-  // get completed quests of all users in current group, except current user
-  const { data: questsOtherUsersCompletedData, error: questsOtherUsersCompletedErr } = await supabase
-    .from('quest_done')
-    .select('quest, user(id, username)')
-    .in('quest', allQuestIds)
-    .neq('user', session.user.id)
-    .returns<({quest: number} & {user: Pick<Tables<"user">, 'id' | 'username'>})[]>()
+	const allQuestIds = allQuests.flatMap((q) => {
+		return q.id;
+	});
 
-  if (questsOtherUsersCompletedErr) {
-    console.error({questsOtherUsersCompletedErr})
-    return genApiRes(null, questsOtherUsersCompletedErr.message, 500)
-  }
+	// get completed quests of all users in current group, except current user
+	const { data: questsOtherUsersCompletedData, error: questsOtherUsersCompletedErr } =
+		await supabase
+			.from('quest_done')
+			.select('quest, user(id, username)')
+			.in('quest', allQuestIds)
+			.neq('user', session.user.id)
+			.returns<({ quest: number } & { user: Pick<Tables<'user'>, 'id' | 'username'> })[]>();
 
-  // Grouping logic
-  const groupedByUser = questsOtherUsersCompletedData.reduce((acc, item) => {
-    const { id, username } = item.user;
-    const { quest } = item
+	if (questsOtherUsersCompletedErr) {
+		console.error({ questsOtherUsersCompletedErr });
+		return genApiRes(null, questsOtherUsersCompletedErr.message, 500);
+	}
 
-    // Check if the user already exists in the accumulator
-    if (!acc[id]) {
-      acc[id] = { user: id, username, questIdsCompleted: [] };
-    }
-    if (quest !== null && quest !== undefined) {
-      acc[id].questIdsCompleted.push(quest);
-    }
+	// Grouping logic
+	const groupedByUser = questsOtherUsersCompletedData.reduce(
+		(acc, item) => {
+			const { id, username } = item.user;
+			const { quest } = item;
 
-    return acc;
-  }, {} as Record<string, { user: string; username: string; questIdsCompleted: number[] }>);
+			// Check if the user already exists in the accumulator
+			if (!acc[id]) {
+				acc[id] = { user: id, username, questIdsCompleted: [] };
+			}
+			if (quest !== null && quest !== undefined) {
+				acc[id].questIdsCompleted.push(quest);
+			}
 
-  // Convert the result to the desired array format
-  const result = Object.values(groupedByUser);
+			return acc;
+		},
+		{} as Record<string, { user: string; username: string; questIdsCompleted: number[] }>
+	);
 
-	return genApiRes({allQuestIds, resultsPerUser: result});
+	// Convert the result to the desired array format
+	const result = Object.values(groupedByUser);
+
+	return genApiRes({ allQuestIds, resultsPerUser: result });
 };

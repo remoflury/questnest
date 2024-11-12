@@ -1,5 +1,5 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
 export const menu = writable({
-  heightAppNav: 0
-})
+	heightAppNav: 0
+});

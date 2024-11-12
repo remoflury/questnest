@@ -1,4 +1,4 @@
-import { error , fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -13,43 +13,47 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	const { data: groupData, error: groupErr } = await supabase
 		.from('group')
 		.select('id, name')
-		.eq('id', params.id)
+		.eq('id', params.id);
 
 	if (groupErr) {
-		console.error({groupErr})
-		error(500)
+		console.error({ groupErr });
+		error(500);
 	}
 
 	if (!groupData.length) {
-		error(404)
+		error(404);
 	}
 
 	// get all users assigned to this group
 	const { data: groupUsers, error: groupUsersErr } = await supabase
 		.from('user_group')
-		.select(`
+		.select(
+			`
 			user!user_group_user_fkey1(
 				id,
 				username
 			)
-			`)
-		.eq('group', params.id)
+			`
+		)
+		.eq('group', params.id);
 
 	if (groupUsersErr) {
-		console.error({groupUsersErr})
-		error(500)
+		console.error({ groupUsersErr });
+		error(500);
 	}
 
 	const [addUserToGroupForm, removeUserFromGroupForm] = await Promise.all([
 		superValidate(zod(addUserToGroupSchema)),
 		superValidate(zod(removeUserFromGroupSchema))
-	])
+	]);
 
 	return {
 		group: {
 			id: groupData[0].id as number,
 			name: groupData[0].name as string,
-			users: groupUsers.flatMap(user => {return user.user}) as { id: string, username: string }[]
+			users: groupUsers.flatMap((user) => {
+				return user.user;
+			}) as { id: string; username: string }[]
 		},
 		addUserToGroupForm,
 		removeUserFromGroupForm
@@ -63,23 +67,21 @@ export const actions: Actions = {
 			return fail(401);
 		}
 
-		const form = await superValidate(request, zod(addUserToGroupSchema))
+		const form = await superValidate(request, zod(addUserToGroupSchema));
 
 		if (!form.valid) {
-			console.error(form)
+			console.error(form);
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
 
-		const { error: insertErr } = await supabase
-			.from('user_group')
-			.insert({
-				user: form.data.user,
-				group: form.data.group
-			})
+		const { error: insertErr } = await supabase.from('user_group').insert({
+			user: form.data.user,
+			group: form.data.group
+		});
 
 		if (insertErr) {
-			console.error(insertErr)
-			if (insertErr.code == "23505"){
+			console.error(insertErr);
+			if (insertErr.code == '23505') {
 				return message(form, 'User is already in group.', { status: 400 });
 			}
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
@@ -94,20 +96,20 @@ export const actions: Actions = {
 			return fail(401);
 		}
 
-		const form = await superValidate(request, zod(removeUserFromGroupSchema))
+		const form = await superValidate(request, zod(removeUserFromGroupSchema));
 
 		if (!form.valid) {
-			console.error(form)
+			console.error(form);
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
 
 		const { error: deleteErr } = await supabase
 			.from('user_group')
 			.delete()
-			.match({ user: form.data.user, group: form.data.group})
+			.match({ user: form.data.user, group: form.data.group });
 
 		if (deleteErr) {
-			console.error(deleteErr)
+			console.error(deleteErr);
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
 		}
 

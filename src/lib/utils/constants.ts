@@ -5,4 +5,4 @@ export const TRANSITION_CONFIG = {
 	easing: sineInOut
 } as const;
 
-export const QUESTS_PER_BOARD = 24
+export const QUESTS_PER_BOARD = 24;
