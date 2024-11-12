@@ -23,6 +23,7 @@
 				title="add quest"
 				aria-label="add quest"
 				onclick={() => (open = true)}
+				data-testid="addquest-btn"
 			>
 				<Plus />
 			</Button>

@@ -78,7 +78,7 @@
 					onValueChange={(v) => (value = v)}
 					{...$constraints.group}
 				>
-					<Select.Trigger {...props}>
+					<Select.Trigger {...props} data-testid="group-select">
 						{selectedLabel ?? 'Assign a group'}
 					</Select.Trigger>
 					<Select.Content>
