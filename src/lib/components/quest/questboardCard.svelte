@@ -14,7 +14,7 @@
 <a href="/quests/{q.id}" title="go to {q.name}" aria-label="go to {q.name}">
 	<Card.Root>
 		<Card.Header>
-			<Card.Title>{q.name}</Card.Title>
+			<Card.Title level={2}>{q.name}</Card.Title>
 			{#if q.description}
 				<Card.Description class="truncate">{q.description}</Card.Description>
 			{/if}

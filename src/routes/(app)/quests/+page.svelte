@@ -35,9 +35,9 @@
 </FadeInWrapper>
 
 {#if data.groupsOfUser.length}
-	<section class="section-spacing container">
+	<section class="section-spacing grid-content grid-spacing container">
 		{#each data.questboards as questboard}
-			<FadeInWrapper>
+			<FadeInWrapper class="col-span-full">
 				<QuestboardCard {questboard} groupName={questboard.group.name} />
 			</FadeInWrapper>
 		{/each}

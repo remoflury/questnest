@@ -14,12 +14,12 @@
 	} = $props();
 </script>
 
-<div
+<svelte:element
+	this={`h${level}`}
 	role="heading"
-	aria-level={level}
 	bind:this={ref}
 	class={cn('text-lg font-semibold leading-none tracking-tight', className)}
 	{...restProps}
 >
 	{@render children?.()}
-</div>
+</svelte:element>

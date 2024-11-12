@@ -14,7 +14,7 @@
 		</TitleWrapper>
 		<p>
 			{#if $page.status >= 500}
-				{$page.status}: Our servers seems to have trouble. Try again later.
+				{$page.status}: Our server seems to have trouble. Try again later.
 			{:else if $page.status == 401}
 				{$page.status}: You are not authorized to access this page. Please log in.
 			{:else}

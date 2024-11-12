@@ -17,15 +17,17 @@
 				{data.questboard.name}
 			{/snippet}
 			{#snippet icon()}
-				<Button
-					class="!aspect-square p-2"
-					title="edit quest"
-					aria-label="edit quest"
-					variant="secondary"
-					href={`/quests/${data.questboard.id}/edit`}
-				>
-					<Edit class="stroke-primary" />
-				</Button>
+				{#if data.questboard.quest.length}
+					<Button
+						class="!aspect-square p-2"
+						title="edit quest"
+						aria-label="edit quest"
+						variant="secondary"
+						href={`/quests/${data.questboard.id}/edit`}
+					>
+						<Edit class="stroke-primary" />
+					</Button>
+				{/if}
 			{/snippet}
 		</TitleWrapper>
 		<Badge class="max-w-max text-sm font-normal" variant="outline"
@@ -40,7 +42,8 @@
 				class="max-w-max"
 				href="/quests/{data.questboard.id}/create"
 				title="create quests"
-				aria-label="create quests">Create Quests</Button
+				aria-label="create quests"
+				data-testid="createquests-btn">Create Quests</Button
 			>
 		{:else}
 			<Questboard
@@ -53,17 +56,19 @@
 	</article>
 </FadeInWrapper>
 
-<FadeInWrapper tag="section" class="section-spacing container">
-	<article class="grid-content grid-spacing">
-		<TitleWrapper tag="h2" className="mb-0">
-			{#snippet text()}
-				Other Groupmembers
-			{/snippet}
-		</TitleWrapper>
+{#if data.questboard.quest.length}
+	<FadeInWrapper tag="section" class="section-spacing container">
+		<article class="grid-content grid-spacing">
+			<TitleWrapper tag="h2" className="mb-0">
+				{#snippet text()}
+					Other Groupmembers
+				{/snippet}
+			</TitleWrapper>
 
-		<ResultsOtherGroupmembers
-			countOtherMembers={data.countOtherMembers}
-			questboardId={data.questboard.id}
-		/>
-	</article>
-</FadeInWrapper>
+			<ResultsOtherGroupmembers
+				countOtherMembers={data.countOtherMembers}
+				questboardId={data.questboard.id}
+			/>
+		</article>
+	</FadeInWrapper>
+{/if}

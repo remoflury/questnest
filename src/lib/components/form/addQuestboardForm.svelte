@@ -82,8 +82,8 @@
 						{selectedLabel ?? 'Assign a group'}
 					</Select.Trigger>
 					<Select.Content>
-						{#each groups as group}
-							<Select.Item value={group.value} label={group.label} />
+						{#each groups as group, i}
+							<Select.Item value={group.value} label={group.label} data-testid="group-select-{i}" />
 						{/each}
 					</Select.Content>
 				</Select.Root>
@@ -91,5 +91,7 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Button class="w-full" loading={$delayed} disabled={$delayed}>Add Quest</Form.Button>
+	<Form.Button class="w-full" loading={$delayed} disabled={$delayed} data-testid="submit-questboard"
+		>Add Quest</Form.Button
+	>
 </form>
