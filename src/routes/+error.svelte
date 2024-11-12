@@ -15,10 +15,18 @@
 		<p>
 			{#if $page.status >= 500}
 				{$page.status}: Our servers seems to have trouble. Try again later.
+			{:else if $page.status == 401}
+				{$page.status}: You are not authorized to access this page. Please log in.
 			{:else}
 				{$page.status}: The page could not be found.
 			{/if}
 		</p>
-		<Button class="max-w-max" href="/" title="go to home" aria-label="go to home">Home</Button>
+		<Button
+			class="max-w-max"
+			href={$page.status == 401 ? '/signin' : '/'}
+			title="go to {$page.status == 401 ? 'Login page' : 'home'}"
+			aria-label="go to {$page.status == 401 ? 'Login page' : 'home'}"
+			>{$page.status == 401 ? 'Sign In' : 'Home'}</Button
+		>
 	</article>
 </FadeInWrapper>

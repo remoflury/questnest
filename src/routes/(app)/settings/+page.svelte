@@ -1,4 +1,5 @@
 <script>
+	import LogoutForm from '$lib/components/form/logoutForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import Password from '$lib/components/settings/password.svelte';
@@ -15,6 +16,10 @@
 	<TitleWrapper tag="h1">
 		{#snippet text()}
 			Settings
+		{/snippet}
+
+		{#snippet icon()}
+			<LogoutForm />
 		{/snippet}
 	</TitleWrapper>
 	<p>Change your profile credentials.</p>
