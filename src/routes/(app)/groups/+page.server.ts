@@ -38,15 +38,25 @@ export const actions: Actions = {
 			return message(form, 'Something went wrong. Try again.', { status: 400 });
 		}
 
-		const { data: groupData, error: groupErr } = await supabase
+		const { error: groupErr } = await supabase
 			.from('group')
 			.insert({ name: form.data.name })
-			.select('id');
 
 		if (groupErr) {
-			console.log('groupErr', groupErr);
+			console.log({groupErr});
 			return message(form, 'Something went wrong. Try again.', { status: 500 });
 		}
+
+		const { data: selectData, error: selectErr } = await supabase
+			.from('group')
+			.select('id')
+			.order('id', { ascending: false })
+			.limit(1)
+
+			if (selectErr) {
+				console.log({selectErr});
+				return message(form, 'Something went wrong. Try again.', { status: 500 });
+			}
 
 		// n:m relationship of current user and newly created group will be inserted via trigger function in supabase
 		// ========
@@ -78,6 +88,6 @@ export const actions: Actions = {
   */
 		setMessage(form, `${form.data.name} saved succesfully`);
 
-		redirect(301, `/groups/${groupData[0].id}`);
+		redirect(301, `/groups/${selectData[0].id}`);
 	}
 };
