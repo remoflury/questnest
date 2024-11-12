@@ -37,5 +37,7 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Button class="w-full" loading={$delayed} disabled={$delayed}>Add Group</Form.Button>
+	<Form.Button class="w-full" loading={$delayed} disabled={$delayed} data-testid="submitgroup-btn"
+		>Add Group</Form.Button
+	>
 </form>

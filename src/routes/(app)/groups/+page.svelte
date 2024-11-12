@@ -26,6 +26,7 @@
 				title="add group"
 				aria-label="add group"
 				onclick={() => (open = true)}
+				data-testid="addgroup-btn"
 			>
 				<Plus />
 			</Button>
