@@ -6,7 +6,7 @@
 
 <FadeInWrapper tag="section" class="section-spacing grid-content grid-spacing container">
 	<h1>Bring Your Friends Together with QuestNest!</h1>
-	<p class="font-bold">
+	<p class="font-bold" data-testid="lead">
 		Welcome to QuestNest, the ultimate app for unforgettable moments with friends. Create custom
 		bingo cards, filled with challenges and dares designed by your group, and see who can check off
 		the most! Whether you're planning a game night, a weekend getaway, or just a fun evening with
@@ -21,13 +21,15 @@
 				<Button
 					href="/signup"
 					title="Sign up for a new account"
-					aria-label="Sign up for a new account">Sign Up</Button
+					aria-label="Sign up for a new account"
+					data-testid="signup-btn">Sign Up</Button
 				>
 				<Button
 					href="/signin"
 					variant="secondary"
 					title="login to your account"
-					aria-label="login in your account">Sign In</Button
+					aria-label="login in your account"
+					data-testid="signin-btn">Sign In</Button
 				>
 			</div>
 		{:else}
