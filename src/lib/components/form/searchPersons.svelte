@@ -27,7 +27,6 @@
 		if (status >= 400) {
 			error = message!;
 			throw new Error(message);
-			// TODO catch error in html code
 		}
 		users = payload;
 	};
