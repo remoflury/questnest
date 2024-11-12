@@ -4,7 +4,7 @@
 	import type { AddUserToGroupSchema } from '$lib/validation/schema';
 	import type { Tables } from '$lib/types/SupabaseTypes';
 	import { flip } from 'svelte/animate';
-	import { slide } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import { TRANSITION_CONFIG } from '$lib/utils/constants';
 	import AddPersonToGroup from './addPersonToGroup.svelte';
 	import * as Command from '$lib/components/ui/command/index.js';
@@ -47,7 +47,7 @@
 	{#if error && query.length}
 		<FetchError message="Something went wrong." {error} />
 	{/if}
-	{#if users.length && query.length}
+	{#if users.length && query.length && !error}
 		<div class="space-y-3 pb-4 pt-3" transition:slide={TRANSITION_CONFIG}>
 			{#each users as user (user.id)}
 				{@const isAlreadyInGroup = !!userIdsOfGroup.find((id) => id == user.id)}
@@ -63,5 +63,9 @@
 				</div>
 			{/each}
 		</div>
+	{:else if query.length && !error}
+		<p class="px-8 pb-2 pt-3 text-sm" in:slide={TRANSITION_CONFIG}>
+			No results for <em>{query}</em>
+		</p>
 	{/if}
 </article>
