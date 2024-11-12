@@ -4,6 +4,7 @@
 	import SearchPersons from '$lib/components/form/searchPersons.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
+	import QuestboardPreview from '$lib/components/quest/questboardPreview.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
@@ -79,13 +80,33 @@
 <FadeInWrapper tag="span" role="presentation">
 	<Separator />
 </FadeInWrapper>
-<FadeInWrapper tag="section" class="section-spacing container">
-	<TitleWrapper>
-		{#snippet text()}
-			Quests
-		{/snippet}
-	</TitleWrapper>
-</FadeInWrapper>
+
+<div class="section-t-spacing container">
+	<article class="grid-content grid-spacing">
+		<FadeInWrapper tag="div">
+			<TitleWrapper>
+				{#snippet text()}
+					Quests
+				{/snippet}
+			</TitleWrapper>
+		</FadeInWrapper>
+		{#if data.group.questboards.length}
+			{#each data.group.questboards as questboard}
+				<FadeInWrapper>
+					<QuestboardPreview {questboard} />
+				</FadeInWrapper>
+			{/each}
+		{:else}
+			<p>No quests for this group available.</p>
+			<Button
+				class="max-w-max"
+				href="/quests"
+				aria-label="create a new questboard"
+				title="create a new questboard">Create new quests</Button
+			>
+		{/if}
+	</article>
+</div>
 
 <RemoveFromGroup
 	bind:open

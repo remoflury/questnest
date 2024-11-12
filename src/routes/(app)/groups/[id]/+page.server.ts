@@ -1,5 +1,6 @@
-import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import type { Tables } from '$lib/types/SupabaseTypes';
+import { error, fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { addUserToGroupSchema, removeUserFromGroupSchema } from '$lib/validation/schema';
@@ -12,15 +13,24 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 
 	const { data: groupData, error: groupErr } = await supabase
 		.from('group')
-		.select('id, name')
-		.eq('id', params.id);
+		.select(`
+				id,
+				name,
+				questboards:questboard(
+					id,
+					name,
+					description
+				)
+			`)
+		.eq('id', params.id)
+		.single()
 
 	if (groupErr) {
 		console.error({ groupErr });
 		error(500);
 	}
 
-	if (!groupData.length) {
+	if (!groupData) {
 		error(404);
 	}
 
@@ -49,11 +59,12 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 
 	return {
 		group: {
-			id: groupData[0].id as number,
-			name: groupData[0].name as string,
+			id: groupData.id as number,
+			name: groupData.name as string,
 			users: groupUsers.flatMap((user) => {
 				return user.user;
-			}) as { id: string; username: string }[]
+			}) as { id: string; username: string }[],
+			questboards: groupData.questboards as Pick<Tables<"questboard">, 'id' | 'name' | 'description'>[]
 		},
 		addUserToGroupForm,
 		removeUserFromGroupForm
