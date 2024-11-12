@@ -43,20 +43,18 @@ export const actions: Actions = {
       return message(form, 'Something went wrong. Try again later.', { status: 400 })
     }
 
-    console.log(form)
-
-    // check if new credentials already exist
+    // check if new credentials already exist (taken by other users)
     const { data: alreadyTakenData, error: alreadyTakenErr } = await supabase
       .from('user')
       .select('username, email')
-      .or(`email.eq.${form.data.email},username.eq.${form.data.username}`);
+      .or(`email.eq.${form.data.email},username.eq.${form.data.username}`)
+      .neq('id', session.user.id)
 
     if (alreadyTakenErr) {
       console.error({alreadyTakenErr})
       return message(form, 'Something went wrong. Try again later.', { status: 500 })
     }
 
-    // TODO: what if user only updates one of both values? 
     if (alreadyTakenData.length) {
       if (alreadyTakenData[0].email == form.data.email) {
 				setError(form, 'email', `User with email ${form.data.email} already exists.`);
