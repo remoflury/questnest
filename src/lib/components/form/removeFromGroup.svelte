@@ -1,10 +1,9 @@
 <script lang="ts">
-	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '../ui/button/button.svelte';
 	import type { RemoveUserFromGroupSchema } from '$lib/validation/schema';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { toast } from 'svelte-sonner';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	type Props = {
 		userToRemove: {

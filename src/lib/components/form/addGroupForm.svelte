@@ -24,7 +24,7 @@
 		}
 	});
 
-	let { form: formData, enhance, delayed } = form;
+	let { form: formData, enhance, delayed, constraints } = form;
 </script>
 
 <form method="POST" use:enhance {action}>
@@ -32,7 +32,7 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Group name <sup>*</sup></Form.Label>
-				<Input {...props} bind:value={$formData.name} />
+				<Input {...props} bind:value={$formData.name} {...$constraints.name} />
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />

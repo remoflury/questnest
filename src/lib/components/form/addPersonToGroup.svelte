@@ -1,10 +1,10 @@
 <script lang="ts">
+	import type { AddUserToGroupSchema } from '$lib/validation/schema';
 	import { Plus, Check } from 'lucide-svelte';
-	import Button from '../ui/button/button.svelte';
 	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { toast } from 'svelte-sonner';
 	import Badge from '../ui/badge/badge.svelte';
-	import type { AddUserToGroupSchema } from '$lib/validation/schema';
+	import Button from '../ui/button/button.svelte';
 
 	type Props = {
 		username: string;
@@ -29,7 +29,7 @@
 		}
 	});
 
-	let { form: formData, enhance, delayed } = form;
+	let { enhance, delayed } = form;
 </script>
 
 {#snippet content(isAlreadyInGroup: boolean)}

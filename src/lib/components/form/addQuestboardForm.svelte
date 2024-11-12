@@ -1,14 +1,13 @@
 <script lang="ts">
-	import * as Form from '$lib/components/ui/form/index.js';
+	import type { Tables } from '$lib/types/SupabaseTypes';
+	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { addQuestboardSchema, type AddQuestboardSchema } from '$lib/validation/schema';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { Input } from '../ui/input';
+	import { Input } from '$lib/components/ui/input';
 	import { toast } from 'svelte-sonner';
+	import * as Form from '$lib/components/ui/form/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import Textarea from '../ui/textarea/textarea.svelte';
-	import type { Tables } from '$lib/types/SupabaseTypes';
-	import { goto } from '$app/navigation';
+	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 
 	type Props = {
 		data: SuperValidated<Infer<AddQuestboardSchema>>;
@@ -28,13 +27,12 @@
 	let { data, action, groupsOfUser }: Props = $props();
 	let form = superForm(data, {
 		validators: zodClient(addQuestboardSchema),
-		// dataType: 'json',
 		onUpdate: ({ result }) => {
 			if (result.type == 'failure') return toast.error(result.data.form.message);
 		}
 	});
 
-	let { form: formData, enhance, delayed } = form;
+	let { form: formData, enhance, delayed, constraints } = form;
 
 	let value: string = $state('');
 
@@ -48,7 +46,7 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Name <sup>*</sup></Form.Label>
-				<Input {...props} bind:value={$formData.name} />
+				<Input {...props} bind:value={$formData.name} {...$constraints.name} />
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
@@ -57,7 +55,12 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Description</Form.Label>
-				<Textarea {...props} class="resize-none rounded-xl" bind:value={$formData.description} />
+				<Textarea
+					{...props}
+					class="resize-none rounded-xl"
+					bind:value={$formData.description}
+					{...$constraints.description}
+				/>
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
@@ -73,6 +76,7 @@
 					name={props.name}
 					items={groups}
 					onValueChange={(v) => (value = v)}
+					{...$constraints.group}
 				>
 					<Select.Trigger {...props}>
 						{selectedLabel ?? 'Assign a group'}

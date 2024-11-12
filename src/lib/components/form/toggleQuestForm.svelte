@@ -7,6 +7,7 @@
 	import { scale } from 'svelte/transition';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+
 	type Props = {
 		data: SuperValidated<Infer<ToggleQuestSchema>>;
 		action: string;
