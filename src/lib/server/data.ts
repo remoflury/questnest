@@ -65,30 +65,35 @@ const seoData: (SeoProps & { uri: string })[] = [
   {
     uri: "/quests",
     seoPageTitle: "Quests",
+    seoRobots: ["noindex, nofollow"],
     seoPageDescription: "All of your quest boards in one place.",
     ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/quests/[id]",
     seoPageTitle: "Placeholder",
+    seoRobots: ["noindex, nofollow"],
     seoPageDescription: "All of your quest boards in one place.",
     ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/quests/[id]/create",
     seoPageTitle: "Create a new questboard",
+    seoRobots: ["noindex, nofollow"],
     seoPageDescription: "Create a new questboard.",
     ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/quests/[id]/edit",
     seoPageTitle: "Placeholder",
+    seoRobots: ["noindex, nofollow"],
     seoPageDescription: "Edit your current questboard.",
     ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/settings",
     seoPageTitle: "Settings",
+    seoRobots: ["noindex, nofollow"],
     seoPageDescription: "Edit your profile, change your email or password.",
     ogImage: genImageUrl("/assets/chicken.svg")
   },
