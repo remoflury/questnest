@@ -7,7 +7,7 @@ import { redirect } from '@sveltejs/kit';
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { session } = await safeGetSession();
 	if (session) {
-		redirect(300, '/quests');
+		redirect(307, '/quests');
 	}
 	return {
 		signUpForm: await superValidate(zod(signupSchema))

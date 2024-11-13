@@ -1,12 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
-	// const { session } = await safeGetSession()
-	// if (session) {
-	//   console.log(session)
-	//   // redirect(300, '/quests')
-	// }
+export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
