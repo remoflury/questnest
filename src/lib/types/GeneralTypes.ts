@@ -49,3 +49,15 @@ export type ApiResponse<T = undefined> = T extends undefined
 			message?: string;
 			status: HttpStatus;
 		};
+
+export type SeoProps = {
+	seoPageTitle: string | null;
+	seoPageDescription: string | null;
+	seoKeywords?: string | null;
+	seoCanonical?: string | null;
+	seoRobots?: string[];
+	ogTitle?: string;
+	ogDescription?: string;
+	ogImage?: string;
+	ogUrl?: string;
+}

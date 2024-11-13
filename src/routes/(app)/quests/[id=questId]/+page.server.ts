@@ -4,6 +4,7 @@ import type { Tables } from '$lib/types/SupabaseTypes';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { toggleQuestSchema } from '$lib/validation/schema';
+import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
 	const { session } = await safeGetSession();
@@ -83,7 +84,8 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 		questboard,
 		toggleQuestForm,
 		questIdsCompleted,
-		countOtherMembers: countOtherMembers as number
+		countOtherMembers: countOtherMembers as number,
+		seo: getSeo("/quests/[id]", questboard.name)
 	};
 };
 

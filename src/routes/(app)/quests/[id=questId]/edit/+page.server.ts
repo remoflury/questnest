@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { createQuestsSchema } from '$lib/validation/schema';
+import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
 	const { session } = await safeGetSession();
@@ -51,7 +52,8 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 
 	return {
 		questboard: questboardData,
-		editQuestsForm
+		editQuestsForm,
+		seo: getSeo("/quests/[id]/edit", `Edit: ${questboardData.name}`)
 	};
 };
 

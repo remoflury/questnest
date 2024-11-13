@@ -1,6 +1,7 @@
 <script>
 	import LogoutForm from '$lib/components/form/logoutForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
+	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import Password from '$lib/components/settings/password.svelte';
 	import Profile from '$lib/components/settings/profile.svelte';
@@ -11,6 +12,8 @@
 	let editProfile = $state(false);
 	let editPassword = $state(false);
 </script>
+
+<Seo pageSeo={data.seo} />
 
 <FadeInWrapper class="section-spacing container" tag="section">
 	<TitleWrapper tag="h1">

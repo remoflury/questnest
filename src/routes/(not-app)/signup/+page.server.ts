@@ -3,6 +3,7 @@ import { signupSchema } from '$lib/validation/schema.js';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
+import { getSeo } from '$lib/server/data.js';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { session } = await safeGetSession();
@@ -10,7 +11,8 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 		redirect(307, '/quests');
 	}
 	return {
-		signUpForm: await superValidate(zod(signupSchema))
+		signUpForm: await superValidate(zod(signupSchema)),
+		seo: getSeo("/signup")
 	};
 };
 

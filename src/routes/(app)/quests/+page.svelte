@@ -1,6 +1,7 @@
 <script lang="ts">
 	import AddQuestboardForm from '$lib/components/form/addQuestboardForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
+	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import QuestboardCard from '$lib/components/quest/questboardCard.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -11,6 +12,8 @@
 
 	let open = $state(false);
 </script>
+
+<Seo pageSeo={data.seo} />
 
 <FadeInWrapper class="section-spacing container" tag="section">
 	<TitleWrapper tag="h1">

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
+	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import Questboard from '$lib/components/quest/questboard.svelte';
 	import ResultsOtherGroupmembers from '$lib/components/quest/resultsOtherGroupmembers.svelte';
@@ -9,6 +10,8 @@
 
 	let { data } = $props();
 </script>
+
+<Seo pageSeo={data.seo} />
 
 <FadeInWrapper class="section-spacing container" tag="section">
 	<article class="grid-content grid-spacing">

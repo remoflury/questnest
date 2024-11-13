@@ -5,7 +5,7 @@
 </script>
 
 <nav class="grid-content grid-spacing container pt-3">
-	<a href="/" class="max-w-1/2 col-span-1 flex items-center gap-x-3">
+	<a href="/" class="max-w-1/2 col-span-1 flex items-center gap-x-3 lg:col-span-2">
 		<img src="/assets/chicken.svg" alt="logo" />
 		<span class="font-dm-serif text-lg font-bold">QuestNest</span>
 	</a>

@@ -1,3 +1,4 @@
+import type { SeoProps } from '$lib/types/GeneralTypes';
 import type { Session, SupabaseClient, User } from '@supabase/supabase-js';
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
@@ -13,6 +14,7 @@ declare global {
 		}
 		interface PageData {
 			session: Session | null;
+			seo: SeoProps;
 			flash?: { type: 'success' | 'error'; message: string };
 		}
 		// interface PageState {}

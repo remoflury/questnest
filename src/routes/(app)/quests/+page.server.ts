@@ -4,6 +4,7 @@ import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { addQuestboardSchema } from '$lib/validation/schema';
 import type { Tables } from '$lib/types/SupabaseTypes';
+import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase } }) => {
 	const { session } = await safeGetSession();
@@ -50,7 +51,8 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	return {
 		addQuestboardForm,
 		groupsOfUser,
-		questboards
+		questboards,
+		seo: getSeo("/quests")
 	};
 };
 

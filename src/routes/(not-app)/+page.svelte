@@ -2,7 +2,12 @@
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { page } from '$app/stores';
+	import Seo from '$lib/components/general/seo.svelte';
+
+	let { data } = $props();
 </script>
+
+<Seo pageSeo={data.seo} />
 
 <FadeInWrapper tag="section" class="section-spacing grid-content grid-spacing container">
 	<h1>Bring Your Friends Together with QuestNest!</h1>

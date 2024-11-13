@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { changePwSchema, editProfileSchema } from '$lib/validation/schema';
+import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase } }) => {
 	const { session } = await safeGetSession();
@@ -29,7 +30,8 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	return {
 		user: userData,
 		editProfileForm,
-		editPasswordForm
+		editPasswordForm,
+		seo: getSeo("/settings")
 	};
 };
 
