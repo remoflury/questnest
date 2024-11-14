@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { menu } from '$lib/store/store';
 	import LogoutForm from '../form/logoutForm.svelte';
 	import Button from '../ui/button/button.svelte';
 </script>
 
-<nav class="grid-content grid-spacing container pt-3">
-	<a href="/" class="max-w-1/2 col-span-1 flex items-center gap-x-3 lg:col-span-2">
+<nav class="grid-content grid-spacing container pt-3" bind:clientHeight={$menu.heightNav}>
+	<a href="/" class="col-span-1 flex max-w-1/2 items-center gap-x-3 lg:col-span-2">
 		<img src="/assets/chicken.svg" alt="logo" />
 		<span class="font-dm-serif text-lg font-bold">QuestNest</span>
 	</a>
