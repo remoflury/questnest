@@ -44,13 +44,13 @@ export const actions: Actions = {
 			return message(form, 'Something went wrong.', { status: 400 });
 		}
 
-		const { data, error } = await supabase.auth.signUp({
+		const { data, error: signupErr } = await supabase.auth.signUp({
 			email: form.data.email,
 			password: form.data.password
 		});
-		if (error) {
-			console.error('eeeerr', error);
-			if (error?.code == 'user_already_exists') {
+		if (signupErr) {
+			console.error({signupErr});
+			if (signupErr?.code == 'user_already_exists') {
 				setError(form, 'email', 'User with this email already exists.');
 				return message(form, 'User with this email already exists.', { status: 400 });
 			}
