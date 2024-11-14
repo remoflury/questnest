@@ -39,7 +39,7 @@ const defaultSeoValues: SeoProps = {
   seoKeywords: "game, bingo, friends, group, app, challenges",
   ogTitle: "QuestNest",
   ogDescription: "The ultimate app for unforgettable moments with friends. Create custom bingo cards, filled with challenges and dares designed by your group, and see who can check off the most!",
-  ogImage: genImageUrl("/assets/chicken.svg"),
+  ogImage: genImageUrl("/icons-pwa/android-launchericon-512-512.png"),
 }
 
 const seoData: (SeoProps & { uri: string })[] = [
@@ -53,48 +53,53 @@ const seoData: (SeoProps & { uri: string })[] = [
     seoPageTitle: "Sign in",
     seoPageDescription: "Sign in into the ultimate app for unforgettable bingo moments with friends.",
     seoKeywords: "game, bingo, friends, group, app, challenges, Sign in",
-    ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/signup",
     seoPageTitle: "Sign up",
     seoPageDescription: "Sign up for the ultimate app for unforgettable bingo moments with friends.",
     seoKeywords: "game, bingo, friends, group, app, challenges, Sign up",
-    ogImage: genImageUrl("/assets/chicken.svg")
+  },
+  {
+    uri: "/imprint",
+    seoPageTitle: "Imprint",
+    seoPageDescription: "Imprint of questnest, the app for unforgettable bingo moments with friends.",
+    seoKeywords: "game, bingo, friends, group, app, challenges, imprint",
+  },
+  {
+    uri: "/privacy-policy",
+    seoPageTitle: "Privacy Policy",
+    seoPageDescription: "Learn more about the privacy policy of questnest, the app for unforgettable bingo moments with friends.",
+    seoKeywords: "game, bingo, friends, group, app, challenges, imprint",
   },
   {
     uri: "/quests",
     seoPageTitle: "Quests",
     seoRobots: ["noindex, nofollow"],
     seoPageDescription: "All of your quest boards in one place.",
-    ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/quests/[id]",
     seoPageTitle: "Placeholder",
     seoRobots: ["noindex, nofollow"],
     seoPageDescription: "All of your quest boards in one place.",
-    ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/quests/[id]/create",
     seoPageTitle: "Create a new questboard",
     seoRobots: ["noindex, nofollow"],
     seoPageDescription: "Create a new questboard.",
-    ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/quests/[id]/edit",
     seoPageTitle: "Placeholder",
     seoRobots: ["noindex, nofollow"],
     seoPageDescription: "Edit your current questboard.",
-    ogImage: genImageUrl("/assets/chicken.svg")
   },
   {
     uri: "/settings",
     seoPageTitle: "Settings",
     seoRobots: ["noindex, nofollow"],
     seoPageDescription: "Edit your profile, change your email or password.",
-    ogImage: genImageUrl("/assets/chicken.svg")
   },
 ]

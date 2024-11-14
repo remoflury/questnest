@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { cn } from '$lib/utils/utils';
+	import type { HeadingTypes } from '$lib/types/GeneralTypes';
 	import type { Snippet } from 'svelte';
+	import { cn } from '$lib/utils/utils';
 
 	let {
 		text,
@@ -9,7 +10,7 @@
 		icon
 	}: {
 		text: Snippet;
-		tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+		tag?: HeadingTypes;
 		className?: string;
 		icon?: Snippet;
 	} = $props();
