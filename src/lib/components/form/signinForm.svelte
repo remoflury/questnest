@@ -7,6 +7,7 @@
 	import * as Form from '$lib/components/ui/form/index.js';
 	import { Input } from '$lib/components/ui/input';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import PasswordInput from '../ui/input/passwordInput.svelte';
 
 	let { data, action }: { data: SuperValidated<Infer<SigninSchema>>; action: string } = $props();
 
@@ -37,12 +38,7 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Password <sup>*</sup></Form.Label>
-				<Input
-					{...props}
-					bind:value={$formData.password}
-					type="password"
-					{...$constraints.password}
-				/>
+				<PasswordInput {...props} bind:value={$formData.password} {...$constraints.password} />
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />

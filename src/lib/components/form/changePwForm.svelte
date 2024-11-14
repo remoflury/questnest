@@ -6,6 +6,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import PasswordInput from '../ui/input/passwordInput.svelte';
 
 	type Props = {
 		data: SuperValidated<Infer<ChangePwSchema>>;
@@ -32,10 +33,9 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Current Password <sup>*</sup></Form.Label>
-				<Input
+				<PasswordInput
 					{...props}
 					bind:value={$formData.currentPassword}
-					type="password"
 					{...$constraints.currentPassword}
 				/>
 			{/snippet}
@@ -46,10 +46,9 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>New password <sup>*</sup></Form.Label>
-				<Input
+				<PasswordInput
 					{...props}
 					bind:value={$formData.newPassword}
-					type="password"
 					{...$constraints.newPassword}
 				/>
 			{/snippet}
@@ -60,10 +59,9 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Confirm new password <sup>*</sup></Form.Label>
-				<Input
+				<PasswordInput
 					{...props}
 					bind:value={$formData.newPasswordConfirm}
-					type="password"
 					{...$constraints.newPasswordConfirm}
 				/>
 			{/snippet}
