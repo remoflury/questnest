@@ -1,28 +1,38 @@
-# sv
+# QuestNest
+The ultimate app for unforgettable moments with friends. Create custom bingo cards, filled with challenges and dares designed by your group, and see who can check off the most.
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+QuestNest's Backend is built with Supabase and SvelteKit 2. It's Fronted uses Svelte 5 with TailwindCSS and ShadCN for Svelte.
 
-## Creating a project
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Setup 
 
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+1. Clone the repository
+2. Install dependencies with 
+```shell
+npm install
 ```
+3. Copy the .env.example file to .env and fill in the required values
+```shell
+cp .env.example .env
+```
+
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Start the development server. This will start the local supabase cli aswell as the frontend
+```shell
+npm run start
+```
 
-```bash
-npm run dev
+## Pushing Local DB Changes to Remote
+If you have local db changes, which should be pushed to the remote, start a migration:
+```shell
+supabase db diff -f <file-name>
+```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Then apply the migration:
+```shell
+supabase db push
 ```
 
 ## Building
@@ -35,4 +45,3 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
