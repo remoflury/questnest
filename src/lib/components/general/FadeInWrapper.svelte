@@ -7,6 +7,33 @@
 		options?: IntersectionObserverInit;
 		delayInMs?: number;
 		href?: string;
+		from?: From;
+	};
+
+	type From = 'left' | 'right' | 'top' | 'bottom';
+	type AnimationClass = {
+		from: string;
+		to: string;
+	};
+	// const from: From = 'bottom';
+
+	const animationClasses: Record<From, AnimationClass> = {
+		left: {
+			from: '-translate-x-12 opacity-0 lg:-translate-x-24',
+			to: 'translate-x-0 opacity-100'
+		},
+		right: {
+			from: 'translate-x-12 opacity-0 lg:translate-x-24',
+			to: 'translate-x-0 opacity-100'
+		},
+		top: {
+			from: '-translate-y-12 opacity-0 lg:-translate-y-24',
+			to: 'translate-y-0 opacity-100'
+		},
+		bottom: {
+			from: 'translate-y-12 opacity-0 lg:translate-y-24',
+			to: 'translate-y-0 opacity-100'
+		}
 	};
 
 	let className: $$Props['class'] = '';
@@ -19,6 +46,7 @@
 		rootMargin: '0px',
 		threshold: 0.1 // Trigger when 10% of the element is visible
 	};
+	export let from: $$Props['from'] = 'bottom';
 
 	let isVisible = false;
 	let random = Math.random();
@@ -45,9 +73,9 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <svelte:element
 	this={tag}
-	class="transition-all duration-700 {className}"
-	class:not-visible={!isVisible}
-	class:is-visible={isVisible}
+	class="transition-all duration-700 {className} {isVisible
+		? animationClasses[from!].to
+		: animationClasses[from!].from}"
 	id="intersector-{random}"
 	style:transition-delay="{delayInMs}ms"
 	{href}
@@ -56,12 +84,3 @@
 >
 	<slot />
 </svelte:element>
-
-<style lang="postcss">
-	.not-visible {
-		@apply translate-y-12 opacity-0 lg:translate-y-24;
-	}
-	.is-visible {
-		@apply translate-y-0 opacity-100;
-	}
-</style>
