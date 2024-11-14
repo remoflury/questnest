@@ -2,6 +2,7 @@
 	import { menu, footer } from '$lib/store/store';
 	import FooterLoggedOut from '$lib/components/footer/footerLoggedOut.svelte';
 	import NavLoggedOut from '$lib/components/navigation/navLoggedOut.svelte';
+	import DesignElement from '$lib/components/ui/designElements/designElement.svelte';
 
 	let { children } = $props();
 </script>
@@ -11,3 +12,5 @@
 	{@render children()}
 </main>
 <FooterLoggedOut />
+
+<DesignElement />

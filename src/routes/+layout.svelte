@@ -3,7 +3,6 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
-	import DesignElement from '$lib/components/ui/designElements/designElement.svelte';
 
 	let { children, data } = $props();
 	let supabase = $state(data.supabase);
@@ -22,5 +21,3 @@
 
 <Toaster position="top-center" />
 {@render children()}
-
-<DesignElement />
