@@ -2,7 +2,6 @@
 	import type { AddUserToGroupSchema } from '$lib/validation/schema';
 	import type { Tables } from '$lib/types/SupabaseTypes';
 	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
-	import { page } from '$app/stores';
 	import { Plus, Check } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { getPublicSbUrl } from '$lib/utils/fileUtils';
@@ -42,7 +41,8 @@
 			<Avatar.Root class="border border-secondary">
 				{#if user.avatar_path}
 					<Avatar.Image
-						src={getPublicSbUrl($page.data.supabase, 'avatar', user.avatar_path, {
+						class="object-cover"
+						src={getPublicSbUrl('avatar', user.avatar_path, {
 							width: 100,
 							height: 100
 						})}

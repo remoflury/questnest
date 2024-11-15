@@ -11,8 +11,6 @@
 		showAvatar?: boolean;
 	};
 	let { title, text, className, avatarUrl, showAvatar = false }: Props = $props();
-
-	$inspect({ avatarUrl });
 </script>
 
 <div class={cn('flex items-start justify-between gap-x-4', className)}>
