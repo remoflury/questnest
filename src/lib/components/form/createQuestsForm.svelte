@@ -21,6 +21,7 @@
 	let form = superForm(data, {
 		validators: zodClient(createQuestsSchema),
 		dataType: 'json',
+		taintedMessage: 'Are you sure you want to leave?',
 		onUpdate: async ({ result }) => {
 			if (result.type == 'failure') {
 				return toast.error(result.data.form.message ?? 'Something went wrong.');
@@ -52,9 +53,6 @@
 			{/if}
 		</Form.Field>
 	{/each}
-	<!-- <Form.Button loading={$delayed} disabled={$delayed} data-testid="submit-addquests">
-		Save Quests
-	</Form.Button> -->
 
 	<div class="grid-spacing flex flex-wrap">
 		<Button type="button" variant="destructive" class="mt-2" onclick={oncloseForm}>Cancel</Button>
