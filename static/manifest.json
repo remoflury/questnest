@@ -1,7 +1,12 @@
 {
-	"short_name": "moviemate",
-	"name": "moviemate",
+	"short_name": "QuestNest",
+	"name": "QuestNest",
 	"start_url": "/",
+  "background_color": "#0C011A",
+	"display": "standalone",
+	"scope": "/",
+	"theme_color": "#042f2e",
+	"description": "The ultimate app for unforgettable moments with friends. Create custom bingo cards, filled with challenges and dares designed by your group, and see who can check off the most!",
 	"icons": [
 		{
 			"src": "/icons-pwa/android/android-launchericon-512-512.png",
@@ -570,10 +575,5 @@
 			"sizes": "1024x1024"
     }
 		
-	],
-	"background_color": "#0C011A",
-	"display": "standalone",
-	"scope": "/",
-	"theme_color": "#042f2e",
-	"description": "The ultimate app for unforgettable moments with friends. Create custom bingo cards, filled with challenges and dares designed by your group, and see who can check off the most!"
+	]
 }
