@@ -6,12 +6,12 @@
 	let {
 		text,
 		tag = 'h2',
-		className = '',
+		class: className = '',
 		icon
 	}: {
 		text: Snippet;
 		tag?: HeadingTypes;
-		className?: string;
+		class?: string;
 		icon?: Snippet;
 	} = $props();
 </script>

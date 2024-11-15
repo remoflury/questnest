@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 
 	const { data: userData, error: userErr } = await supabase
 		.from('user')
-		.select('username, email')
+		.select('username, email, score')
 		.eq('id', session.user.id)
 		.single();
 

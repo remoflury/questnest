@@ -15,7 +15,7 @@
 
 <FadeInWrapper class="section-spacing container" tag="section">
 	<article class="grid-content grid-spacing">
-		<TitleWrapper tag="h1" className="mb-0">
+		<TitleWrapper tag="h1" class="mb-0">
 			{#snippet text()}
 				{data.questboard.name}
 			{/snippet}
@@ -63,7 +63,7 @@
 {#if data.questboard.quest.length}
 	<FadeInWrapper tag="section" class="section-spacing container">
 		<article class="grid-content grid-spacing">
-			<TitleWrapper tag="h2" className="mb-0">
+			<TitleWrapper tag="h2" class="mb-0">
 				{#snippet text()}
 					Other Groupmembers
 				{/snippet}

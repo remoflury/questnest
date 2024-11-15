@@ -3,6 +3,7 @@
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
+	import Score from '$lib/components/quest/score.svelte';
 	import Password from '$lib/components/settings/password.svelte';
 	import Profile from '$lib/components/settings/profile.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -25,55 +26,62 @@
 			<LogoutForm />
 		{/snippet}
 	</TitleWrapper>
-	<p>Change your profile credentials.</p>
-</FadeInWrapper>
 
-<FadeInWrapper class="section-spacing container" tag="section">
-	<TitleWrapper>
-		{#snippet text()}
-			Profile
-		{/snippet}
-		{#snippet icon()}
-			{#if !editProfile}
-				<Button
-					class="!aspect-square p-2"
-					title="edit quest"
-					aria-label="edit quest"
-					variant="secondary"
-					onclick={() => (editProfile = true)}
-				>
-					<Edit class="stroke-primary" />
-				</Button>
-			{/if}
-		{/snippet}
-	</TitleWrapper>
-	<Profile
-		bind:edit={editProfile}
-		user={data.user}
-		editProfileForm={data.editProfileForm}
-		action="?/editprofile"
+	<Score
+		text="Your current score:"
+		score={data.user.score}
+		class="text-lg font-bold text-foreground"
+		classScore="pl-4"
 	/>
 </FadeInWrapper>
 
 <FadeInWrapper class="section-spacing container" tag="section">
-	<TitleWrapper>
-		{#snippet text()}
-			Password
-		{/snippet}
-		{#snippet icon()}
-			{#if !editPassword}
-				<Button
-					class="!aspect-square p-2"
-					title="edit quest"
-					aria-label="edit quest"
-					variant="secondary"
-					onclick={() => (editPassword = true)}
-				>
-					<Edit class="stroke-primary" />
-				</Button>
-			{/if}
-		{/snippet}
-	</TitleWrapper>
-
-	<Password bind:edit={editPassword} editPwForm={data.editPasswordForm} action="?/changepw" />
+	<article class="grid-content grid-spacing">
+		<TitleWrapper>
+			{#snippet text()}
+				Profile
+			{/snippet}
+			{#snippet icon()}
+				{#if !editProfile}
+					<Button
+						class="!aspect-square p-2"
+						title="edit quest"
+						aria-label="edit quest"
+						variant="secondary"
+						onclick={() => (editProfile = true)}
+					>
+						<Edit class="stroke-primary" />
+					</Button>
+				{/if}
+			{/snippet}
+		</TitleWrapper>
+		<p>Change your profile credentials.</p>
+		<Profile
+			bind:edit={editProfile}
+			user={data.user}
+			editProfileForm={data.editProfileForm}
+			action="?/editprofile"
+		/>
+		<TitleWrapper class="mt-4">
+			{#snippet text()}
+				Password
+			{/snippet}
+			{#snippet icon()}
+				{#if !editPassword}
+					<Button
+						class="!aspect-square p-2"
+						title="edit quest"
+						aria-label="edit quest"
+						variant="secondary"
+						onclick={() => (editPassword = true)}
+					>
+						<Edit class="stroke-primary" />
+					</Button>
+				{/if}
+			{/snippet}
+		</TitleWrapper>
+		<Password bind:edit={editPassword} editPwForm={data.editPasswordForm} action="?/changepw" />
+	</article>
 </FadeInWrapper>
+
+<!-- <FadeInWrapper class="section-spacing container" tag="section"></FadeInWrapper> -->

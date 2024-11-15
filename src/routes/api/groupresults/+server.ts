@@ -33,10 +33,10 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 	const { data: questsOtherUsersCompletedData, error: questsOtherUsersCompletedErr } =
 		await supabase
 			.from('quest_done')
-			.select('quest, user(id, username)')
+			.select('quest, user(id, username, score)')
 			.in('quest', allQuestIds)
 			.neq('user', session.user.id)
-			.returns<({ quest: number } & { user: Pick<Tables<'user'>, 'id' | 'username'> })[]>();
+			.returns<({ quest: number } & { user: Pick<Tables<'user'>, 'id' | 'username' | 'score'> })[]>();
 
 	if (questsOtherUsersCompletedErr) {
 		console.error({ questsOtherUsersCompletedErr });
@@ -46,12 +46,12 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 	// Grouping logic
 	const groupedByUser = questsOtherUsersCompletedData.reduce(
 		(acc, item) => {
-			const { id, username } = item.user;
+			const { id, username, score } = item.user;
 			const { quest } = item;
 
 			// Check if the user already exists in the accumulator
 			if (!acc[id]) {
-				acc[id] = { user: id, username, questIdsCompleted: [] };
+				acc[id] = { id, username, score, questIdsCompleted: [] };
 			}
 			if (quest !== null && quest !== undefined) {
 				acc[id].questIdsCompleted.push(quest);
@@ -59,7 +59,7 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 
 			return acc;
 		},
-		{} as Record<string, { user: string; username: string; questIdsCompleted: number[] }>
+		{} as Record<string, { id: string; username: string; score: number; questIdsCompleted: number[] }>
 	);
 
 	// Convert the result to the desired array format

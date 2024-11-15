@@ -10,7 +10,7 @@
 <Seo pageSeo={data.seo} />
 
 {#snippet title(title: string, tag?: HeadingTypes, className?: string)}
-	<TitleWrapper {tag} {className}>
+	<TitleWrapper {tag} class={className}>
 		{#snippet text()}
 			{title}
 		{/snippet}

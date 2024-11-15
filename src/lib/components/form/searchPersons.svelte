@@ -23,12 +23,12 @@
 	const fetchUsers = async () => {
 		if (!query) return [];
 		const res = await fetch(`/api/user?q=${query}`);
-		const { payload, message, status }: ApiResponse<Tables<'user'>[]> = await res.json();
+		const { payload, message, status }: ApiResponse<{ users: Tables<'user'>[] }> = await res.json();
 		if (status >= 400) {
 			error = message!;
 			throw new Error(message);
 		}
-		users = payload;
+		users = payload.users;
 	};
 
 	let users: Tables<'user'>[] = $state([]);
@@ -53,8 +53,7 @@
 				{@const isAlreadyInGroup = !!userIdsOfGroup.find((id) => id == user.id)}
 				<div animate:flip={TRANSITION_CONFIG} class="px-8">
 					<AddPersonToGroup
-						username={user.username}
-						userUid={user.id}
+						{user}
 						{isAlreadyInGroup}
 						action="/groups/{groupId}?/addtogroup"
 						data={addUserToGroupForm}

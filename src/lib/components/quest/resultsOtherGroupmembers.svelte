@@ -2,6 +2,7 @@
 	import type { ApiResponse } from '$lib/types/GeneralTypes';
 	import FetchError from '../general/fetchError.svelte';
 	import { Skeleton } from '../ui/skeleton';
+	import Score from './score.svelte';
 
 	type Props = {
 		countOtherMembers: number;
@@ -17,7 +18,12 @@
 			status
 		}: ApiResponse<{
 			allQuestIds: number[];
-			resultsPerUser: { user: string; username: string; questIdsCompleted: number[] }[];
+			resultsPerUser: {
+				id: string;
+				username: string;
+				score: number;
+				questIdsCompleted: number[];
+			}[];
 		}> = await res.json();
 
 		if (status >= 400) {
@@ -41,8 +47,11 @@
 		<article class="grid-spacing grid grid-cols-4">
 			<div class="col-span-2 flex items-start gap-x-4">
 				{#each resultsPerUser as user}
-					{user.username}
-
+					<p class="">
+						{user.username}
+						<Score score={user.questIdsCompleted.length} />
+						<Score text="Total Score:" score={user.score} />
+					</p>
 					<div class="grid max-w-max grid-cols-4">
 						{#each allQuestIds as id}
 							{@const completed = user.questIdsCompleted.includes(id)}
