@@ -1,5 +1,21 @@
-import { QUESTS_PER_BOARD } from '$lib/utils/constants';
+import { ACCEPTED_IMAGE_TYPES, MAX_IMG_FILE_SIZE_IN_BYTES, QUESTS_PER_BOARD } from '$lib/utils/constants';
 import { z } from 'zod';
+
+const imageSchema = z.object({
+	type: z.enum(ACCEPTED_IMAGE_TYPES, {
+		message: `Only these image types are accepted: ${ACCEPTED_IMAGE_TYPES.join(', ').replaceAll('image/', '')}`
+	}),
+	name: z.string().min(1, { message: 'A file is required.' }),
+	fileBase64: z.string().refine(
+		(base64) => {
+			const base64WithoutPrefix = base64.split(',')[1] || base64;
+			const sizeInBytes = (base64WithoutPrefix.replace(/=+$/, '').length * 3) / 4;
+			// const sizeInBytes = Buffer.from(base64WithoutPrefix, 'base64').length;
+			return sizeInBytes < MAX_IMG_FILE_SIZE_IN_BYTES; // Ensuring the size is less than xMB
+		},
+		`File can't exceed a size of ${MAX_IMG_FILE_SIZE_IN_BYTES / 1024 / 1024} MB.`
+	)
+});
 
 const emailSchema = z
 	.string({ required_error: 'Email is required.' })
@@ -121,7 +137,8 @@ export type ToggleQuestSchema = typeof toggleQuestSchema;
 
 export const editProfileSchema = z.object({
 	email: emailSchema,
-	username: usernameSchema
+	username: usernameSchema,
+	avatar: imageSchema.optional(),
 });
 
 export type EditProfileSchema = typeof editProfileSchema;

@@ -10,7 +10,7 @@
 	import { Edit } from 'lucide-svelte';
 
 	let { data } = $props();
-	let editProfile = $state(false);
+	let editProfile = $state(true);
 	let editPassword = $state(false);
 </script>
 

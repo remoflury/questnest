@@ -49,8 +49,6 @@
 			clearInterval(interval);
 		};
 	});
-
-	$inspect(squares);
 </script>
 
 <div

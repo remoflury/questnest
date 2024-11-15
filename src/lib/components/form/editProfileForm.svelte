@@ -6,6 +6,8 @@
 	import { toast } from 'svelte-sonner';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import FileInput from '../ui/input/fileInput.svelte';
+	import { ACCEPTED_IMAGE_TYPES } from '$lib/utils/constants';
 
 	type Props = {
 		data: SuperValidated<Infer<EditProfileSchema>>;
@@ -25,9 +27,11 @@
 	});
 
 	let { form: formData, enhance, delayed, constraints } = form;
+
+	// $inspect($formData);
 </script>
 
-<form method="POST" use:enhance {action}>
+<form method="POST" use:enhance {action} enctype="multipart/form-data">
 	<Form.Field {form} name="email">
 		<Form.Control>
 			{#snippet children({ props })}
@@ -42,6 +46,19 @@
 			{#snippet children({ props })}
 				<Form.Label>Username <sup>*</sup></Form.Label>
 				<Input {...props} bind:value={$formData.username} {...$constraints.username} />
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+	<Form.Field {form} name="avatar">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Profile picture</Form.Label>
+				<FileInput
+					{...props}
+					bind:value={$formData.avatar}
+					accept={ACCEPTED_IMAGE_TYPES.join(', ')}
+				/>
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />

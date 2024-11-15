@@ -29,8 +29,6 @@
 	});
 
 	let { form: formData, enhance, delayed, constraints, errors } = form;
-
-	$inspect(redirect);
 </script>
 
 <form method="POST" use:enhance {action} class="space-y-3">

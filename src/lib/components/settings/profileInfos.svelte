@@ -10,8 +10,6 @@
 		avatarUrl?: string | null;
 	};
 	let { title, text, className, avatarUrl }: Props = $props();
-
-	$inspect($page.data);
 </script>
 
 <div class={className} class:avatar={avatarUrl}>

@@ -4,6 +4,8 @@ import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { changePwSchema, editProfileSchema } from '$lib/validation/schema';
 import { getSeo } from '$lib/server/data';
+import { encode } from 'base64-arraybuffer';
+import type { ACCEPTED_IMAGE_TYPES } from '$lib/utils/constants';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase } }) => {
 	const { session } = await safeGetSession();
@@ -22,8 +24,36 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		error(500);
 	}
 
+	let avatarBlob: Blob | null | undefined = undefined;
+	// get users avatar from supabase
+	if (userData.avatar_path) {
+		const { data: avatarData, error: avatarErr } = await supabase.storage
+			.from('avatar')
+			.download(`${userData.avatar_path}`);
+
+		if (avatarErr) {
+			console.error({avatarErr});
+			return error(500);
+		}
+
+		avatarBlob = avatarData ? avatarData : undefined;
+	}
+
+	const populatedUserForm = {
+		email: userData.email,
+		username: userData.username,
+		avatar: avatarBlob
+			? {
+					type: avatarBlob.type as typeof ACCEPTED_IMAGE_TYPES[number],
+					name: userData.avatar_path!.replace(`${session.user.id}/`, '') as string,
+					fileBase64: encode(await avatarBlob.arrayBuffer())
+				}
+			: undefined,
+
+	}
+
 	const [editProfileForm, editPasswordForm] = await Promise.all([
-		superValidate(userData, zod(editProfileSchema)),
+		superValidate(populatedUserForm, zod(editProfileSchema)),
 		superValidate(zod(changePwSchema))
 	]);
 
