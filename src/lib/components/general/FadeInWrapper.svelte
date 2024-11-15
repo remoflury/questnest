@@ -1,21 +1,20 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	type $$Props = HTMLAttributes<HTMLElement> & {
+	import { onMount } from 'svelte';
+
+	type Props = HTMLAttributes<HTMLElement> & {
 		tag?: keyof HTMLElementTagNameMap;
 		options?: IntersectionObserverInit;
 		delayInMs?: number;
 		href?: string;
 		from?: From;
 	};
-
 	type From = 'left' | 'right' | 'top' | 'bottom';
 	type AnimationClass = {
 		from: string;
 		to: string;
 	};
-	// const from: From = 'bottom';
 
 	const animationClasses: Record<From, AnimationClass> = {
 		left: {
@@ -36,20 +35,23 @@
 		}
 	};
 
-	let className: $$Props['class'] = '';
-	export { className as class };
-	export let tag: $$Props['tag'] = 'div';
-	export let delayInMs: $$Props['delayInMs'] = 0;
-	export let href: $$Props['href'] = undefined;
-	export let options: $$Props['options'] = {
-		root: null, // Use the viewport
-		rootMargin: '0px',
-		threshold: 0.1 // Trigger when 10% of the element is visible
-	};
-	export let from: $$Props['from'] = 'bottom';
+	let {
+		tag = 'div',
+		options = {
+			root: null, // Use the viewport
+			rootMargin: '0px',
+			threshold: 0.1 // Trigger when 10% of the element is visible
+		},
+		delayInMs = 0,
+		href = undefined,
+		from = 'bottom',
+		class: className,
+		children,
+		...restProps
+	}: Props = $props();
 
-	let isVisible = false;
-	let random = Math.random();
+	let isVisible = $state(false);
+	const random = crypto.randomUUID();
 
 	onMount(() => {
 		const observer = new IntersectionObserver((entries) => {
@@ -70,17 +72,15 @@
 	});
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
 <svelte:element
 	this={tag}
+	id="intersector-{random}"
 	class="transition-all duration-700 {className} {isVisible
 		? animationClasses[from!].to
 		: animationClasses[from!].from}"
-	id="intersector-{random}"
 	style:transition-delay="{delayInMs}ms"
 	{href}
-	{...$$restProps}
-	on:click
+	{...restProps}
 >
-	<slot />
+	{@render children?.()}
 </svelte:element>

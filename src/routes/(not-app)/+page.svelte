@@ -9,7 +9,7 @@
 
 <Seo pageSeo={data.seo} />
 
-<FadeInWrapper tag="section" class="section-spacing grid-content grid-spacing container">
+<FadeInWrapper tag="a" class="section-spacing grid-content grid-spacing container">
 	<h1>Bring Your Friends Together with QuestNest!</h1>
 	<p class="font-bold" data-testid="lead">
 		Welcome to QuestNest, the ultimate app for unforgettable moments with friends. Create custom
