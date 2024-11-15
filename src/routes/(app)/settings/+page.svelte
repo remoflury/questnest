@@ -23,7 +23,7 @@
 		{/snippet}
 
 		{#snippet icon()}
-			<LogoutForm />
+			<LogoutForm variant="secondary" />
 		{/snippet}
 	</TitleWrapper>
 
@@ -45,23 +45,24 @@
 				{#if !editProfile}
 					<Button
 						class="!aspect-square p-2"
-						title="edit quest"
-						aria-label="edit quest"
-						variant="secondary"
+						title="edit profile"
+						aria-label="edit profile"
 						onclick={() => (editProfile = true)}
 					>
-						<Edit class="stroke-primary" />
+						<Edit class="stroke-secondary" />
 					</Button>
 				{/if}
 			{/snippet}
 		</TitleWrapper>
 		<p>Change your profile credentials.</p>
+
 		<Profile
 			bind:edit={editProfile}
 			user={data.user}
 			editProfileForm={data.editProfileForm}
 			action="?/editprofile"
 		/>
+
 		<TitleWrapper class="mt-4">
 			{#snippet text()}
 				Password
@@ -70,12 +71,11 @@
 				{#if !editPassword}
 					<Button
 						class="!aspect-square p-2"
-						title="edit quest"
-						aria-label="edit quest"
-						variant="secondary"
+						title="change password"
+						aria-label="change password"
 						onclick={() => (editPassword = true)}
 					>
-						<Edit class="stroke-primary" />
+						<Edit class="stroke-secondary" />
 					</Button>
 				{/if}
 			{/snippet}

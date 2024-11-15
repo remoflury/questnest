@@ -7,7 +7,6 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import AddGroupForm from '$lib/components/form/addGroupForm.svelte';
 	import { ChevronRight } from 'lucide-svelte/icons';
-	import { goto } from '$app/navigation';
 
 	let { data } = $props();
 	let open = $state(false);

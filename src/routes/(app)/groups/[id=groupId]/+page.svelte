@@ -83,7 +83,7 @@
 
 <div class="section-t-spacing container">
 	<article class="grid-content grid-spacing">
-		<FadeInWrapper tag="div">
+		<FadeInWrapper>
 			<TitleWrapper>
 				{#snippet text()}
 					Quests
@@ -97,13 +97,15 @@
 				</FadeInWrapper>
 			{/each}
 		{:else}
-			<p>No quests for this group available.</p>
-			<Button
-				class="max-w-max"
-				href="/quests"
-				aria-label="create a new questboard"
-				title="create a new questboard">Create new quests</Button
-			>
+			<FadeInWrapper class="grid-spacing grid grid-cols-subgrid">
+				<p class="col-span-full">No quests for this group available.</p>
+				<Button
+					class="col-span-full max-w-max"
+					href="/quests"
+					aria-label="create a new questboard"
+					title="create a new questboard">Create new quests</Button
+				>
+			</FadeInWrapper>
 		{/if}
 	</article>
 </div>

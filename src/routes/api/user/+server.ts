@@ -17,7 +17,6 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 		sbQuery.or(`username.ilike.%${q}%, email.ilike.%${q}%`);
 	}
 
-	
 	const { data: users, error: usersErr } = await sbQuery;
 	if (usersErr) {
 		console.error(usersErr);
