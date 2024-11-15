@@ -3,6 +3,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { fail, message, setMessage, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { addGroupSchema } from '$lib/validation/schema';
+import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase } }) => {
 	const { session } = await safeGetSession();
@@ -22,6 +23,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	return {
 		addGroupForm,
 		groups: groupData,
+		seo: getSeo("/groups")
 	};
 };
 

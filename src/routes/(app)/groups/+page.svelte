@@ -7,12 +7,15 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import AddGroupForm from '$lib/components/form/addGroupForm.svelte';
 	import { ChevronRight } from 'lucide-svelte/icons';
+	import Seo from '$lib/components/general/seo.svelte';
 
 	let { data } = $props();
 	let open = $state(false);
 
 	let groups = $derived(data.groups);
 </script>
+
+<Seo pageSeo={data.seo} />
 
 <FadeInWrapper class="section-t-spacing container" tag="section">
 	<TitleWrapper tag="h1">

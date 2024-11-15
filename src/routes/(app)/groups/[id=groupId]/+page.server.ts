@@ -4,6 +4,7 @@ import { error, fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { addUserToGroupSchema, removeUserFromGroupSchema } from '$lib/validation/schema';
+import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase }, params }) => {
 	const { session } = await safeGetSession();
@@ -72,7 +73,8 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 			>[]
 		},
 		addUserToGroupForm,
-		removeUserFromGroupForm
+		removeUserFromGroupForm,
+		seo: getSeo("/groups/[id]", groupData.name, `All about your questnest group ${groupData.name}.`)
 	};
 };
 

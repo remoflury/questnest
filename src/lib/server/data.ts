@@ -73,6 +73,18 @@ const seoData: (SeoProps & { uri: string })[] = [
     seoKeywords: "game, bingo, friends, group, app, challenges, imprint",
   },
   {
+    uri: "/groups",
+    seoPageTitle: "Groups",
+    seoRobots: ["noindex, nofollow"],
+    seoPageDescription: "All of your questnest qroups in one place.",
+  },
+  {
+    uri: "/groups/[id]",
+    seoPageTitle: "Placeholder",
+    seoRobots: ["noindex, nofollow"],
+    seoPageDescription: "Placeholder",
+  },
+  {
     uri: "/quests",
     seoPageTitle: "Quests",
     seoRobots: ["noindex, nofollow"],

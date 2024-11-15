@@ -3,6 +3,7 @@
 	import RemoveFromGroup from '$lib/components/form/removeFromGroup.svelte';
 	import SearchPersons from '$lib/components/form/searchPersons.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
+	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import QuestboardPreview from '$lib/components/quest/questboardPreview.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
@@ -29,6 +30,8 @@
 		open = !open;
 	};
 </script>
+
+<Seo pageSeo={data.seo} />
 
 <FadeInWrapper class="section-t-spacing container" tag="section">
 	<TitleWrapper tag="h1">
