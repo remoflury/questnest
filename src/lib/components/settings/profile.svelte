@@ -24,6 +24,7 @@
 				title="Username"
 				text={user.username}
 				avatarUrl={user.avatar_path}
+				showAvatar={true}
 				className="col-span-full"
 			/>
 			<ProfileInfos title="Email" text={user.email} className="col-span-full" />

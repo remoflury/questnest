@@ -1,36 +1,35 @@
 <script lang="ts">
 	import * as Avatar from '$lib/components/ui/avatar';
-	import { page } from '$app/stores';
 	import { getPublicSbUrl } from '$lib/utils/fileUtils';
+	import { cn } from '$lib/utils/utils';
 
 	type Props = {
 		title: string;
 		text: string;
 		className?: string;
 		avatarUrl?: string | null;
+		showAvatar?: boolean;
 	};
-	let { title, text, className, avatarUrl }: Props = $props();
+	let { title, text, className, avatarUrl, showAvatar = false }: Props = $props();
+
+	$inspect({ avatarUrl });
 </script>
 
-<div class={className} class:avatar={avatarUrl}>
+<div class={cn('flex items-start justify-between gap-x-4', className)}>
 	<p>
 		<strong>{title}</strong><br />
 		{text}
 	</p>
-
-	{#if avatarUrl}
+	{#if showAvatar}
 		<Avatar.Root class="border border-secondary">
-			<Avatar.Image
-				src={getPublicSbUrl($page.data.supabase, 'avatar', avatarUrl, { width: 100, height: 100 })}
-				alt="@shadcn"
-			/>
+			{#if avatarUrl}
+				<Avatar.Image
+					class="object-cover"
+					src={getPublicSbUrl('avatar', avatarUrl, { height: 100, width: 100 })}
+					alt="Profile picture of {text}"
+				/>
+			{/if}
 			<Avatar.Fallback>{text.slice(0, 2).toUpperCase()}</Avatar.Fallback>
 		</Avatar.Root>
 	{/if}
 </div>
-
-<style lang="postcss">
-	.avatar {
-		@apply flex items-start justify-between gap-x-4;
-	}
-</style>

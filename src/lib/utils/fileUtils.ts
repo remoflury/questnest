@@ -1,3 +1,4 @@
+import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import type { CustomFileProps } from '$lib/types/GeneralTypes';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
@@ -24,19 +25,25 @@ export const convertBlobToCustomFileClientSide = async (
 };
 
 export const getPublicSbUrl = (
-	supabase: SupabaseClient,
+	// supabase: SupabaseClient,
 	bucketname: string,
 	fullPath: string,
 	transform?: { width: number; height?: number }
 ): string => {
-	const { data } = supabase.storage.from(bucketname).getPublicUrl(fullPath, {
-		transform: transform
-			? {
-					width: transform.width,
-					height: transform.height
-				}
-			: undefined
-	});
+	// const { data } = supabase.storage.from(bucketname).getPublicUrl(fullPath, {
+	// 	transform: transform
+	// 		? {
+	// 				width: transform.width,
+	// 				height: transform.height
+	// 			}
+	// 		: undefined
+	// });
 
-	return data.publicUrl;
+	// return data.publicUrl;
+
+	let url = `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketname}/${fullPath}`
+
+	if (transform) url = `${url}?width=${transform.width}&height=${transform.height}`
+
+	return url
 };
