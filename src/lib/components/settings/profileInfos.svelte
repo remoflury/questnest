@@ -18,16 +18,18 @@
 		<strong>{title}</strong><br />
 		{text}
 	</p>
-	{#if showAvatar}
-		<Avatar.Root class="border border-secondary">
-			{#if avatarUrl}
-				<Avatar.Image
-					class="object-cover"
-					src={getPublicSbUrl('avatar', avatarUrl, { height: 100, width: 100 })}
-					alt="Profile picture of {text}"
-				/>
-			{/if}
-			<Avatar.Fallback>{text.slice(0, 2).toUpperCase()}</Avatar.Fallback>
-		</Avatar.Root>
-	{/if}
+	{#key avatarUrl}
+		{#if showAvatar}
+			<Avatar.Root class="border border-secondary">
+				{#if avatarUrl}
+					<Avatar.Image
+						class="object-cover"
+						src={getPublicSbUrl('avatar', avatarUrl, { height: 100, width: 100 })}
+						alt="Profile picture of {text}"
+					/>
+				{/if}
+				<Avatar.Fallback>{text.slice(0, 2).toUpperCase()}</Avatar.Fallback>
+			</Avatar.Root>
+		{/if}
+	{/key}
 </div>

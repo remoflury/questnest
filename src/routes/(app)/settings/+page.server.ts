@@ -124,6 +124,20 @@ export const actions: Actions = {
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
 		}
 
+		// delete the old avatar first
+		if (prevAvatarData.length && prevAvatarData[0].avatar_path) {
+
+			const { error: deleteErr } = await supabase
+			.storage
+			.from('avatar')
+			.remove([prevAvatarData[0].avatar_path])
+			
+			if (deleteErr) {
+				console.log({deleteErr})
+				return message(form, 'Something went wrong. Try again later.', { status: 500 });
+			}
+		}
+
 		const createAvatarPath = (path: string | undefined | null, userId: string) => {
 			if (!path) return null
 			if (path.includes(userId)) return path
@@ -143,22 +157,10 @@ export const actions: Actions = {
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
 		}
 
+		
+
 		// upload avatar
 		if (avatar) {
-			// delete the old one first
-			if (prevAvatarData.length && prevAvatarData[0].avatar_path) {
-
-				const { error: deleteErr } = await supabase
-				.storage
-				.from('avatar')
-				.remove([prevAvatarData[0].avatar_path])
-				
-				if (deleteErr) {
-					console.log({deleteErr})
-					return message(form, 'Something went wrong. Try again later.', { status: 500 });
-				}
-			}
-
 			console.log(avatar.name)
 			// avatar.name.includes(session.user.id) ? avatar.name.replace(`${session.user.id}/`, '') : avatar.name
 			const { error: uploadErr } = await supabase.storage
