@@ -7,14 +7,16 @@
 	import { toast } from 'svelte-sonner';
 	import { QUESTS_PER_BOARD } from '$lib/utils/constants';
 	import { goto } from '$app/navigation';
+	import Button from '../ui/button/button.svelte';
 
 	type Props = {
 		data: SuperValidated<Infer<CreateQuestsSchema>>;
 		action: string;
 		redirect: string;
+		oncloseForm?: () => void;
 	};
 
-	let { data, action, redirect }: Props = $props();
+	let { data, action, redirect, oncloseForm }: Props = $props();
 
 	let form = superForm(data, {
 		validators: zodClient(createQuestsSchema),
@@ -28,7 +30,7 @@
 		}
 	});
 
-	let { form: formData, enhance, delayed, constraints, errors } = form;
+	let { form: formData, enhance, delayed, errors } = form;
 </script>
 
 <form method="POST" use:enhance {action} class="space-y-3">
@@ -50,7 +52,12 @@
 			{/if}
 		</Form.Field>
 	{/each}
-	<Form.Button loading={$delayed} disabled={$delayed} data-testid="submit-addquests"
-		>Save Quests</Form.Button
-	>
+	<!-- <Form.Button loading={$delayed} disabled={$delayed} data-testid="submit-addquests">
+		Save Quests
+	</Form.Button> -->
+
+	<div class="grid-spacing flex flex-wrap">
+		<Button type="button" variant="destructive" class="mt-2" onclick={oncloseForm}>Cancel</Button>
+		<Form.Button loading={$delayed} disabled={$delayed}>Save</Form.Button>
+	</div>
 </form>

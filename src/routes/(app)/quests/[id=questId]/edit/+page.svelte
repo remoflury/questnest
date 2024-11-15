@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import CreateQuestsForm from '$lib/components/form/createQuestsForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
@@ -23,5 +24,6 @@
 		data={data.editQuestsForm}
 		action="?/editquests"
 		redirect="/quests/{$page.params.id}"
+		oncloseForm={async () => await goto(`/quests/${$page.params.id}`)}
 	/>
 </FadeInWrapper>

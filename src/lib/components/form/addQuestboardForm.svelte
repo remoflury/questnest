@@ -15,6 +15,8 @@
 		groupsOfUser: Pick<Tables<'group'>, 'id' | 'name'>[];
 	};
 
+	let { data, action, groupsOfUser }: Props = $props();
+
 	const groups = $derived.by(() =>
 		groupsOfUser.map((group) => {
 			return {
@@ -24,7 +26,6 @@
 		})
 	);
 
-	let { data, action, groupsOfUser }: Props = $props();
 	let form = superForm(data, {
 		validators: zodClient(addQuestboardSchema),
 		onUpdate: ({ result }) => {
