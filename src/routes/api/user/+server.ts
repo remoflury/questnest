@@ -22,7 +22,6 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 		console.error(usersErr);
 		return genApiRes(undefined, usersErr.message, 500);
 	}
-	console.log(users)
 
 	return genApiRes({users});
 };

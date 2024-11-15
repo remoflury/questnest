@@ -50,7 +50,7 @@
 			}
 			users = payload.users;
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 			error = err as string;
 		}
 		isLoading = false;

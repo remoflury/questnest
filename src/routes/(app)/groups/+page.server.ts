@@ -43,7 +43,7 @@ export const actions: Actions = {
 			.insert({ name: form.data.name })
 
 		if (groupErr) {
-			console.log({groupErr});
+			console.error({groupErr});
 			return message(form, 'Something went wrong. Try again.', { status: 500 });
 		}
 
@@ -54,7 +54,7 @@ export const actions: Actions = {
 			.limit(1)
 
 			if (selectErr) {
-				console.log({selectErr});
+				console.error({selectErr});
 				return message(form, 'Something went wrong. Try again.', { status: 500 });
 			}
 

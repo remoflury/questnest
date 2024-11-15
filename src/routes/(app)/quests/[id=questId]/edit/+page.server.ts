@@ -65,7 +65,6 @@ export const actions: Actions = {
 		}
 
 		const form = await superValidate(request, zod(createQuestsSchema));
-		console.log(form.data);
 
 		if (!form.valid) {
 			console.error(form);

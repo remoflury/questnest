@@ -133,7 +133,7 @@ export const actions: Actions = {
 			.remove([prevAvatarData[0].avatar_path])
 			
 			if (deleteErr) {
-				console.log({deleteErr})
+				console.error({deleteErr})
 				return message(form, 'Something went wrong. Try again later.', { status: 500 });
 			}
 		}
@@ -161,7 +161,6 @@ export const actions: Actions = {
 
 		// upload avatar
 		if (avatar) {
-			console.log(avatar.name)
 			// avatar.name.includes(session.user.id) ? avatar.name.replace(`${session.user.id}/`, '') : avatar.name
 			const { error: uploadErr } = await supabase.storage
 				.from('avatar')

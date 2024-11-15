@@ -26,7 +26,6 @@
 			$formData.id = quest.id;
 		},
 		onUpdate: async ({ result }) => {
-			console.log(result);
 			if (result.type == 'failure') return toast.error(result.data.form.message);
 			toast.success(result.data.form.message);
 		}
