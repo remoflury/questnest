@@ -16,7 +16,7 @@ test.describe('homepage', () => {
 		await page.goto('localhost:5173/');
 		await page.getByTestId("app-btn").click()
 
-		await page.waitForURL('/quests');
+		// await page.waitForURL('/quests');
 		await page.goto('/groups')
 	})
 

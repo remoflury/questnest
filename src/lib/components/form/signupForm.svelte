@@ -49,7 +49,12 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Password <sup>*</sup></Form.Label>
-				<PasswordInput {...props} bind:value={$formData.password} {...$constraints.password} />
+				<PasswordInput
+					{...props}
+					bind:value={$formData.password}
+					{...$constraints.password}
+					data-testid="pw-input"
+				/>
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
