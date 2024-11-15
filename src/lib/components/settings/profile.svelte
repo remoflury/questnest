@@ -8,7 +8,7 @@
 	import ProfileInfos from './profileInfos.svelte';
 
 	type Props = {
-		user: Pick<Tables<'user'>, 'username' | 'email' | 'avatar_path'>;
+		user: Pick<Tables<'user'>, 'id' | 'username' | 'email' | 'avatar_path'>;
 		edit: boolean;
 		editProfileForm: SuperValidated<Infer<EditProfileSchema>>;
 		action: string;
@@ -30,7 +30,12 @@
 		</div>
 	{:else}
 		<div in:fly={{ ...TRANSITION_CONFIG, y: 20 }}>
-			<EditProfileForm data={editProfileForm} {action} oncloseForm={() => (edit = false)} />
+			<EditProfileForm
+				data={editProfileForm}
+				{action}
+				oncloseForm={() => (edit = false)}
+				userId={user.id}
+			/>
 		</div>
 	{/if}
 </article>

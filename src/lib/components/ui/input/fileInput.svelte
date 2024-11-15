@@ -11,9 +11,10 @@
 		ref = $bindable(null),
 		value = $bindable(),
 		accept,
+		nameReplace,
 		class: className,
 		...restProps
-	}: WithElementRef<HTMLInputAttributes> = $props();
+	}: WithElementRef<HTMLInputAttributes> & { nameReplace?: string } = $props();
 
 	async function handleFileInput(e: Event) {
 		const target = e.target as HTMLInputElement;
@@ -29,8 +30,6 @@
 
 		value = customFile;
 	}
-
-	$inspect(value?.name);
 </script>
 
 <div class="flex gap-x-4">
@@ -44,7 +43,7 @@
 		onclick={() => ref?.click()}
 	>
 		{#if value}
-			{value.name}
+			{nameReplace ? value.name.replace(`${nameReplace}/`, '') : value.name}
 		{:else}
 			Select file
 		{/if}

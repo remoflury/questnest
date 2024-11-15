@@ -4,7 +4,7 @@ import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { changePwSchema, editProfileSchema } from '$lib/validation/schema';
 import { getSeo } from '$lib/server/data';
-import { encode } from 'base64-arraybuffer';
+import { decode, encode } from 'base64-arraybuffer';
 import type { ACCEPTED_IMAGE_TYPES } from '$lib/utils/constants';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase } }) => {
@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 
 	const { data: userData, error: userErr } = await supabase
 		.from('user')
-		.select('username, email, score, avatar_path')
+		.select('*')
 		.eq('id', session.user.id)
 		.single();
 
@@ -45,11 +45,10 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		avatar: avatarBlob
 			? {
 					type: avatarBlob.type as typeof ACCEPTED_IMAGE_TYPES[number],
-					name: userData.avatar_path!.replace(`${session.user.id}/`, '') as string,
+					name: userData.avatar_path! as string,
 					fileBase64: encode(await avatarBlob.arrayBuffer())
 				}
 			: undefined,
-
 	}
 
 	const [editProfileForm, editPasswordForm] = await Promise.all([
@@ -103,6 +102,19 @@ export const actions: Actions = {
 			});
 		}
 
+		// Destructure the avatar and region key out and use the rest operator to capture the remaining properties
+		const { avatar, ...formData } = form.data;
+		// const get previous avatar path, so that the previous can be later deleted
+		const { data: prevAvatarData, error: prevAvatarErr } = await supabase
+			.from('user')
+			.select('avatar_path')
+			.eq('id', session.user.id)
+
+		if (prevAvatarErr) {
+			console.error({ prevAvatarErr})
+			return message(form, 'Something went wrong. Try again later.', { status: 500 })
+		}
+
 		// update user
 		const { error: authErr } = await supabase.auth.updateUser({
 			email: form.data.email
@@ -112,17 +124,54 @@ export const actions: Actions = {
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
 		}
 
+		const createAvatarPath = (path: string | undefined | null, userId: string) => {
+			if (!path) return null
+			if (path.includes(userId)) return path
+			return `${userId}/${path}`
+		}
 		const { error: userErr } = await supabase
 			.from('user')
 			.update({
-				username: form.data.username,
-				email: form.data.email
+				username: formData.username,
+				email: formData.email,
+				avatar_path: createAvatarPath(avatar?.name, session.user.id)
 			})
 			.eq('id', session.user.id);
 
 		if (userErr) {
 			console.error({ userErr });
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
+		}
+
+		// upload avatar
+		if (avatar) {
+			// delete the old one first
+			if (prevAvatarData.length && prevAvatarData[0].avatar_path) {
+
+				const { error: deleteErr } = await supabase
+				.storage
+				.from('avatar')
+				.remove([prevAvatarData[0].avatar_path])
+				
+				if (deleteErr) {
+					console.log({deleteErr})
+					return message(form, 'Something went wrong. Try again later.', { status: 500 });
+				}
+			}
+
+			console.log(avatar.name)
+			// avatar.name.includes(session.user.id) ? avatar.name.replace(`${session.user.id}/`, '') : avatar.name
+			const { error: uploadErr } = await supabase.storage
+				.from('avatar')
+				.upload(createAvatarPath(avatar.name, session.user.id)!, decode(avatar.fileBase64), {
+					contentType: avatar.type,
+					upsert: true
+				});
+
+			if (uploadErr) {
+				console.error({uploadErr});
+				return message(form, 'Something went wrong. Try again later.', { status: 500 });
+			}
 		}
 
 		return message(form, 'Profile updated successfully');

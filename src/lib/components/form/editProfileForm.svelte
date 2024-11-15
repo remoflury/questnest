@@ -13,8 +13,9 @@
 		data: SuperValidated<Infer<EditProfileSchema>>;
 		action: string;
 		oncloseForm?: () => void;
+		userId?: string;
 	};
-	let { data, action, oncloseForm }: Props = $props();
+	let { data, action, oncloseForm, userId }: Props = $props();
 
 	let form = superForm(data, {
 		validators: zodClient(editProfileSchema),
@@ -27,8 +28,6 @@
 	});
 
 	let { form: formData, enhance, delayed, constraints } = form;
-
-	// $inspect($formData);
 </script>
 
 <form method="POST" use:enhance {action} enctype="multipart/form-data">
@@ -58,6 +57,7 @@
 					{...props}
 					bind:value={$formData.avatar}
 					accept={ACCEPTED_IMAGE_TYPES.join(', ')}
+					nameReplace={userId}
 				/>
 			{/snippet}
 		</Form.Control>
