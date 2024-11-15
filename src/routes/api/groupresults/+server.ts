@@ -33,7 +33,7 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 	const { data: questsOtherUsersCompletedData, error: questsOtherUsersCompletedErr } =
 		await supabase
 			.from('quest_done')
-			.select('quest, user(id, username, score)')
+			.select('quest, user(id, username, score, avatar_path)')
 			.in('quest', allQuestIds)
 			.neq('user', session.user.id)
 			.returns<({ quest: number } & { user: Pick<Tables<'user'>, 'id' | 'username' | 'score'> })[]>();

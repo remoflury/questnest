@@ -1,12 +1,15 @@
 <script lang="ts">
 	import type { AddUserToGroupSchema } from '$lib/validation/schema';
-	import { Plus, Check, Table } from 'lucide-svelte';
+	import type { Tables } from '$lib/types/SupabaseTypes';
 	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
+	import { page } from '$app/stores';
+	import { Plus, Check } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
+	import { getPublicSbUrl } from '$lib/utils/fileUtils';
 	import Badge from '../ui/badge/badge.svelte';
 	import Button from '../ui/button/button.svelte';
-	import type { Tables } from '$lib/types/SupabaseTypes';
 	import Score from '../quest/score.svelte';
+	import * as Avatar from '$lib/components/ui/avatar';
 
 	type Props = {
 		user: Tables<'user'>;
@@ -35,7 +38,24 @@
 
 {#snippet content(isAlreadyInGroup: boolean)}
 	<div class="flex items-center justify-between">
-		<small>{user.username}</small>
+		<div class="flex items-start gap-x-4">
+			<Avatar.Root class="border border-secondary">
+				{#if user.avatar_path}
+					<Avatar.Image
+						src={getPublicSbUrl($page.data.supabase, 'avatar', user.avatar_path, {
+							width: 100,
+							height: 100
+						})}
+						alt="profile avatar of {user.username}"
+					/>
+				{/if}
+				<Avatar.Fallback>{user.username.slice(0, 2).toUpperCase()}</Avatar.Fallback>
+			</Avatar.Root>
+			<div>
+				<small>{user.username}</small>
+				<Score score={user.score} />
+			</div>
+		</div>
 		{#if !isAlreadyInGroup}
 			<Button
 				type="submit"
@@ -53,7 +73,6 @@
 			<Badge variant="outline" class="!aspect-square h-6 w-6 p-1 font-normal"><Check /></Badge>
 		{/if}
 	</div>
-	<Score score={user.score} />
 {/snippet}
 
 {#if isAlreadyInGroup}

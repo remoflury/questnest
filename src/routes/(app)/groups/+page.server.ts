@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	const addGroupForm = await superValidate(zod(addGroupSchema));
 	return {
 		addGroupForm,
-		groups: groupData
+		groups: groupData,
 	};
 };
 
