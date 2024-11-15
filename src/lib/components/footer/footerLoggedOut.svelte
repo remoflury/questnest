@@ -20,10 +20,12 @@
 <footer bind:clientHeight={$footerStore.footerHeight} class="section-t-spacing">
 	<Separator />
 	<article class="grid-content grid-spacing container py-4">
-		<strong class="font-dm-serif">QuestNest</strong>
+		<strong class="font-dm-serif lg:col-span-2">QuestNest</strong>
 
 		{#if footerLinks.length}
-			<ul>
+			<ul
+				class="gap-x-4 lg:col-span-6 lg:-col-end-1 lg:row-start-2 lg:flex lg:items-start lg:justify-end"
+			>
 				{#each footerLinks as link}
 					<li>
 						<Button
@@ -40,6 +42,8 @@
 				{/each}
 			</ul>
 		{/if}
-		<small class="font-dm-serif">© {year} QuestNest</small>
+		<small class="flex items-center font-dm-serif lg:col-span-2 lg:row-start-2"
+			>© {year} QuestNest</small
+		>
 	</article>
 </footer>
