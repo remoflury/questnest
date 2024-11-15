@@ -9,6 +9,7 @@
 	import AddPersonToGroup from './addPersonToGroup.svelte';
 	import * as Command from '$lib/components/ui/command/index.js';
 	import FetchError from '../general/fetchError.svelte';
+	import { debounce } from '$lib/utils/utils';
 
 	type Props = {
 		addUserToGroupForm: SuperValidated<Infer<AddUserToGroupSchema>>;
@@ -20,15 +21,32 @@
 	let query = $state('');
 	let error = $state('');
 
+	const debounceSearch = debounce(() => {
+		fetchUsers();
+	});
+
+	// Update query and trigger debounced search
+	const handleInput = (e: Event) => {
+		const value = (e.target as HTMLInputElement).value;
+		query = value; // Update query
+		debounceSearch(value); // Trigger debounced fetch
+	};
+
 	const fetchUsers = async () => {
 		if (!query) return [];
-		const res = await fetch(`/api/user?q=${query}`);
-		const { payload, message, status }: ApiResponse<{ users: Tables<'user'>[] }> = await res.json();
-		if (status >= 400) {
-			error = message!;
-			throw new Error(message);
+		try {
+			const res = await fetch(`/api/user?q=${query}`);
+			const { payload, message, status }: ApiResponse<{ users: Tables<'user'>[] }> =
+				await res.json();
+			if (status >= 400) {
+				error = message!;
+				throw new Error(message);
+			}
+			users = payload.users;
+		} catch (err) {
+			console.log(err);
+			error = err as string;
 		}
-		users = payload.users;
 	};
 
 	let users: Tables<'user'>[] = $state([]);
@@ -40,7 +58,7 @@
 	<Command.Root>
 		<Command.Input
 			bind:value={query}
-			oninput={fetchUsers}
+			oninput={handleInput}
 			placeholder="Search for username or email..."
 		/>
 	</Command.Root>
