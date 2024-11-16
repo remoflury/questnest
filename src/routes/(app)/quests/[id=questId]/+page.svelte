@@ -15,7 +15,7 @@
 
 <FadeInWrapper class="section-spacing container" tag="section">
 	<article class="grid-content grid-spacing">
-		<TitleWrapper tag="h1" class="mb-0">
+		<TitleWrapper tag="h1" class="mb-0" goBackUri="/quests">
 			{#snippet text()}
 				{data.questboard.name}
 			{/snippet}

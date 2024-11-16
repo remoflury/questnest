@@ -34,7 +34,7 @@
 <Seo pageSeo={data.seo} />
 
 <FadeInWrapper class="section-t-spacing container" tag="section">
-	<TitleWrapper tag="h1">
+	<TitleWrapper tag="h1" goBackUri="/groups">
 		{#snippet text()}
 			{data.group.name}
 		{/snippet}

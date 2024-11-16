@@ -12,7 +12,7 @@
 <Seo pageSeo={data.seo} />
 
 <FadeInWrapper class="section-t-spacing container" tag="section">
-	<TitleWrapper tag="h1" class="mb-0">
+	<TitleWrapper tag="h1" class="mb-0" goBackUri="/quests/{$page.params.id}">
 		{#snippet text()}
 			Edit Quests from {data.questboard.name}
 		{/snippet}

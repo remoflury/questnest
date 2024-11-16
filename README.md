@@ -30,6 +30,11 @@ If you have local db changes, which should be pushed to the remote, start a migr
 supabase db diff -f <file-name>
 ```
 
+You may also want to define, which schema should be used:
+```shell
+supabase db diff -f <file-name> --schema <schema-name>
+```
+
 Then apply the migration:
 ```shell
 supabase db push
