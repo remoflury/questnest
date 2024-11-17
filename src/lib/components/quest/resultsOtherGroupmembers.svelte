@@ -11,6 +11,7 @@
 	let { countOtherMembers, questboardId }: Props = $props();
 
 	const fetchResults = async () => {
+		// await new Promise((resolve) => setTimeout(resolve, 100000));
 		const res = await fetch(`/api/groupresults?questboard-id=${questboardId}`);
 		const {
 			payload,
@@ -21,7 +22,7 @@
 			resultsPerUser: {
 				id: string;
 				username: string;
-				score: number;
+				totalScore: number;
 				questIdsCompleted: number[];
 			}[];
 		}> = await res.json();
@@ -43,14 +44,14 @@
 		{/each}
 	</div>
 {:then { resultsPerUser, allQuestIds }}
-	{#if resultsPerUser.length}
-		<article class="grid-spacing grid grid-cols-4">
+	<article class="grid-spacing grid grid-cols-4">
+		{#if countOtherMembers > 0}
 			<div class="col-span-2 flex items-start gap-x-4">
 				{#each resultsPerUser as user}
 					<p class="">
 						{user.username}
 						<Score score={user.questIdsCompleted.length} />
-						<Score text="Total Score:" score={user.score} />
+						<Score text="Total Score:" score={user.totalScore} />
 					</p>
 					<div class="grid max-w-max grid-cols-4">
 						{#each allQuestIds as id}
@@ -64,8 +65,10 @@
 					</div>
 				{/each}
 			</div>
-		</article>
-	{/if}
+		{:else}
+			<p>No users in this group.</p>
+		{/if}
+	</article>
 {:catch error}
 	<FetchError message="Something went wrong." {error} />
 {/await}

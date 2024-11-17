@@ -79,6 +79,13 @@ export type Database = {
             referencedRelation: "questboard"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "quest_questboard_fkey"
+            columns: ["questboard"]
+            isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["questboard_id"]
+          },
         ]
       }
       quest_done: {
@@ -107,6 +114,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "quest"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quest_done_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "quest_done_user_fkey"
@@ -146,6 +160,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "group"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "questboard_group_fkey"
+            columns: ["group"]
+            isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["group_id"]
           },
         ]
       }
@@ -204,11 +225,32 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "user_group_group_fkey"
+            columns: ["group"]
+            isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["group_id"]
+          },
+          {
+            foreignKeyName: "user_group_user_fkey1"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["user_id"]
+          },
+          {
             foreignKeyName: "user_group_user_fkey1"
             columns: ["user"]
             isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_group_user_fkey2"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "user_group_user_fkey2"
@@ -221,6 +263,17 @@ export type Database = {
       }
     }
     Views: {
+      questboard_users: {
+        Row: {
+          email: string | null
+          group_id: number | null
+          questboard_id: number | null
+          score: number | null
+          user_id: string | null
+          username: string | null
+        }
+        Relationships: []
+      }
       user_accessible_groups: {
         Row: {
           group: number | null
@@ -238,6 +291,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "group"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_group_group_fkey"
+            columns: ["group"]
+            isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["group_id"]
           },
         ]
       }
@@ -260,6 +320,13 @@ export type Database = {
             foreignKeyName: "quest_done_user_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "quest_done_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
           },
@@ -267,8 +334,22 @@ export type Database = {
             foreignKeyName: "user_group_user_fkey1"
             columns: ["member_user_id"]
             isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "user_group_user_fkey1"
+            columns: ["member_user_id"]
+            isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_group_user_fkey2"
+            columns: ["member_user_id"]
+            isOneToOne: false
+            referencedRelation: "questboard_users"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "user_group_user_fkey2"
