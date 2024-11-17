@@ -64,7 +64,7 @@
 					<Input
 						{...props}
 						bind:value={$formData.quests[i].text}
-						required
+						{...$constraints.quests?.text}
 						data-testid={`addquest-input-${i}`}
 					/>
 				{/snippet}

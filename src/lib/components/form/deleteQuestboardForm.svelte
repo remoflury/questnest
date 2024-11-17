@@ -49,7 +49,3 @@
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>
-
-<form method="POST" use:enhance {action}>
-	<Form.Button loading={$delayed} disabled={$delayed}>Delete</Form.Button>
-</form>

@@ -55,7 +55,7 @@
 			</figure>
 		{:else}
 			<small
-				class="text-center"
+				class="hyphens-auto break-words text-center"
 				class:text-white={completed}
 				in:scale={TRANSITION_CONFIG}
 				data-testid="questtext-{index}">{quest.text}</small

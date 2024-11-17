@@ -11,7 +11,7 @@
 
 	let { data } = $props();
 
-	let showDeleteDialog = $state(true);
+	let showDeleteDialog = $state(false);
 </script>
 
 <Seo pageSeo={data.seo} />

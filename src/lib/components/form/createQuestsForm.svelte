@@ -31,7 +31,7 @@
 		}
 	});
 
-	let { form: formData, enhance, delayed, errors } = form;
+	let { form: formData, enhance, delayed, errors, constraints } = form;
 </script>
 
 <form method="POST" use:enhance {action} class="space-y-3">
@@ -43,7 +43,7 @@
 					<Input
 						{...props}
 						bind:value={$formData.quests[i].text}
-						required
+						{...$constraints.quests?.text}
 						data-testid={`addquest-input-${i}`}
 					/>
 				{/snippet}
