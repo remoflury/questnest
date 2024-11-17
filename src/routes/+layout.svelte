@@ -3,6 +3,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
+	import PageLoader from '$lib/components/general/pageLoader.svelte';
 
 	let { children, data } = $props();
 	let supabase = $state(data.supabase);
@@ -20,4 +21,5 @@
 </script>
 
 <Toaster position="top-center" />
+<PageLoader />
 {@render children()}
