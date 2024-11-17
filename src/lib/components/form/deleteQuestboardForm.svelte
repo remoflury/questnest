@@ -24,8 +24,6 @@
 	});
 
 	let { form: formData, enhance, delayed, constraints } = form;
-
-	$inspect($formData);
 </script>
 
 <AlertDialog.Root bind:open={showDialog}>
