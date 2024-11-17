@@ -196,3 +196,12 @@ export const changePwSchema = z
 	});
 
 export type ChangePwSchema = typeof changePwSchema;
+
+export const deleteQuestboardSchema = z.object({
+	questboardId: z
+		.number({ required_error: 'Questboard ID is required' })
+		.int()
+		.positive(),
+})
+
+export type DeleteQuestboardSchema = typeof deleteQuestboardSchema

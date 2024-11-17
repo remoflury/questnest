@@ -2,7 +2,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { editQuestsSchema } from '$lib/validation/schema';
+import { deleteQuestboardSchema, editQuestsSchema } from '$lib/validation/schema';
 import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
@@ -50,11 +50,19 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 		quests: questsData
 	};
 
-	const editQuestsForm = await superValidate(prepopulatedData, zod(editQuestsSchema));
+	// const editQuestsForm = await superValidate(prepopulatedData, zod(editQuestsSchema));
+
+	const [editQuestsForm, deleteQuestboardForm] = await Promise.all([
+		await superValidate(prepopulatedData, zod(editQuestsSchema)),
+		await superValidate({questboardId: parseInt(params.id)}, zod(deleteQuestboardSchema))
+	])
+
+
 
 	return {
 		questboard: questboardData,
 		editQuestsForm,
+		deleteQuestboardForm,
 		seo: getSeo("/quests/[id]/edit", `Edit: ${questboardData.name}`)
 	};
 };
@@ -106,5 +114,31 @@ export const actions: Actions = {
 		}
 
 		return message(form, 'Quests updated successfully.');
+	},
+	deletequestboard: async ({ request, locals: { safeGetSession, supabase }}) => {
+		const { session} = await safeGetSession()
+		if (!session) {
+			return fail(401);
+		}
+
+		const form = await superValidate(request, zod(deleteQuestboardSchema))
+
+		console.log(form)
+		if (!form.valid) {
+			console.error(form);
+			return message(form, 'Something went wrong. Try again later.', { status: 400 });
+		}
+
+		const { error: deleteErr } = await supabase
+			.from('questboard')
+			.delete()
+			.eq('id', form.data.questboardId)
+
+		if (deleteErr) {
+			console.error({deleteErr})
+			return message(form, "Something went wrong. Try again later.", {status: 500})
+		}
+
+		redirect(301, "/quests")
 	}
 };

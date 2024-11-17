@@ -32,7 +32,7 @@
 	{/if}
 	<span
 		class={cn({
-			'flex w-full items-center justify-between gap-x-4': icon
+			'flex w-full items-start justify-between gap-x-4': icon
 		})}
 	>
 		{@render text()}
