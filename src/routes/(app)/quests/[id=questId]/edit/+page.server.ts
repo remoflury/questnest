@@ -2,7 +2,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { createQuestsSchema } from '$lib/validation/schema';
+import { editQuestsSchema } from '$lib/validation/schema';
 import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 	// get questboard credentials
 	const { data: questboardData, error: questboardErr } = await supabase
 		.from('questboard')
-		.select('name')
+		.select('name, description')
 		.eq('id', params.id)
 		.single();
 
@@ -44,11 +44,13 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 	}
 
 	const prepopulatedData = {
-		questboard: parseInt(params.id),
+		questboardId: parseInt(params.id),
+		name: questboardData.name,
+		description: questboardData.description,
 		quests: questsData
 	};
 
-	const editQuestsForm = await superValidate(prepopulatedData, zod(createQuestsSchema));
+	const editQuestsForm = await superValidate(prepopulatedData, zod(editQuestsSchema));
 
 	return {
 		questboard: questboardData,
@@ -64,25 +66,42 @@ export const actions: Actions = {
 			return fail(401);
 		}
 
-		const form = await superValidate(request, zod(createQuestsSchema));
+		const form = await superValidate(request, zod(editQuestsSchema));
 
 		if (!form.valid) {
 			console.error(form);
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
 		}
 
-		const updateData = form.data.quests.map((quest) => {
+		const updateQuestsData = form.data.quests.map((quest) => {
 			return {
 				id: quest.id!,
-				questboard: form.data.questboard,
+				questboard: form.data.questboardId,
 				text: quest.text
 			};
 		});
 
-		const { error: updateErr } = await supabase.from('quest').upsert(updateData);
+		const { error: updateQuestsErr } = await supabase
+			.from('quest')
+			.upsert(updateQuestsData);
+		
+		if (updateQuestsErr) {
+			console.error({ updateQuestsErr });
+			return message(form, 'Something went wrong. Try again later.', { status: 500 });
+		}
 
-		if (updateErr) {
-			console.error({ updateErr });
+		const { error: updateQuestboardErr } = await supabase
+			.from('questboard')
+			.update({
+				name: form.data.name,
+				description: form.data.description ? form.data.description : null
+			})
+			.eq("id", form.data.questboardId)
+			.select('name, description')
+
+
+		if (updateQuestboardErr) {
+			console.error({ updateQuestboardErr });
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
 		}
 

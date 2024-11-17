@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import CreateQuestsForm from '$lib/components/form/createQuestsForm.svelte';
+	import EditQuestsForm from '$lib/components/form/editQuestsForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
@@ -20,7 +21,7 @@
 </FadeInWrapper>
 
 <FadeInWrapper class="section-spacing container" tag="section">
-	<CreateQuestsForm
+	<EditQuestsForm
 		data={data.editQuestsForm}
 		action="?/editquests"
 		redirect="/quests/{$page.params.id}"
