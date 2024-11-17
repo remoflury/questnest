@@ -6,6 +6,7 @@
 	import { scale } from 'svelte/transition';
 
 	let isLoading = $state(false);
+	let scrollY = $state(0);
 
 	beforeNavigate(async () => {
 		isLoading = true;
@@ -17,10 +18,12 @@
 	});
 </script>
 
+<svelte:window bind:scrollY />
 {#if isLoading}
 	<div
 		aria-busy="true"
-		class="bg--400 pointer-events-none absolute inset-0 z-10 grid place-content-center"
+		class="pointer-events-none absolute left-0 right-0 z-50 grid place-content-center"
+		style="top: calc(40dvh + {scrollY}px)"
 		transition:scale={TRANSITION_CONFIG}
 	>
 		<LoaderCircle size={48} class="animate-spin stroke-primary stroke-1" />
