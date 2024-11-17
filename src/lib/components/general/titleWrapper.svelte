@@ -3,20 +3,16 @@
 	import type { Snippet } from 'svelte';
 	import { cn } from '$lib/utils/utils';
 	import { ChevronLeft } from 'lucide-svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	let {
-		text,
-		tag = 'h2',
-		class: className = '',
-		icon,
-		goBackUri
-	}: {
+	type Props = HTMLAttributes<HTMLHeadingElement> & {
 		text: Snippet;
 		tag?: HeadingTypes;
 		class?: string;
 		icon?: Snippet;
 		goBackUri?: string;
-	} = $props();
+	};
+	let { text, tag = 'h2', class: className = '', icon, goBackUri, ...restProps }: Props = $props();
 </script>
 
 <svelte:element
@@ -24,6 +20,7 @@
 	class={cn(className, {
 		'flex items-baseline justify-start gap-x-4': goBackUri
 	})}
+	{...restProps}
 >
 	{#if goBackUri}
 		<a href={goBackUri} title="go back" aria-label="go back">

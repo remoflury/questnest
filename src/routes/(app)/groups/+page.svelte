@@ -18,7 +18,7 @@
 <Seo pageSeo={data.seo} />
 
 <FadeInWrapper class="section-t-spacing container" tag="section">
-	<TitleWrapper tag="h1">
+	<TitleWrapper tag="h1" data-testid="title-group">
 		{#snippet text()}
 			Groups
 		{/snippet}

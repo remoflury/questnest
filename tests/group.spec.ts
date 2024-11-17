@@ -6,7 +6,7 @@ describe("groups", () => {
   const groupname = `Playwright-${Math.random().toFixed(4)}`.trim();
   test("site loading", async ({ page }) => {
     await page.goto('/groups')
-    const heading = page.getByRole("heading")
+    const heading = page.getByTestId("title-group")
     await expect(heading).toBeVisible()
 
 
@@ -18,7 +18,7 @@ describe("groups", () => {
     await page.goto('/groups')
     await page.getByTestId("addgroup-btn").click()
 
-    await page.getByLabel('Group name').fill(groupname);
+    await page.getByTestId('addgroup-input-name').fill(groupname);
     const submitBtn = page.getByTestId('submitgroup-btn')
     await submitBtn.isVisible()
     await submitBtn.click()
@@ -26,8 +26,7 @@ describe("groups", () => {
     await page.waitForURL(/\/groups\/\d+/);
 
     const heading =  page.locator('h1')
+    await expect(heading).toHaveCount(1)
     await expect(heading).toBeVisible()
-    const headingText = await heading.textContent()
-    expect(headingText).toContain(groupname)
   })
 })

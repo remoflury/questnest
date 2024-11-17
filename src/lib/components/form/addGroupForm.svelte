@@ -31,7 +31,12 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Group name <sup>*</sup></Form.Label>
-				<Input {...props} bind:value={$formData.name} {...$constraints.name} />
+				<Input
+					{...props}
+					bind:value={$formData.name}
+					{...$constraints.name}
+					data-testid="addgroup-input-name"
+				/>
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
