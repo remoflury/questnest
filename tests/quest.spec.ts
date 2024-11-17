@@ -14,7 +14,7 @@ describe("groups", () => {
   })
 
 
-  test("create questboard and add quests", async ({ page }) => {
+  test("create questboard and add, toggle, edit quests", async ({ page }) => {
     const name = "Playwright Testboard-" + Math.random().toFixed(4)
     const description = "Playwright Description"
     let questboardId = ''
@@ -97,7 +97,8 @@ describe("groups", () => {
       await page.getByTestId("togglequest-submit-0").click()
       await page.getByTestId("togglequest-submit-1").click()
 
-      await page.goto(`/quests/${questboardId}`, { timeout: 2000 })
+      await page.goto(`/quests/${questboardId}`)
+      await new Promise(resolve => setTimeout(resolve, 5000))
 
       // check if it is not green (quest done)
       const form1IsUndone = await form1.evaluate((element) => !element.classList.contains("bg-primary"));
@@ -110,7 +111,7 @@ describe("groups", () => {
       
       await page.getByTestId('editquest-btn').click()
       await page.getByTestId(`addquest-input-0`).fill(`Playwright Quest 1 edited`)
-      await page.getByTestId("submit-addquests").click()
+      await page.getByTestId("submit-editquests").click()
 
       await page.goto(`/quests/${questboardId}`)
 

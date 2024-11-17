@@ -77,6 +77,8 @@
 
 	<div class="grid-spacing flex flex-wrap">
 		<Button type="button" variant="destructive" class="mt-2" onclick={oncloseForm}>Cancel</Button>
-		<Form.Button loading={$delayed} disabled={$delayed}>Save</Form.Button>
+		<Form.Button loading={$delayed} disabled={$delayed} data-testid="submit-editquests"
+			>Save</Form.Button
+		>
 	</div>
 </form>
