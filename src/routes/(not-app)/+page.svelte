@@ -39,7 +39,7 @@
 			</div>
 		{:else}
 			<Button href="/quests" title="to the app" class="max-w-max" data-testid="app-btn"
-				>Zur App</Button
+				>Go To App</Button
 			>
 		{/if}
 	</article>
