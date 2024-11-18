@@ -18,17 +18,17 @@
 	beforeNavigate(() => (open = false));
 
 	const loggedOutItems: Readonly<NavItem[]> = [
-		{
-			href: '/',
-			label: 'Label'
-		}
+		// {
+		// 	href: '/',
+		// 	label: 'Label'
+		// }
 	];
 
 	const loggedInItems: Readonly<NavItem[]> = [
-		{
-			href: '/',
-			label: 'Label loggedin'
-		}
+		// {
+		// 	href: '/',
+		// 	label: 'Label loggedin'
+		// }
 	];
 </script>
 
@@ -49,26 +49,6 @@
 	>
 		<Menu class="stroke-foreground" />
 	</button>
-
-	<!-- {#if !$page.data.session}
-		<div class="flex flex-wrap gap-x-8 gap-y-2">
-			<Button
-				href="/signup"
-				title="Sign up for a new account"
-				aria-label="Sign up for a new account"
-				data-testid="signup-btn">Sign Up</Button
-			>
-			<Button
-				href="/signin"
-				variant="secondary"
-				title="login to your account"
-				aria-label="login in your account"
-				data-testid="signin-btn">Sign In</Button
-			>
-		</div>
-	{:else}
-		<LogoutForm variant="secondary" className="col-span-1 -col-end-1 ml-auto" />
-	{/if} -->
 </nav>
 
 <Sheet.Root bind:open>
@@ -78,13 +58,28 @@
 
 			<Sheet.Title hidden>Menu</Sheet.Title>
 
-			<ul class="!mt-8">
+			<ul class="!mt-8 space-y-4">
 				{#if !$page.data.session}
 					{#each loggedOutItems as item}
 						<li>
-							<Button href={item.href} variant="link" class="px-0">{item.label}</Button>
+							<Button href={item.href} variant="link" class="h-auto p-0">{item.label}</Button>
 						</li>
 					{/each}
+					<li class="flex flex-wrap gap-x-8 gap-y-2">
+						<Button
+							href="/signup"
+							title="Sign up for a new account"
+							aria-label="Sign up for a new account"
+							data-testid="signup-btn">Sign Up</Button
+						>
+						<Button
+							href="/signin"
+							variant="secondary"
+							title="login to your account"
+							aria-label="login in your account"
+							data-testid="signin-btn">Sign In</Button
+						>
+					</li>
 				{/if}
 				{#if $page.data.session}
 					{#each loggedInItems as item}
