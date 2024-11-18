@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		.from('user_group')
 		.select(
 			`
-			user!user_group_user_fkey1(
+			user!user_group_user_fkey(
 				id,
 				username
 			)

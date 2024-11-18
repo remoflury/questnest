@@ -50,13 +50,11 @@
 		<div class="flex flex-wrap gap-x-4 gap-y-2">
 			{#each data.group.users as user}
 				{@const isOwnUser = $page.data.session?.user.id == user.id}
-				<Badge
-					variant="secondary"
-					class="flex items-center gap-x-1 {isOwnUser ? '' : 'pr-0'}"
-					draggable={false}
+				<Badge variant="secondary" class="flex items-center gap-x-1" draggable={false}
 					>{user.username}
+					<!-- class="flex items-center gap-x-1 {isOwnUser ? '' : 'pr-0'}" -->
 					{#if !isOwnUser}
-						<Button
+						<!-- <Button
 							type="button"
 							variant="ghost"
 							class="h-2 w-2"
@@ -65,7 +63,7 @@
 							title="remove {user.username} from group"
 						>
 							<X />
-						</Button>
+						</Button> -->
 					{/if}
 				</Badge>
 			{/each}
@@ -113,7 +111,7 @@
 	</article>
 </div>
 
-<RemoveFromGroup
+<!-- <RemoveFromGroup
 	bind:open
 	data={data.removeUserFromGroupForm}
 	action="?/removefromgroup"
@@ -121,4 +119,4 @@
 	groupId={data.group.id}
 	oncancel={() => setUser(null)}
 	onsuccess={() => setUser(null)}
-/>
+/> -->

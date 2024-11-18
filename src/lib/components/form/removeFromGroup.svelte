@@ -53,16 +53,16 @@
 			<Dialog.Description></Dialog.Description>
 		</Dialog.Header>
 		<Dialog.Footer class="gap-y-2">
+			<Button type="button" variant="destructive" onclick={oncancel}>Cancel</Button>
 			<form method="POST" use:enhance {action}>
 				<Button
 					type="submit"
-					class="w-full"
+					class="!mt-0 w-full"
 					variant="default"
 					loading={$delayed}
 					disabled={$delayed}>Remove</Button
 				>
 			</form>
-			<Button type="button" variant="destructive" onclick={oncancel}>Cancel</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
