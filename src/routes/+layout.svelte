@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import PageLoader from '$lib/components/general/pageLoader.svelte';
+	import { ModeWatcher } from 'mode-watcher';
 
 	let { children, data } = $props();
 	let supabase = $state(data.supabase);
@@ -21,5 +22,6 @@
 </script>
 
 <Toaster position="top-center" />
+<ModeWatcher />
 <PageLoader />
 {@render children()}

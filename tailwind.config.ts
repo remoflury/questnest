@@ -22,9 +22,9 @@ const config: Config = {
 				"2/3": "66.6666%",
 				"3/4": "75%",
 			},
-			boxShadow: {
-				top: '0px -5px 10px 0px rgba(0, 0, 0, 0.05)'
-			},
+			// boxShadow: {
+			// 	top: '0px -5px 10px 0px rgba(0, 0, 0, 0.05)'
+			// },
 			colors: {
 				border: 'hsl(var(--border) / <alpha-value>)',
 				input: 'hsl(var(--input) / <alpha-value>)',

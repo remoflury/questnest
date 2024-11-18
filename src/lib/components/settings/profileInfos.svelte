@@ -2,21 +2,22 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { getPublicSbUrl } from '$lib/utils/fileUtils';
 	import { cn } from '$lib/utils/utils';
+	import type { Snippet } from 'svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	type Props = {
+	type Props = HTMLAttributes<HTMLDivElement> & {
 		title: string;
-		text: string;
 		className?: string;
 		avatarUrl?: string | null;
 		showAvatar?: boolean;
 	};
-	let { title, text, className, avatarUrl, showAvatar = false }: Props = $props();
+	let { title, className, avatarUrl, showAvatar = false, children }: Props = $props();
 </script>
 
 <div class={cn('flex items-start justify-between gap-x-4', className)}>
 	<p>
 		<strong>{title}</strong><br />
-		{text}
+		{@render children?.()}
 	</p>
 	{#key avatarUrl}
 		{#if showAvatar}
@@ -25,10 +26,11 @@
 					<Avatar.Image
 						class="object-cover"
 						src={getPublicSbUrl('avatar', avatarUrl, { height: 100, width: 100 })}
-						alt="Profile picture of {text}"
+						alt="Profile picture of"
 					/>
 				{/if}
-				<Avatar.Fallback>{text.slice(0, 2).toUpperCase()}</Avatar.Fallback>
+				<!-- <Avatar.Fallback>{text.slice(0, 2).toUpperCase()}</Avatar.Fallback> -->
+				<Avatar.Fallback>QN</Avatar.Fallback>
 			</Avatar.Root>
 		{/if}
 	{/key}

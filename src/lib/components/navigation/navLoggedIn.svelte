@@ -30,7 +30,7 @@
 </script>
 
 <nav
-	class="fixed bottom-0 left-0 right-0 bg-white py-4 shadow-top"
+	class="fixed bottom-0 left-0 right-0 bg-background py-4 shadow-[0px_-5px_10px_0px_hsl(var(--foreground)/0.05)]"
 	bind:clientHeight={navAppElemClientHeight}
 >
 	<div class="container flex items-center justify-around">

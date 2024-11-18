@@ -1,11 +1,13 @@
 <script>
 	import LogoutForm from '$lib/components/form/logoutForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
+	import LightSwitch from '$lib/components/general/LightSwitch.svelte';
 	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import Score from '$lib/components/quest/score.svelte';
 	import Password from '$lib/components/settings/password.svelte';
 	import Profile from '$lib/components/settings/profile.svelte';
+	import ProfileInfos from '$lib/components/settings/profileInfos.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Edit } from 'lucide-svelte';
 
@@ -49,7 +51,7 @@
 						aria-label="edit profile"
 						onclick={() => (editProfile = true)}
 					>
-						<Edit class="stroke-secondary" />
+						<Edit class="stroke-secondary dark:stroke-foreground" />
 					</Button>
 				{/if}
 			{/snippet}
@@ -75,7 +77,7 @@
 						aria-label="change password"
 						onclick={() => (editPassword = true)}
 					>
-						<Edit class="stroke-secondary" />
+						<Edit class="stroke-secondary dark:stroke-foreground" />
 					</Button>
 				{/if}
 			{/snippet}
@@ -84,4 +86,14 @@
 	</article>
 </FadeInWrapper>
 
-<!-- <FadeInWrapper class="section-spacing container" tag="section"></FadeInWrapper> -->
+<FadeInWrapper class="section-spacing container" tag="section">
+	<TitleWrapper tag="h1">
+		{#snippet text()}
+			Settings
+		{/snippet}
+	</TitleWrapper>
+
+	<ProfileInfos title="Switch Theme">
+		<LightSwitch class="mt-2" />
+	</ProfileInfos>
+</FadeInWrapper>

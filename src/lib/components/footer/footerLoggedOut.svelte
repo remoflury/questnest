@@ -19,7 +19,7 @@
 
 <footer bind:clientHeight={$footerStore.footerHeight} class="section-t-spacing">
 	<Separator />
-	<article class="grid-content grid-spacing container bg-white py-4">
+	<article class="grid-content grid-spacing container bg-background py-4">
 		<strong class="font-dm-serif lg:col-span-2 xl:col-span-4">QuestNest</strong>
 
 		{#if footerLinks.length}

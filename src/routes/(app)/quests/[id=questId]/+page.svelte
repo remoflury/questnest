@@ -29,7 +29,7 @@
 						href={`/quests/${data.questboard.id}/edit`}
 						data-testid="editquest-btn"
 					>
-						<Edit class="stroke-primary" />
+						<Edit class="stroke-primary dark:stroke-foreground" />
 					</Button>
 				{/if}
 			{/snippet}

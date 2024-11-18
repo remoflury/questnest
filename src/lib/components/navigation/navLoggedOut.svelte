@@ -8,6 +8,7 @@
 	import { cn } from '$lib/utils/utils';
 	import { beforeNavigate } from '$app/navigation';
 	import { string } from 'zod';
+	import LightSwitch from '../general/LightSwitch.svelte';
 	type NavItem = {
 		href: string;
 		label: string;
@@ -53,12 +54,12 @@
 
 <Sheet.Root bind:open>
 	<Sheet.Content class="w-full sm:w-3/4">
-		<Sheet.Header class="text-left">
+		<Sheet.Header class="space-y-8 text-left">
 			{@render homeLink('max-w-[2rem]')}
 
 			<Sheet.Title hidden>Menu</Sheet.Title>
 
-			<ul class="!mt-8 space-y-4">
+			<ul class="space-y-4">
 				{#if !$page.data.session}
 					{#each loggedOutItems as item}
 						<li>
@@ -90,6 +91,7 @@
 					<LogoutForm variant="secondary" className="col-span-1 -col-end-1 ml-auto mt-4" />
 				{/if}
 			</ul>
+			<LightSwitch />
 		</Sheet.Header>
 	</Sheet.Content>
 </Sheet.Root>

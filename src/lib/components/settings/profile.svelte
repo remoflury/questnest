@@ -22,12 +22,11 @@
 		<div class="grid-spacing grid grid-cols-subgrid" in:fly={{ ...TRANSITION_CONFIG, y: 20 }}>
 			<ProfileInfos
 				title="Username"
-				text={user.username}
 				avatarUrl={user.avatar_path}
 				showAvatar={true}
-				className="col-span-full"
-			/>
-			<ProfileInfos title="Email" text={user.email} className="col-span-full" />
+				className="col-span-full">{user.username}</ProfileInfos
+			>
+			<ProfileInfos title="Email" className="col-span-full">{user.email}</ProfileInfos>
 		</div>
 	{:else}
 		<div in:fly={{ ...TRANSITION_CONFIG, y: 20 }}>

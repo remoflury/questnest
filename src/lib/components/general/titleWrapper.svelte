@@ -24,7 +24,7 @@
 >
 	{#if goBackUri}
 		<a href={goBackUri} title="go back" aria-label="go back">
-			<ChevronLeft class="stroke-primary" />
+			<ChevronLeft class="stroke-primary dark:stroke-foreground" />
 		</a>
 	{/if}
 	<span
