@@ -94,7 +94,5 @@
 	</TitleWrapper>
 	<ProfileInfos title="Switch Theme">
 		<LightSwitchSwitch class="mt-2" id="theme-switch" />
-		<!-- <ThemeSwitch class="mt-2" /> -->
-		<!-- <LightSwitchSwitch class="mt-2" id="theme-switch" /> -->
 	</ProfileInfos>
 </FadeInWrapper>

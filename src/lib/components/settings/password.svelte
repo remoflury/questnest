@@ -19,7 +19,7 @@
 <article class="grid-content grid-spacing">
 	{#if !edit}
 		<div class="grid-spacing grid grid-cols-subgrid" in:fly={{ ...TRANSITION_CONFIG, y: 20 }}>
-			<ProfileInfos title="Password" text="******" />
+			<ProfileInfos title="Password">******</ProfileInfos>
 		</div>
 	{:else}
 		<div in:fly={{ ...TRANSITION_CONFIG, y: 20 }}>
