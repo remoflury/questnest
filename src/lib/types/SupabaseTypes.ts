@@ -52,6 +52,33 @@ export type Database = {
         }
         Relationships: []
       }
+      plan: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: number
+          stripe_price_id: string
+          title: string
+        }
+        Insert: {
+          active: boolean
+          created_at?: string
+          description?: string | null
+          id?: number
+          stripe_price_id: string
+          title: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: number
+          stripe_price_id?: string
+          title?: string
+        }
+        Relationships: []
+      }
       quest: {
         Row: {
           created_at: string
@@ -232,14 +259,14 @@ export type Database = {
             referencedColumns: ["group_id"]
           },
           {
-            foreignKeyName: "user_group_user_fkey1"
+            foreignKeyName: "user_group_user_fkey"
             columns: ["user"]
             isOneToOne: false
             referencedRelation: "questboard_users"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "user_group_user_fkey1"
+            foreignKeyName: "user_group_user_fkey"
             columns: ["user"]
             isOneToOne: false
             referencedRelation: "user"
@@ -331,14 +358,14 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "user_group_user_fkey1"
+            foreignKeyName: "user_group_user_fkey"
             columns: ["member_user_id"]
             isOneToOne: false
             referencedRelation: "questboard_users"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "user_group_user_fkey1"
+            foreignKeyName: "user_group_user_fkey"
             columns: ["member_user_id"]
             isOneToOne: false
             referencedRelation: "user"
