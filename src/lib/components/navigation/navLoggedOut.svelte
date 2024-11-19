@@ -8,7 +8,7 @@
 	import { cn } from '$lib/utils/utils';
 	import { beforeNavigate } from '$app/navigation';
 	import { string } from 'zod';
-	import LightSwitch from '../general/LightSwitch.svelte';
+	import LightSwitch from '../lightSwitch/LightSwitch.svelte';
 	type NavItem = {
 		href: string;
 		label: string;

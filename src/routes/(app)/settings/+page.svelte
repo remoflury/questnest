@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import LogoutForm from '$lib/components/form/logoutForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
-	import LightSwitch from '$lib/components/general/LightSwitch.svelte';
+	import LightSwitch from '$lib/components/lightSwitch/LightSwitch.svelte';
 	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import Score from '$lib/components/quest/score.svelte';

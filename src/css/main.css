@@ -38,9 +38,9 @@
 
 	.dark {
     --background: 240 10% 3.9%; /* #09090b */
-    --foreground: 0 0% 80%; 
+    --foreground: 0 0% 90%; 
     --muted: var(--secondary);
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted-foreground: 0 0% 60%;
     --popover: var(--background);
     --popover-foreground: var(--foreground);
     --card: var(--background);
@@ -96,12 +96,12 @@
 
 	h2,
 	.h2 {
-		@apply mb-3 text-2xl;
+		@apply mb-3 text-2xl !tracking-wide;
 	}
 
 	h3,
 	.h3 {
-		@apply mb-2 text-xl;
+		@apply mb-2 text-xl !tracking-wide;
 	}
 
 	h4,

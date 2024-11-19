@@ -1,9 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
+	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import type { SeoProps } from '$lib/types/GeneralTypes';
+
+	let pageSeo: SeoProps = $state({
+		seoPageTitle: `${$page.status} | Error`,
+		seoPageDescription: 'Something went wrong.'
+	});
 </script>
+
+<Seo {pageSeo} />
 
 <FadeInWrapper class="section-spacing container" tag="section">
 	<article class="grid-content grid-spacing">
