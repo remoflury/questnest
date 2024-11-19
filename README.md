@@ -40,6 +40,22 @@ Then apply the migration:
 supabase db push
 ```
 
+### Developing with the Stripe CLI
+To locally test webhooks of stripe, you can use the stripe cli. First, login with your stripe account:
+```shell
+stripe login
+```
+
+Then forward each event:
+```
+stripe listen --forward-to localhost:3000/api/webhooks/{xy}
+```
+
+Optionally, you can trigger events with the stripe cli, e.g. when a product is updated:
+```shell
+stripe trigger product.updated
+```
+
 ## Building
 
 To create a production version of your app:
