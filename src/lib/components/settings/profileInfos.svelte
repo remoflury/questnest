@@ -2,7 +2,6 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { getPublicSbUrl } from '$lib/utils/fileUtils';
 	import { cn } from '$lib/utils/utils';
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	type Props = HTMLAttributes<HTMLDivElement> & {
@@ -15,10 +14,10 @@
 </script>
 
 <div class={cn('flex items-start justify-between gap-x-4', className)}>
-	<p>
-		<strong>{title}</strong><br />
+	<div>
+		<p class="font-bold">{title}</p>
 		{@render children?.()}
-	</p>
+	</div>
 	{#key avatarUrl}
 		{#if showAvatar}
 			<Avatar.Root class="border border-secondary">

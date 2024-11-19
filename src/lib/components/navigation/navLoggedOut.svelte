@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { menu } from '$lib/store/store';
-	import * as Sheet from '$lib/components/ui/sheet';
-	import LogoutForm from '../form/logoutForm.svelte';
-	import Button from '../ui/button/button.svelte';
-	import { Menu } from 'lucide-svelte';
 	import { cn } from '$lib/utils/utils';
 	import { beforeNavigate } from '$app/navigation';
-	import { string } from 'zod';
-	import LightSwitch from '../lightSwitch/LightSwitch.svelte';
+	import { Menu } from 'lucide-svelte';
+	import * as Sheet from '$lib/components/ui/sheet';
+	import LogoutForm from '$lib/components/form/logoutForm.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import ThemeSwitch from '$lib/components/lightSwitch/themeSwitch.svelte';
 	type NavItem = {
 		href: string;
 		label: string;
@@ -91,7 +90,7 @@
 					<LogoutForm variant="secondary" className="col-span-1 -col-end-1 ml-auto mt-4" />
 				{/if}
 			</ul>
-			<LightSwitch />
+			<ThemeSwitch />
 		</Sheet.Header>
 	</Sheet.Content>
 </Sheet.Root>
