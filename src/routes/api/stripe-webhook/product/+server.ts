@@ -1,11 +1,11 @@
 import type { RequestHandler } from "./$types";
-import { STRIPE_SECRET_KEY } from "$env/static/private";
+// import { STRIPE_SECRET_KEY } from "$env/static/private";
 import { json } from "@sveltejs/kit";
 import Stripe from "stripe";
 
-const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  typescript: true
-});
+// const stripe = new Stripe(STRIPE_SECRET_KEY, {
+//   typescript: true
+// });
 
 
 export const POST: RequestHandler = async ({ request, locals: { adminSupabase } }) => {
@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
     // TODO: verify signature
     const body: Stripe.Event = await request.json()
 
-    if (!body || !body.id || (body.type !== "product.deleted" && body.type !== "product.created" && body.type !== "product.updated")) {
+    if (!body || !body.id || (body.type !== "product.deleted" && body.type !== "product.created" && body.type !== "product.updated") ) {
       return json("Request failed.", {status: 403}) 
     }
 
@@ -74,7 +74,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
     }
 
 
-  return json("Product Webhook successfull.");
+  return json("Product Webhook successful.");
 };
 
 // product.created
