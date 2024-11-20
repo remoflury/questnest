@@ -18,10 +18,10 @@
 	beforeNavigate(() => (open = false));
 
 	const loggedOutItems: Readonly<NavItem[]> = [
-		// {
-		// 	href: '/',
-		// 	label: 'Label'
-		// }
+		{
+			href: '/pricing',
+			label: 'Plans'
+		}
 	];
 
 	const loggedInItems: Readonly<NavItem[]> = [
