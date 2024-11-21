@@ -13,7 +13,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
     const stripeSignature = request.headers.get('stripe-signature');
 
     if (!stripeSignature) {
-      return json("Signature failed.", {status: 403})
+      return json("Signature failed.", {status: 401})
     }
 
     // TODO: verify signature

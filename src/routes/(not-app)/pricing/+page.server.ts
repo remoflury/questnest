@@ -96,11 +96,9 @@ export const actions: Actions = {
       return message(form, "Ups, something went wrong.", { status: 403 })
     }
 
-    console.log(url)
-
     const { data: planData, error: planErr } = await supabase
       .from('plan')
-      .select('stripe_price_id, title')
+      .select('stripe_price_id')
       .eq("id", form.data.id)
       .single()
 
@@ -127,7 +125,11 @@ export const actions: Actions = {
         }
       ],
       customer_email: session.user.email,
-      mode: "payment"
+      mode: "payment",
+      allow_promotion_codes: true,
+      metadata: {
+        userId: session.user.id
+      }
     })
 
     if (!stripeSession || !stripeSession?.url) {
@@ -136,11 +138,5 @@ export const actions: Actions = {
     }
 
     redirect(301, stripeSession.url)
-
-
-
-
-
-    // const { data: priceId}
   }
 };
