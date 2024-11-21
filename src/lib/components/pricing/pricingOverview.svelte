@@ -8,13 +8,14 @@
 		plans: PricingPlan[];
 		action: string;
 		form: SuperValidated<Infer<SelectPricingPlanSchema>>;
+		usersPlanId: number;
 	};
 
-	let { plans, action, form }: Props = $props();
+	let { plans, action, form, usersPlanId }: Props = $props();
 </script>
 
 <div class="grid-spacing grid grid-cols-2">
 	{#each plans as plan (crypto.randomUUID())}
-		<PricingCard {plan} {action} {form} />
+		<PricingCard {plan} {action} {form} {usersPlanId} />
 	{/each}
 </div>

@@ -8,6 +8,7 @@ import type { PricingPlan } from "$lib/types/StripeTypes";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { selectPricingPlanSchema } from "$lib/validation/stripeSchema";
+import type { Tables } from "$lib/types/SupabaseTypes";
 
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
@@ -42,12 +43,19 @@ export const load: PageServerLoad = async ({ locals: { supabase }}) => {
   }
 
   // supabase planId 
-  const { data: ids, error: idErr } = await supabase
+  const { data: planData, error: planErr } = await supabase
     .from('plan')
-    .select('id, stripe_price_id')
+    .select(`
+        id, 
+        stripe_price_id,
+        user_plan (
+          plan
+        )
+      `)
+    .returns<(Pick<Tables<"plan">, 'id' | 'stripe_price_id'> & { user_plan: Pick<Tables<"user_plan">, "plan">[] })[]>()
 
-    if (idErr) {
-      console.error({ idErr })
+    if (planErr) {
+      console.error({ planErr })
       error(500)
     }
 
@@ -55,7 +63,7 @@ export const load: PageServerLoad = async ({ locals: { supabase }}) => {
   const mergedPlans: PricingPlan[] = plans.map(plan => {
     // Find the price that matches the plan's default_price
     const matchingPrice = prices.find(price => price.id === plan.default_price)!;
-    const matchingSbId = ids!.find(id => id.stripe_price_id === plan.default_price)!
+    const matchingSbId = planData!.find(id => id.stripe_price_id === plan.default_price)!
     
     return {
       supabasePlanId: matchingSbId.id,
@@ -65,10 +73,11 @@ export const load: PageServerLoad = async ({ locals: { supabase }}) => {
   });
 
   const selectPricingPlanForm = await superValidate(zod(selectPricingPlanSchema))
-  
+
 	return {
     selectPricingPlanForm,
     plans: mergedPlans,
+    usersPlanId: planData!.find(plan => plan.user_plan.length)!.user_plan[0].plan,
 		seo: getSeo("/pricing")
 	};
 };

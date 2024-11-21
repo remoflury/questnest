@@ -285,6 +285,49 @@ export type Database = {
           },
         ]
       }
+      user_plan: {
+        Row: {
+          created_at: string
+          id: number
+          plan: number
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          plan: number
+          user: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          plan?: number
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_plan_plan_fkey"
+            columns: ["plan"]
+            isOneToOne: false
+            referencedRelation: "plan"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_plan_user_fkey"
+            columns: ["user"]
+            isOneToOne: true
+            referencedRelation: "questboard_users"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "user_plan_user_fkey"
+            columns: ["user"]
+            isOneToOne: true
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       questboard_users: {

@@ -11,9 +11,10 @@
 		plan: PricingPlan;
 		action: string;
 		form: SuperValidated<Infer<SelectPricingPlanSchema>>;
+		usersPlanId: number;
 	};
 
-	let { plan: data, action, form }: Props = $props();
+	let { plan: data, action, form, usersPlanId }: Props = $props();
 	let price = $derived(data.price);
 	let plan = $derived(data.plan);
 	let planId = $derived(data.supabasePlanId);
@@ -22,8 +23,6 @@
 	const renderPrice = (price: number | null, currency: string): string => {
 		return `${price ? price / 100 : 0} ${currency.toLocaleUpperCase()}`;
 	};
-
-	// $inspect(plan);
 </script>
 
 <Card.Root class="w-full {!isFreePlan ? 'border-primary' : ''}">
@@ -34,7 +33,7 @@
 		{/if}
 	</Card.Header>
 	<Card.Content>
-		{#if isFreePlan}
+		{#if $page.data.session && usersPlanId == planId}
 			<Button
 				title="Sign in to get plan"
 				aria-label="Sign in to get plan"
@@ -43,7 +42,7 @@
 			>
 				Currently active
 			</Button>
-		{:else if $page.data.session}
+		{:else if $page.data.session && usersPlanId != planId}
 			<SelectPricingPlanForm data={form} {action} {planId} />
 		{:else if !$page.data.session}
 			<Button title="Sign in to get plan" aria-label="Sign in to get plan" href="/signin">

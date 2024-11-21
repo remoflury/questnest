@@ -16,6 +16,11 @@
 				Our Pricing Plans
 			{/snippet}
 		</TitleWrapper>
-		<PricingOverview plans={data.plans} action="?/selectplan" form={data.selectPricingPlanForm} />
+		<PricingOverview
+			plans={data.plans}
+			action="?/selectplan"
+			form={data.selectPricingPlanForm}
+			usersPlanId={data.usersPlanId}
+		/>
 	</article>
 </FadeInWrapper>
