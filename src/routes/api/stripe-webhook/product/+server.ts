@@ -32,8 +32,6 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
             stripe_product_id: body.data.object.id,
             stripe_price_id: body.data.object.id,
             active: body.data.object.active,
-            title: body.data.object.name,
-            description: body.data.object.description ? body.data.object.description : null
           })
 
           if (error) {
@@ -49,8 +47,6 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
             stripe_product_id: body.data.object.id,
             stripe_price_id: body.data.object.default_price,
             active: body.data.object.active,
-            title: body.data.object.name,
-            description: body.data.object.description ? body.data.object.description : null
           })
           .eq("stripe_product_id", body.data.object.id)
 

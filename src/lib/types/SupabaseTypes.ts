@@ -56,26 +56,23 @@ export type Database = {
         Row: {
           active: boolean
           created_at: string
-          description: string | null
           id: number
           stripe_price_id: string
-          title: string
+          stripe_product_id: string
         }
         Insert: {
           active: boolean
           created_at?: string
-          description?: string | null
           id?: number
           stripe_price_id: string
-          title: string
+          stripe_product_id: string
         }
         Update: {
           active?: boolean
           created_at?: string
-          description?: string | null
           id?: number
           stripe_price_id?: string
-          title?: string
+          stripe_product_id?: string
         }
         Relationships: []
       }
