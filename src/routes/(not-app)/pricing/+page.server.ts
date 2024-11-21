@@ -1,4 +1,4 @@
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import { getSeo } from "$lib/server/data";
 import Stripe from "stripe";
@@ -74,7 +74,7 @@ export const load: PageServerLoad = async ({ locals: { supabase }}) => {
 };
 
 export const actions: Actions = {
-  selectplan: async ({ request, locals: { supabase, safeGetSession }}) => {
+  selectplan: async ({ request, url, locals: { supabase, safeGetSession }}) => {
     const { session } = await safeGetSession()
     if (!session) {
       return fail(401)
@@ -82,12 +82,55 @@ export const actions: Actions = {
 
     const form = await superValidate(request, zod(selectPricingPlanSchema))
 
-    console.log(form)
-
     if (!form.valid) {
       console.error({form})
       return message(form, "Ups, something went wrong.", { status: 403 })
     }
+
+    console.log(url)
+
+    const { data: planData, error: planErr } = await supabase
+      .from('plan')
+      .select('stripe_price_id, title')
+      .eq("id", form.data.id)
+      .single()
+
+    if (planErr) {
+      console.error({planErr})
+      return message(form, "Something went wrong.", { status: 500 })
+    }
+
+    if (!planData) {
+      console.error("Selected Plan does not exist.")
+      return message(form, "Selected Plan does not exist.", { status: 403 })
+    }
+
+    // todo: if submitted plan is currently active plan, do nothing
+
+    // create stripe session
+    const stripeSession = await stripe.checkout.sessions.create({
+      success_url: `${url.origin}${url.pathname}`,
+      cancel_url: `${url.origin}${url.pathname}`,
+      line_items: [
+        {
+          price: planData.stripe_price_id,
+          quantity: 1
+        }
+      ],
+      customer_email: session.user.email,
+      mode: "payment"
+    })
+
+    if (!stripeSession || !stripeSession?.url) {
+      console.error("Payment could not be processed.")
+      return message(form, "Payment could not be processed.", { status: 403 }) 
+    }
+
+    redirect(301, stripeSession.url)
+
+
+
+
 
     // const { data: priceId}
   }

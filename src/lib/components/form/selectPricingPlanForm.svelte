@@ -33,6 +33,6 @@
 
 <form method="POST" use:enhance {action}>
 	<Form.Button loading={$delayed} disabled={$delayed} aria-label="Purchase plan">
-		Select Plan
+		Upgrade now
 	</Form.Button>
 </form>

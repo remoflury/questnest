@@ -17,6 +17,7 @@
 	let price = $derived(data.price);
 	let plan = $derived(data.plan);
 	let planId = $derived(data.supabasePlanId);
+	let isFreePlan = $derived(price.unit_amount == 0);
 
 	const renderPrice = (price: number | null, currency: string): string => {
 		return `${price ? price / 100 : 0} ${currency.toLocaleUpperCase()}`;
@@ -25,7 +26,7 @@
 	// $inspect(plan);
 </script>
 
-<Card.Root class="w-full">
+<Card.Root class="w-full {!isFreePlan ? 'border-primary' : ''}">
 	<Card.Header>
 		<Card.Title level={2}>{plan.name}</Card.Title>
 		{#if plan.description}
@@ -33,9 +34,18 @@
 		{/if}
 	</Card.Header>
 	<Card.Content>
-		{#if $page.data.session}
+		{#if isFreePlan}
+			<Button
+				title="Sign in to get plan"
+				aria-label="Sign in to get plan"
+				disabled
+				variant="secondary"
+			>
+				Currently active
+			</Button>
+		{:else if $page.data.session}
 			<SelectPricingPlanForm data={form} {action} {planId} />
-		{:else}
+		{:else if !$page.data.session}
 			<Button title="Sign in to get plan" aria-label="Sign in to get plan" href="/signin">
 				Sign in to get plan
 			</Button>
