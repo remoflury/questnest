@@ -1,7 +1,8 @@
+import { isEventOfDesiredType } from "$lib/server/stripeData";
 import type { RequestHandler } from "./$types";
 // import { STRIPE_SECRET_KEY } from "$env/static/private";
 import { json } from "@sveltejs/kit";
-import Stripe from "stripe";
+import type Stripe from "stripe";
 
 // const stripe = new Stripe(STRIPE_SECRET_KEY, {
 //   typescript: true
@@ -19,19 +20,22 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
     // TODO: verify signature
     const body: Stripe.Event = await request.json()
 
-    if (!body || !body.id || (body.type !== "product.deleted" && body.type !== "product.created" && body.type !== "product.updated") ) {
+    // if (!body || !body.id || (body.type !== "product.deleted" && body.type !== "product.created" && body.type !== "product.updated") ) {
+    if (!body || !body.id || !isEventOfDesiredType("product", body.type) ) {
       return json("Request failed.", {status: 403}) 
     }
 
-    switch (body.type) {
+    const typedBody = body as Stripe.ProductDeletedEvent | Stripe.ProductCreatedEvent | Stripe.ProductUpdatedEvent
+
+    switch (typedBody.type) {
 
       case ("product.created"): {
         const { error } = await adminSupabase
           .from('plan')
           .insert({
-            stripe_product_id: body.data.object.id,
-            stripe_price_id: body.data.object.id,
-            active: body.data.object.active,
+            stripe_product_id: typedBody.data.object.id,
+            stripe_price_id: typedBody.data.object.id,
+            active: typedBody.data.object.active,
           })
 
           if (error) {
@@ -44,11 +48,11 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
         const { error } = await adminSupabase
           .from('plan')
           .update({
-            stripe_product_id: body.data.object.id,
-            stripe_price_id: body.data.object.default_price,
-            active: body.data.object.active,
+            stripe_product_id: typedBody.data.object.id,
+            stripe_price_id: typedBody.data.object.default_price,
+            active: typedBody.data.object.active,
           })
-          .eq("stripe_product_id", body.data.object.id)
+          .eq("stripe_product_id", typedBody.data.object.id)
 
           if (error) {
             console.log({ error })
@@ -60,7 +64,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
         const { error } = await adminSupabase
           .from('plan')
           .delete()
-          .eq("stripe_product_id", body.data.object.id)
+          .eq("stripe_product_id", typedBody.data.object.id)
 
           if (error) {
             console.log({ error })

@@ -21,7 +21,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
 
   
   if (!body || !body.id || !isEventOfDesiredType("purchase", body.type)) {
-    return json("Request failed.") 
+    return json("Request failed.", { status: 403}) 
   }
 
   const typedBody = body as StripeProps.CheckoutSessionCompletedEvent
