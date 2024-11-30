@@ -48,8 +48,6 @@ export const GET: RequestHandler = async ({ locals: { supabase }}) => {
       error(500)
     }
 
-  console.log(plans)
-
   // Merge prices into plans
   const mergedPlans: PricingPlan[] = plans.map(plan => {
     // Find the price that matches the plan's default_price

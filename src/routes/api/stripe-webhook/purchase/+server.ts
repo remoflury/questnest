@@ -10,6 +10,7 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
 
 export const POST: RequestHandler = async ({ request, locals: { adminSupabase } }) => {
 
+  console.log(request)
   const stripeSignature = request.headers.get('stripe-signature');
 
   if (!stripeSignature) {
@@ -19,6 +20,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
   // // TODO: verify signature
   const body: StripeProps.Event = await request.json()
 
+  console.log("purchase", body)
   
   if (!body || !body.id || !isEventOfDesiredType("purchase", body.type)) {
     return json("Request failed.", { status: 403}) 
