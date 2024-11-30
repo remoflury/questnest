@@ -10,7 +10,6 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
 
 export const POST: RequestHandler = async ({ request, locals: { adminSupabase } }) => {
 
-  console.log(request)
   const stripeSignature = request.headers.get('stripe-signature');
 
   if (!stripeSignature) {

@@ -1,4 +1,4 @@
-import { json, redirect } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import type Stripe from "stripe";
 import { isEventTypeValid } from "$lib/server/stripeData";
