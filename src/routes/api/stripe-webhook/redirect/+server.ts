@@ -6,7 +6,6 @@ import { isEventTypeValid } from "$lib/server/stripeData";
 export const POST: RequestHandler = async ({ fetch, request, url }) => {
   const stripeSignature = request.headers.get('stripe-signature');
 
-  console.log(request)
   if (!stripeSignature) {
     return json("Signature failed.", {status: 401})
   }
@@ -39,24 +38,21 @@ export const POST: RequestHandler = async ({ fetch, request, url }) => {
         }
       })
       // 'content-length': '3162',
-      const data = await res.json()
-      console.log({data})
+      await res.json()
     } catch(error) {
       return json(error, { status: 500 })
     }
   }
   
-  console.log(typedBody.type)
   switch(typedBody.type) {
     case("product.created"):
     case("product.updated"):
     case("product.deleted"):
-      // redirect(307, "/api/stripe-webhook/product")
+      await fetchForRedirect("/api/stripe-webhook/product")
       break;
     case ("checkout.session.completed"):
-      console.log("purchase in redirect")
       await fetchForRedirect("/api/stripe-webhook/purchase")
-      // redirect(307, "/api/stripe-webhook/purchase")
+      break;
   }
 
   return json("Successful Webhook Request")
