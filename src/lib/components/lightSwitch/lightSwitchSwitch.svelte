@@ -10,7 +10,7 @@
 	};
 
 	let { class: className, id }: Props = $props();
-	let checked = $state($mode == 'light');
+	let checked = $state($mode == 'dark');
 </script>
 
 <div class={cn('flex items-center space-x-2', className)}>
