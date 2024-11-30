@@ -4,7 +4,7 @@
 	import type { AddUserToGroupSchema } from '$lib/validation/schema';
 	import type { Tables } from '$lib/types/SupabaseTypes';
 	import { flip } from 'svelte/animate';
-	import { fade, slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import { TRANSITION_CONFIG } from '$lib/utils/constants';
 	import AddPersonToGroup from './addPersonToGroup.svelte';
 	import * as Command from '$lib/components/ui/command/index.js';

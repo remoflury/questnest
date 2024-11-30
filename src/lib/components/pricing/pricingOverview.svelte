@@ -14,7 +14,7 @@
 	let { plans, action, form, usersPlanId }: Props = $props();
 </script>
 
-<div class="grid-spacing grid grid-cols-2">
+<div class="grid-spacing grid sm:grid-cols-2">
 	{#each plans as plan (crypto.randomUUID())}
 		<PricingCard {plan} {action} {form} {usersPlanId} />
 	{/each}

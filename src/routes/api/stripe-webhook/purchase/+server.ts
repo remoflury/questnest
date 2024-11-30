@@ -2,6 +2,7 @@ import type { RequestHandler } from "./$types";
 import {type Stripe as StripeProps, Stripe } from "stripe";
 import { json } from "@sveltejs/kit";
 import { STRIPE_SECRET_KEY } from "$env/static/private";
+import { isEventOfDesiredType } from "$lib/server/stripeData";
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
   typescript: true
@@ -15,19 +16,20 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
     return json("Signature failed.", {status: 401})
   }
 
-  // TODO: verify signature
+  // // TODO: verify signature
   const body: StripeProps.Event = await request.json()
 
   
-  if (!body || !body.id || body.type !== "checkout.session.completed" ) {
-    return json("Request failed.", {status: 403}) 
+  if (!body || !body.id || !isEventOfDesiredType("purchase", body.type)) {
+    return json("Request failed.") 
   }
-  console.log(body)
+
+  const typedBody = body as StripeProps.CheckoutSessionCompletedEvent
 
   // get the associated productId
   let productData: StripeProps.LineItem
   try {
-    const lineItems = await stripe.checkout.sessions.listLineItems(body.data.object.id);
+    const lineItems = await stripe.checkout.sessions.listLineItems(typedBody.data.object.id);
     productData = lineItems.data[0]
   } catch(error) {
     console.error({ error })
@@ -51,7 +53,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
     .update({
       plan: planData[0].id
     })
-    .eq("user", body.data.object.metadata!.userId)
+    .eq("user", typedBody.data.object.metadata!.userId)
 
     
   if (updateErr) {

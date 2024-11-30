@@ -47,7 +47,7 @@ stripe login
 ```
 
 Then forward each event:
-```
+```shell
 stripe listen --forward-to localhost:3000/api/webhooks/{xy}
 ```
 

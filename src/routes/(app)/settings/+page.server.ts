@@ -6,8 +6,10 @@ import { changePwSchema, editProfileSchema } from '$lib/validation/schema';
 import { getSeo } from '$lib/server/data';
 import { decode, encode } from 'base64-arraybuffer';
 import type { ACCEPTED_IMAGE_TYPES } from '$lib/utils/constants';
+import type { PricingPlan } from '$lib/types/StripeTypes';
+import type { ApiResponse } from '$lib/types/GeneralTypes';
 
-export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase } }) => {
+export const load: PageServerLoad = async ({ fetch, locals: { safeGetSession, supabase } }) => {
 	const { session } = await safeGetSession();
 	if (!session) {
 		error(401);
@@ -51,15 +53,32 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 			: undefined,
 	}
 
-	const [editProfileForm, editPasswordForm] = await Promise.all([
+	const getPricingPlan = async() => {
+		const res = await fetch('/api/pricing-plans')
+		const { payload, status, message }: ApiResponse<{
+			mergedPlans: PricingPlan[], 
+			usersPlanId: number
+		}> = await res.json()
+
+		if (status >= 400) {
+			console.error({status, message })
+			error(status)
+		}
+		return payload
+	}
+
+	const [editProfileForm, editPasswordForm, pricingPlanData] = await Promise.all([
 		superValidate(populatedUserForm, zod(editProfileSchema)),
-		superValidate(zod(changePwSchema))
+		superValidate(zod(changePwSchema)),
+		getPricingPlan()
 	]);
 
 	return {
 		user: userData,
 		editProfileForm,
 		editPasswordForm,
+		plans: pricingPlanData.mergedPlans,
+    usersPlanId: pricingPlanData.usersPlanId,
 		seo: getSeo("/settings")
 	};
 };
