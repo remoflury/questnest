@@ -21,7 +21,7 @@
 	title="Logout"
 	class={cn(className)}
 >
-	<Button class="!aspect-square p-2" type="submit" {variant}>
+	<Button class="!mt-0 !aspect-square p-2" type="submit" {variant}>
 		<LogOut />
 	</Button>
 </form>

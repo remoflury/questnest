@@ -38,9 +38,9 @@
 				>
 			</div>
 		{:else}
-			<Button href="/quests" title="to the app" class="max-w-max" data-testid="app-btn"
-				>Go To App</Button
-			>
+			<Button href="/quests" title="to the app" class="max-w-max" data-testid="app-btn">
+				Go To App
+			</Button>
 		{/if}
 	</article>
 </FadeInWrapper>

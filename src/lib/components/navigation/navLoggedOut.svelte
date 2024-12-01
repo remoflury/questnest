@@ -59,12 +59,12 @@
 			<Sheet.Title hidden>Menu</Sheet.Title>
 
 			<ul class="space-y-4">
+				{#each loggedOutItems as item}
+					<li>
+						<Button href={item.href} variant="link" class="h-auto p-0">{item.label}</Button>
+					</li>
+				{/each}
 				{#if !$page.data.session}
-					{#each loggedOutItems as item}
-						<li>
-							<Button href={item.href} variant="link" class="h-auto p-0">{item.label}</Button>
-						</li>
-					{/each}
 					<li class="flex flex-wrap gap-x-8 gap-y-2">
 						<Button
 							href="/signup"
@@ -87,7 +87,12 @@
 							<Button href={item.href} variant="link" class="px-0">{item.label}</Button>
 						</li>
 					{/each}
-					<LogoutForm variant="secondary" className="col-span-1 -col-end-1 ml-auto mt-4" />
+					<li class="mt-4 flex flex-wrap items-center gap-x-8 gap-y-2">
+						<Button href="/quests" title="to the app" class="max-w-max" data-testid="nav-app-btn">
+							Go To App
+						</Button>
+						<LogoutForm variant="secondary" className="col-span-1 -col-end-1 !mt-0" />
+					</li>
 				{/if}
 			</ul>
 			<ThemeSwitch />
