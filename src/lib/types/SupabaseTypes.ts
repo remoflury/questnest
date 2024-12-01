@@ -52,6 +52,30 @@ export type Database = {
         }
         Relationships: []
       }
+      plan: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: number
+          stripe_price_id: string
+          stripe_product_id: string
+        }
+        Insert: {
+          active: boolean
+          created_at?: string
+          id?: number
+          stripe_price_id: string
+          stripe_product_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: number
+          stripe_price_id?: string
+          stripe_product_id?: string
+        }
+        Relationships: []
+      }
       quest: {
         Row: {
           created_at: string
@@ -232,14 +256,14 @@ export type Database = {
             referencedColumns: ["group_id"]
           },
           {
-            foreignKeyName: "user_group_user_fkey1"
+            foreignKeyName: "user_group_user_fkey"
             columns: ["user"]
             isOneToOne: false
             referencedRelation: "questboard_users"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "user_group_user_fkey1"
+            foreignKeyName: "user_group_user_fkey"
             columns: ["user"]
             isOneToOne: false
             referencedRelation: "user"
@@ -256,6 +280,49 @@ export type Database = {
             foreignKeyName: "user_group_user_fkey2"
             columns: ["user"]
             isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_plan: {
+        Row: {
+          created_at: string
+          id: number
+          plan: number
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          plan: number
+          user: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          plan?: number
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_plan_plan_fkey"
+            columns: ["plan"]
+            isOneToOne: false
+            referencedRelation: "plan"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_plan_user_fkey"
+            columns: ["user"]
+            isOneToOne: true
+            referencedRelation: "questboard_users"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "user_plan_user_fkey"
+            columns: ["user"]
+            isOneToOne: true
             referencedRelation: "user"
             referencedColumns: ["id"]
           },
@@ -331,14 +398,14 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "user_group_user_fkey1"
+            foreignKeyName: "user_group_user_fkey"
             columns: ["member_user_id"]
             isOneToOne: false
             referencedRelation: "questboard_users"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "user_group_user_fkey1"
+            foreignKeyName: "user_group_user_fkey"
             columns: ["member_user_id"]
             isOneToOne: false
             referencedRelation: "user"

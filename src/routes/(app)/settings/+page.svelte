@@ -14,6 +14,8 @@
 	let { data } = $props();
 	let editProfile = $state(false);
 	let editPassword = $state(false);
+
+	let activePlan = $derived(data.plans.find((plan) => plan.supabasePlanId == data.usersPlanId));
 </script>
 
 <Seo pageSeo={data.seo} />
@@ -84,6 +86,24 @@
 		</TitleWrapper>
 		<Password bind:edit={editPassword} editPwForm={data.editPasswordForm} action="?/changepw" />
 	</article>
+</FadeInWrapper>
+
+<FadeInWrapper class="section-spacing container" tag="section">
+	<article class="grid-content grid-spacing">
+		<TitleWrapper tag="h1">
+			{#snippet text()}
+				Your current plan
+			{/snippet}
+		</TitleWrapper>
+
+		{#if activePlan}
+			<p>Subscription: <strong>{activePlan.plan.name}</strong></p>
+		{/if}
+
+		<!-- <ProfileInfos title="Switch Theme"> -->
+		<Button variant="secondary" href="/pricing" class="max-w-max">To all plans</Button>
+	</article>
+	<!-- </ProfileInfos> -->
 </FadeInWrapper>
 
 <FadeInWrapper class="section-spacing container" tag="section">

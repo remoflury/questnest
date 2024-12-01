@@ -4,6 +4,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import type { Database } from '$lib/types/SupabaseTypes';
+import { SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
 
 const supabase: Handle = async ({ event, resolve }) => {
 	/**
@@ -15,6 +16,30 @@ const supabase: Handle = async ({ event, resolve }) => {
 		PUBLIC_SUPABASE_URL,
 		PUBLIC_SUPABASE_ANON_KEY,
 		{
+			cookies: {
+				getAll: () => event.cookies.getAll(),
+				/**
+				 * SvelteKit's cookies API requires `path` to be explicitly set in
+				 * the cookie options. Setting `path` to `/` replicates previous/
+				 * standard behavior.
+				 */
+				setAll: (cookiesToSet) => {
+					cookiesToSet.forEach(({ name, value, options }) => {
+						event.cookies.set(name, value, { ...options, path: '/' });
+					});
+				}
+			}
+		}
+	);
+
+	event.locals.adminSupabase = createServerClient<Database>(
+		PUBLIC_SUPABASE_URL,
+		SUPABASE_SERVICE_ROLE_KEY,
+		{
+			auth: {
+				autoRefreshToken: false,
+				persistSession: false
+			},
 			cookies: {
 				getAll: () => event.cookies.getAll(),
 				/**

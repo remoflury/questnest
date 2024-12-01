@@ -73,6 +73,11 @@ const seoData: (SeoProps & { uri: string })[] = [
     seoKeywords: "game, bingo, friends, group, app, challenges, imprint",
   },
   {
+    uri: "/pricing",
+    seoPageTitle: "Pricing",
+    seoPageDescription: "See all of our pricing plans and upgrade to your desire.",
+  },
+  {
     uri: "/groups",
     seoPageTitle: "Groups",
     seoRobots: ["noindex, nofollow"],
@@ -113,5 +118,5 @@ const seoData: (SeoProps & { uri: string })[] = [
     seoPageTitle: "Settings",
     seoRobots: ["noindex, nofollow"],
     seoPageDescription: "Edit your profile, change your email or password.",
-  },
+  }
 ]
