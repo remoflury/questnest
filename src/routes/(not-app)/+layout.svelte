@@ -3,11 +3,8 @@
 	import FooterLoggedOut from '$lib/components/footer/footerLoggedOut.svelte';
 	import NavLoggedOut from '$lib/components/navigation/navLoggedOut.svelte';
 	import DesignElement from '$lib/components/ui/designElements/designElement.svelte';
-	import DevPopUp from '$lib/components/general/devPopUp.svelte';
 
 	let { children } = $props();
-
-	let showDevPopUp = $state(true);
 </script>
 
 <NavLoggedOut />
@@ -17,5 +14,3 @@
 <FooterLoggedOut />
 
 <DesignElement />
-
-<DevPopUp bind:open={showDevPopUp} />

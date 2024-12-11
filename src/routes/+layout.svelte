@@ -5,10 +5,12 @@
 	import { Toaster } from '$lib/components/ui/sonner';
 	import PageLoader from '$lib/components/general/pageLoader.svelte';
 	import { ModeWatcher } from 'mode-watcher';
+	import DevPopUp from '$lib/components/general/devPopUp.svelte';
 
 	let { children, data } = $props();
 	let supabase = $state(data.supabase);
 	let session = $state(data.session);
+	let showDevPopUp = $state(true);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -25,3 +27,5 @@
 <ModeWatcher />
 <PageLoader />
 {@render children()}
+
+<DevPopUp bind:open={showDevPopUp} />
