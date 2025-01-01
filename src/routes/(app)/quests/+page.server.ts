@@ -80,7 +80,9 @@ export const actions: Actions = {
 
 		if (insertErr) {
 			console.error(insertErr);
-			return message(form, 'Something went wrong. Try again later.', { status: 500 });
+			const errorCodes = ["P0001", "P0002", "P0003"]
+			const errorMsg = errorCodes.includes(insertErr.code) ? insertErr.message : 'Something went wrong. Try again later.'
+			return message(form, errorMsg, { status: 500 });
 		}
 
 		redirect(301, `/quests/${insertData[0].id}`);
