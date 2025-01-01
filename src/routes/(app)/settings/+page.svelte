@@ -67,7 +67,7 @@
 			action="?/editprofile"
 		/>
 
-		<TitleWrapper class="mt-4">
+		<TitleWrapper class="mb-0 mt-4">
 			{#snippet text()}
 				Password
 			{/snippet}
