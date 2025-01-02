@@ -23,6 +23,8 @@
 	const renderPrice = (price: number | null, currency: string): string => {
 		return `${price ? price / 100 : 0} ${currency.toLocaleUpperCase()}`;
 	};
+
+	$inspect(isFreePlan);
 </script>
 
 <Card.Root class="w-full {!isFreePlan ? 'border-primary' : ''}">
@@ -42,7 +44,7 @@
 			>
 				Currently active
 			</Button>
-		{:else if $page.data.session && usersPlanId != planId}
+		{:else if $page.data.session && usersPlanId != planId && !isFreePlan}
 			<SelectPricingPlanForm data={form} {action} {planId} />
 		{:else if !$page.data.session}
 			<Button title="Sign in to get plan" aria-label="Sign in to get plan" href="/signin">
