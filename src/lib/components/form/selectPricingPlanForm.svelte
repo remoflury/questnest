@@ -1,10 +1,6 @@
 <script lang="ts">
-	import {
-		selectPricingPlanSchema,
-		type SelectPricingPlanSchema
-	} from '$lib/validation/stripeSchema';
+	import { type SelectPricingPlanSchema } from '$lib/validation/stripeSchema';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 	import * as Form from '$lib/components/ui/form/index.js';
 
