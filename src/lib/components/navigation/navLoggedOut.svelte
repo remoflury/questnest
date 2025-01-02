@@ -53,7 +53,7 @@
 
 <Sheet.Root bind:open>
 	<Sheet.Content class="w-full sm:w-3/4">
-		<Sheet.Header class="space-y-8 text-left">
+		<Sheet.Header class="space-y-4 text-left">
 			{@render homeLink('max-w-[2rem]')}
 
 			<Sheet.Title hidden>Menu</Sheet.Title>
@@ -87,7 +87,7 @@
 							<Button href={item.href} variant="link" class="px-0">{item.label}</Button>
 						</li>
 					{/each}
-					<li class="mt-4 flex flex-wrap items-center gap-x-8 gap-y-2">
+					<li class="flex flex-wrap items-center gap-x-8 gap-y-2 pt-6">
 						<Button href="/quests" title="to the app" class="max-w-max" data-testid="nav-app-btn">
 							Go To App
 						</Button>
