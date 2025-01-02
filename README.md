@@ -48,7 +48,7 @@ stripe login
 
 Then forward each event:
 ```shell
-stripe listen --forward-to localhost:5173/api/stripe-webhook
+stripe listen --forward-to localhost:5173/api/stripe-webhook/redirect
 ```
 
 Optionally, you can trigger events with the stripe cli, e.g. when a product is updated:

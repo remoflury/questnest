@@ -10,9 +10,18 @@
 		tag?: HeadingTypes;
 		class?: string;
 		icon?: Snippet;
+		iconWrapperClass?: string;
 		goBackUri?: string;
 	};
-	let { text, tag = 'h2', class: className = '', icon, goBackUri, ...restProps }: Props = $props();
+	let {
+		text,
+		tag = 'h2',
+		class: className = '',
+		icon,
+		goBackUri,
+		iconWrapperClass = '',
+		...restProps
+	}: Props = $props();
 </script>
 
 <svelte:element
@@ -27,11 +36,7 @@
 			<ChevronLeft class="stroke-primary dark:stroke-foreground" />
 		</a>
 	{/if}
-	<span
-		class={cn({
-			'flex w-full items-center justify-between gap-x-4': icon
-		})}
-	>
+	<span class={cn(iconWrapperClass, { 'flex w-full items-center justify-between gap-x-4': icon })}>
 		{@render text()}
 		{@render icon?.()}
 	</span>

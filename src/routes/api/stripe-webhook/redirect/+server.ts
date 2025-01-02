@@ -1,6 +1,6 @@
-import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import type Stripe from "stripe";
+import { json } from "@sveltejs/kit";
 import { isEventTypeValid } from "$lib/server/stripeData";
 
 export const POST: RequestHandler = async ({ fetch, request, url }) => {
@@ -22,6 +22,7 @@ export const POST: RequestHandler = async ({ fetch, request, url }) => {
     | Stripe.CheckoutSessionCompletedEvent
 
 
+  // redirect depending on event type
   const fetchForRedirect = async (path: string) => {
     try {
       const res = await fetch(path, {
@@ -37,7 +38,6 @@ export const POST: RequestHandler = async ({ fetch, request, url }) => {
           'accept-encoding': 'gzip'
         }
       })
-      // 'content-length': '3162',
       await res.json()
     } catch(error) {
       return json(error, { status: 500 })
