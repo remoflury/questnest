@@ -1,4 +1,5 @@
 <script lang="ts">
+	import DeleteQuestboardForm from '$lib/components/form/deleteQuestboardForm.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import Seo from '$lib/components/general/seo.svelte';
 	import TitleWrapper from '$lib/components/general/titleWrapper.svelte';
@@ -6,9 +7,11 @@
 	import ResultsOtherGroupmembers from '$lib/components/quest/resultsOtherGroupmembers.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { Edit } from 'lucide-svelte';
+	import { Edit, Trash } from 'lucide-svelte';
 
 	let { data } = $props();
+
+	let showDeleteDialog = $state(false);
 </script>
 
 <Seo pageSeo={data.seo} />
@@ -20,18 +23,29 @@
 				{data.questboard.name}
 			{/snippet}
 			{#snippet icon()}
-				{#if data.questboard.quest.length}
+				<div class="flex gap-x-4">
 					<Button
-						class="!aspect-square p-2"
-						title="edit quest"
-						aria-label="edit quest"
-						variant="secondary"
-						href={`/quests/${data.questboard.id}/edit`}
-						data-testid="editquest-btn"
+						title="delete questboard"
+						aria-label="delete questbaord"
+						class="!aspect-square p-2 "
+						variant="outline"
+						onclick={() => (showDeleteDialog = true)}
 					>
-						<Edit class="stroke-primary dark:stroke-foreground" />
+						<Trash />
 					</Button>
-				{/if}
+					{#if data.questboard.quest.length}
+						<Button
+							class="!aspect-square p-2"
+							title="edit quest"
+							aria-label="edit quest"
+							variant="secondary"
+							href={`/quests/${data.questboard.id}/edit`}
+							data-testid="editquest-btn"
+						>
+							<Edit class="stroke-primary dark:stroke-foreground" />
+						</Button>
+					{/if}
+				</div>
 			{/snippet}
 		</TitleWrapper>
 		<Badge class="max-w-max text-sm font-normal" variant="outline"
@@ -76,3 +90,9 @@
 		</article>
 	</FadeInWrapper>
 {/if}
+
+<DeleteQuestboardForm
+	data={data.deleteQuestboardForm}
+	action="?/deletequestboard"
+	bind:showDialog={showDeleteDialog}
+/>
