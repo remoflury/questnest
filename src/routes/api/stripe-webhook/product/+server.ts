@@ -35,7 +35,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
         .from('plan')
         .insert({
           stripe_product_id: typedBody.data.object.id,
-          stripe_price_id: typedBody.data.object.id,
+          stripe_price_id: typedBody.data.object.default_price,
           active: typedBody.data.object.active,
         })
 
