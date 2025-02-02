@@ -79,7 +79,7 @@ export const actions: Actions = {
 			.select('id');
 
 		if (insertErr) {
-			console.error(insertErr);
+			console.error({insertErr});
 			const errorCodes = ["P0001", "P0002", "P0003"]
 			const errorMsg = errorCodes.includes(insertErr.code) ? insertErr.message : 'Something went wrong. Try again later.'
 			return message(form, errorMsg, { status: 500 });
