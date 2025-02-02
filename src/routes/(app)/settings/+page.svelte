@@ -16,6 +16,9 @@
 	let editPassword = $state(false);
 
 	let activePlan = $derived(data.plans.find((plan) => plan.supabasePlanId == data.usersPlanId));
+
+	// $inspect(data.plans);
+	// $inspect(data.usersPlanId);
 </script>
 
 <Seo pageSeo={data.seo} />

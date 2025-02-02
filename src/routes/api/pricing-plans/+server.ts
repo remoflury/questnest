@@ -41,6 +41,7 @@ export const GET: RequestHandler = async ({ locals: { supabase }}) => {
           plan
         )
       `)
+    .eq('active', true)
     .returns<(Pick<Tables<"plan">, 'id' | 'stripe_price_id'> & { user_plan: Pick<Tables<"user_plan">, "plan">[] })[]>()
 
     if (planErr) {
@@ -52,7 +53,7 @@ export const GET: RequestHandler = async ({ locals: { supabase }}) => {
   const mergedPlans: PricingPlan[] = plans.map(plan => {
     // Find the price that matches the plan's default_price
     const matchingPrice = prices.find(price => price.id === plan.default_price)!;
-    const matchingSbId = planData!.find(id => id.stripe_price_id === plan.default_price)!
+    const matchingSbId = planData!.find(id => id.stripe_price_id === plan.default_price)!;
     
     return {
       supabasePlanId: matchingSbId.id,
