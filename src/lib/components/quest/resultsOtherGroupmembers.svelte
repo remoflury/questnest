@@ -46,8 +46,8 @@
 {:then { resultsPerUser, allQuestIds }}
 	<article class="grid-spacing grid grid-cols-4">
 		{#if countOtherMembers > 0}
-			<div class="col-span-2 flex items-start gap-x-4">
-				{#each resultsPerUser as user}
+			{#each resultsPerUser as user}
+				<div class="col-span-2 flex items-start gap-x-4">
 					<p class="">
 						{user.username}
 						<Score score={user.questIdsCompleted.length} />
@@ -63,8 +63,8 @@
 							></span>
 						{/each}
 					</div>
-				{/each}
-			</div>
+				</div>
+			{/each}
 		{:else}
 			<p>No users in this group.</p>
 		{/if}
