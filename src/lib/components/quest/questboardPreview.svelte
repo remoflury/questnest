@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Tables } from '$lib/types/SupabaseTypes';
-	import Badge from '../ui/badge/badge.svelte';
 	import * as Card from '../ui/card';
 
 	type Props = {

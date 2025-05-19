@@ -20,6 +20,7 @@ export default ts.config(
 	},
 	{
 		files: ['**/*.svelte'],
+		ignores: ['playwright-report/**', '.vercel/**'],
 
 		languageOptions: {
 			parserOptions: {

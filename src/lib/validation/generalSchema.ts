@@ -1,5 +1,9 @@
-import { ACCEPTED_IMAGE_TYPES, MAX_IMG_FILE_SIZE_IN_BYTES, QUESTS_PER_BOARD } from "$lib/utils/constants";
-import { z } from "zod";
+import {
+	ACCEPTED_IMAGE_TYPES,
+	MAX_IMG_FILE_SIZE_IN_BYTES,
+	QUESTS_PER_BOARD
+} from '$lib/utils/constants';
+import { z } from 'zod';
 
 export const imageSchema = z.object({
 	type: z.enum(ACCEPTED_IMAGE_TYPES, {
@@ -30,7 +34,10 @@ export const passwordConfirmSchema = z
 	.string({ required_error: 'Password confirm is required.' })
 	.min(6, { message: 'Password confirm must contain at least 6 characters.' });
 
-export const groupIdSchema = z.number({ required_error: 'A Group ID is required' }).int().positive();
+export const groupIdSchema = z
+	.number({ required_error: 'A Group ID is required' })
+	.int()
+	.positive();
 
 export const usernameSchema = z
 	.string({ required_error: 'Username is required.' })
@@ -38,27 +45,27 @@ export const usernameSchema = z
 	.max(50, { message: 'Username can not contain more than 50 characters.' })
 	.trim();
 
-
-export const questboardNameSchema =	z
-		.string({ required_error: 'A name is required' })
-		.min(2, { message: 'Name must contain at least 2 characters.' })
-		.max(30, { message: 'Name can not contain more than 30 characters.' })
-		.trim()
+export const questboardNameSchema = z
+	.string({ required_error: 'A name is required' })
+	.min(2, { message: 'Name must contain at least 2 characters.' })
+	.max(30, { message: 'Name can not contain more than 30 characters.' })
+	.trim();
 
 export const questboardDescriptionSchema = z
-		.string()
-		.min(5, { message: 'Description must contain at least 5 characters.' })
-		.max(100, { message: 'Description can not contain more than 100 characters.' })
-		.trim()
-		.optional()
+	.string()
+	.min(5, { message: 'Description must contain at least 5 characters.' })
+	.max(100, { message: 'Description can not contain more than 100 characters.' })
+	.trim()
+	.optional();
 
-export const questsSchema = z.object({
-	id: z.number({ required_error: 'ID is required' }).int().positive().optional(),
-	text: z
-		.string({ required_error: 'Text is required.' })
-		.min(2, { message: 'Text must contain at least 2 characters.' })
-		.max(50, { message: 'Text can not contain more than 50 characters.' })
-		.trim()
+export const questsSchema = z
+	.object({
+		id: z.number({ required_error: 'ID is required' }).int().positive().optional(),
+		text: z
+			.string({ required_error: 'Text is required.' })
+			.min(2, { message: 'Text must contain at least 2 characters.' })
+			.max(50, { message: 'Text can not contain more than 50 characters.' })
+			.trim()
 	})
 	.array()
-	.min(QUESTS_PER_BOARD, { message: `Must have ${QUESTS_PER_BOARD} quests.` })
+	.min(QUESTS_PER_BOARD, { message: `Must have ${QUESTS_PER_BOARD} quests.` });

@@ -7,4 +7,4 @@ export const menu = writable({
 
 export const footer = writable({
 	footerHeight: 0
-})
+});

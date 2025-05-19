@@ -1,6 +1,5 @@
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import type { CustomFileProps } from '$lib/types/GeneralTypes';
-import type { SupabaseClient } from '@supabase/supabase-js';
 
 export const convertBlobToCustomFileClientSide = async (
 	blob: Blob,
@@ -41,9 +40,9 @@ export const getPublicSbUrl = (
 
 	// return data.publicUrl;
 
-	let url = `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketname}/${fullPath}`
+	let url = `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketname}/${fullPath}`;
 
-	if (transform) url = `${url}?width=${transform.width}&height=${transform.height}`
+	if (transform) url = `${url}?width=${transform.width}&height=${transform.height}`;
 
-	return url
+	return url;
 };

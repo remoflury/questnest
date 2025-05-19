@@ -4,7 +4,9 @@
 	import { onMount } from 'svelte';
 
 	type Props = HTMLAttributes<HTMLElement> & {
+		// eslint-disable-next-line
 		tag?: keyof HTMLElementTagNameMap;
+		// eslint-disable-next-line
 		options?: IntersectionObserverInit;
 		delayInMs?: number;
 		href?: string;

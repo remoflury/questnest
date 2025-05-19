@@ -74,7 +74,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		},
 		addUserToGroupForm,
 		removeUserFromGroupForm,
-		seo: getSeo("/groups/[id]", groupData.name, `All about your questnest group ${groupData.name}.`)
+		seo: getSeo('/groups/[id]', groupData.name, `All about your questnest group ${groupData.name}.`)
 	};
 };
 

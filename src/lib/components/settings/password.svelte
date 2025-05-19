@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Tables } from '$lib/types/SupabaseTypes';
 	import type { ChangePwSchema } from '$lib/validation/schema';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import ProfileInfos from './profileInfos.svelte';

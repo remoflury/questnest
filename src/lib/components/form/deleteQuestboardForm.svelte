@@ -23,7 +23,7 @@
 		}
 	});
 
-	let { form: formData, enhance, delayed, constraints } = form;
+	let { enhance, delayed } = form;
 </script>
 
 <AlertDialog.Root bind:open={showDialog}>

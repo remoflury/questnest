@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import RemoveFromGroup from '$lib/components/form/removeFromGroup.svelte';
 	import SearchPersons from '$lib/components/form/searchPersons.svelte';
 	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
 	import Seo from '$lib/components/general/seo.svelte';
@@ -9,15 +8,14 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { X } from 'lucide-svelte';
 
-	type User = {
-		id: string;
-		username: string;
-	};
+	// type User = {
+	// 	id: string;
+	// 	username: string;
+	// };
 	let { data } = $props();
-	let open = $state(false);
-	let userToRemove: User | null = $state(null);
+	// let open = $state(false);
+	// let userToRemove: User | null = $state(null);
 
 	let userIdsOfGroup = $derived.by(() =>
 		data.group.users.map((user) => {
@@ -25,10 +23,10 @@
 		})
 	);
 
-	const setUser = (user: User | null) => {
-		userToRemove = user;
-		open = !open;
-	};
+	// const setUser = (user: User | null) => {
+	// 	userToRemove = user;
+	// 	open = !open;
+	// };
 </script>
 
 <Seo pageSeo={data.seo} />

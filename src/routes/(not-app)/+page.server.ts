@@ -3,10 +3,9 @@ import type { Actions, PageServerLoad } from './$types';
 import { getSeo } from '$lib/server/data';
 
 export const load: PageServerLoad = async () => {
-
 	return {
-		seo: getSeo("home")
-	}
+		seo: getSeo('home')
+	};
 };
 
 export const actions: Actions = {

@@ -1,8 +1,8 @@
 <script>
-	import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
-	import BlurThing from './blurThing.svelte';
-	import Cubicle from './cubicle.svelte';
-	import PoppingCubes from './poppingCubes.svelte';
+	// import FadeInWrapper from '$lib/components/general/FadeInWrapper.svelte';
+	// import BlurThing from './blurThing.svelte';
+	// import Cubicle from './cubicle.svelte';
+	// import PoppingCubes from './poppingCubes.svelte';
 </script>
 
 <!-- <span class="pointer-events-none absolute inset-0 -z-50 m-2" role="presentation">

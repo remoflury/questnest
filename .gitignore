@@ -26,3 +26,4 @@ vite.config.ts.timestamp-*
 # Playwright
 /playwright/.cache/
 /playwright/.auth
+/playwright-report/*

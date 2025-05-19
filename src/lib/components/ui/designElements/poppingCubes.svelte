@@ -2,7 +2,6 @@
 	import { TRANSITION_CONFIG } from '$lib/utils/constants';
 	import { cn } from '$lib/utils/utils';
 	import { onMount } from 'svelte';
-	import { flip } from 'svelte/animate';
 	import { scale } from 'svelte/transition';
 
 	type Props = {

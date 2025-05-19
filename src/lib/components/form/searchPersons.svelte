@@ -31,7 +31,11 @@
 	const handleInput = (e: Event) => {
 		const value = (e.target as HTMLInputElement).value;
 		query = value; // Update query
-		query ? (isLoading = true) : (isLoading = false);
+		if (query) {
+			isLoading = true;
+		} else {
+			isLoading = false;
+		}
 		debounceSearch(value); // Trigger debounced fetch
 	};
 

@@ -36,7 +36,9 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 			.select('quest, user')
 			.in('quest', allQuestIds)
 			.neq('user', session.user.id)
-			.returns<({ quest: number } & { user: Pick<Tables<'user'>, 'id' | 'username' | 'score'> })[]>();
+			.returns<
+				({ quest: number } & { user: Pick<Tables<'user'>, 'id' | 'username' | 'score'> })[]
+			>();
 
 	if (questsOtherUsersCompletedErr) {
 		console.error({ questsOtherUsersCompletedErr });
@@ -44,42 +46,44 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 	}
 
 	// select all other users of the questboard
-	const { data: questboardOtherUsers, error: questboardOtherUsersErr} = await supabase
-	.from('questboard_users')
-  .select('user_id, username, score')
-  .eq('questboard_id', questboardId)
-	.neq('user_id', session.user.id)
+	const { data: questboardOtherUsers, error: questboardOtherUsersErr } = await supabase
+		.from('questboard_users')
+		.select('user_id, username, score')
+		.eq('questboard_id', questboardId)
+		.neq('user_id', session.user.id);
 
 	if (questboardOtherUsersErr) {
 		console.error({ questboardOtherUsersErr });
 		return genApiRes(null, questboardOtherUsersErr.message, 500);
 	}
 	// Grouping logic
-const groupedByUser = questboardOtherUsers.reduce(
-  (acc, userInfo) => {
-    const { user_id: id, username, score } = userInfo;
+	const groupedByUser = questboardOtherUsers.reduce(
+		(acc, userInfo) => {
+			const { user_id: id, username, score } = userInfo;
 
-		// 		// Find user information in questboardOtherUsers
+			// 		// Find user information in questboardOtherUsers
 			// const totalScore = questsOtherUsersCompletedData.find(
 			// 	(u) => u.user.id == id
 			// );
 
+			// Initialize the user record
+			acc[id] = { id, username, totalScore: score, questIdsCompleted: [] };
 
-    // Initialize the user record
-    acc[id] = { id, username, totalScore: score, questIdsCompleted: [] };
+			// Find quests completed by this user
+			const completedQuests = questsOtherUsersCompletedData
+				.filter((questData) => questData.user === id)
+				.map((questData) => questData.quest);
 
-    // Find quests completed by this user
-    const completedQuests = questsOtherUsersCompletedData
-      .filter((questData) => questData.user === id)
-      .map((questData) => questData.quest);
+			// Add quests to the user's questIdsCompleted array
+			acc[id].questIdsCompleted = completedQuests;
 
-    // Add quests to the user's questIdsCompleted array
-    acc[id].questIdsCompleted = completedQuests;
-
-    return acc;
-  },
-  {} as Record<string, { id: string; username: string; totalScore: number; questIdsCompleted: number[] }>
-);
+			return acc;
+		},
+		{} as Record<
+			string,
+			{ id: string; username: string; totalScore: number; questIdsCompleted: number[] }
+		>
+	);
 
 	// Convert the result to the desired array format
 	const result = Object.values(groupedByUser);

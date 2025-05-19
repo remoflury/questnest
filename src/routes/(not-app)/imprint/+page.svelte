@@ -46,9 +46,9 @@
 	<article>
 		{@render title('Disclaimer for content and links')}
 		<p>
-			References and links to third-party websites are outside our area of ​​responsibility. We
-			reject any responsibility for such websites. Access and use of such websites is at the user's
-			own risk.
+			References and links to third-party websites are outside our area of responsibility. We reject
+			any responsibility for such websites. Access and use of such websites is at the user's own
+			risk.
 		</p>
 	</article>
 </FadeInWrapper>

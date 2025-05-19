@@ -4,7 +4,7 @@ export type CustomFileProps<Type extends string = string> = {
 	type: Type;
 };
 
-export type HeadingTypes = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' 
+export type HeadingTypes = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export type HttpStatus =
 	| 200
@@ -68,4 +68,4 @@ export type SeoProps = {
 	ogDescription?: string;
 	ogImage?: string;
 	ogUrl?: string;
-}
+};

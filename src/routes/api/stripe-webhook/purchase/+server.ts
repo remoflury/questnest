@@ -1,69 +1,67 @@
-import type { RequestHandler } from "./$types";
-import {type Stripe as StripeProps, Stripe } from "stripe";
-import { json } from "@sveltejs/kit";
-import { STRIPE_SECRET_KEY } from "$env/static/private";
-import { isEventOfDesiredType } from "$lib/server/stripeData";
+import type { RequestHandler } from './$types';
+import { type Stripe as StripeProps, Stripe } from 'stripe';
+import { json } from '@sveltejs/kit';
+import { STRIPE_SECRET_KEY } from '$env/static/private';
+import { isEventOfDesiredType } from '$lib/server/stripeData';
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  typescript: true
+	typescript: true
 });
 
 export const POST: RequestHandler = async ({ request, locals: { adminSupabase } }) => {
+	const stripeSignature = request.headers.get('stripe-signature');
 
-  const stripeSignature = request.headers.get('stripe-signature');
+	if (!stripeSignature) {
+		return json('Signature failed.', { status: 401 });
+	}
 
-  if (!stripeSignature) {
-    return json("Signature failed.", {status: 401})
-  }
+	// // TODO: verify signature
+	const body: StripeProps.Event = await request.json();
 
-  // // TODO: verify signature
-  const body: StripeProps.Event = await request.json()
+	console.log('purchase', body);
 
-  console.log("purchase", body)
-  
-  if (!body || !body.id || !isEventOfDesiredType("purchase", body.type)) {
-    return json("Request failed.", { status: 403}) 
-  }
+	if (!body || !body.id || !isEventOfDesiredType('purchase', body.type)) {
+		return json('Request failed.', { status: 403 });
+	}
 
-  const typedBody = body as StripeProps.CheckoutSessionCompletedEvent
+	const typedBody = body as StripeProps.CheckoutSessionCompletedEvent;
 
-  // get the associated productId
-  let productData: StripeProps.LineItem
-  try {
-    const lineItems = await stripe.checkout.sessions.listLineItems(typedBody.data.object.id);
-    productData = lineItems.data[0]
-  } catch(error) {
-    console.error({ error })
-    return json("Something went wrong", {status: 403})
-  }
+	// get the associated productId
+	let productData: StripeProps.LineItem;
+	try {
+		const lineItems = await stripe.checkout.sessions.listLineItems(typedBody.data.object.id);
+		productData = lineItems.data[0];
+	} catch (error) {
+		console.error({ error });
+		return json('Something went wrong', { status: 403 });
+	}
 
-  // get id of the purchased plan
-  const { data: planData, error: planErr } = await adminSupabase
-    .from('plan')
-    .select('id')
-    .eq('stripe_product_id', productData.price?.product)
+	// get id of the purchased plan
+	const { data: planData, error: planErr } = await adminSupabase
+		.from('plan')
+		.select('id')
+		.eq('stripe_product_id', productData.price?.product);
 
-  if (planErr) {
-    console.error({planErr})
-    return json(planErr.message, { status: 500})
-  }
+	if (planErr) {
+		console.error({ planErr });
+		return json(planErr.message, { status: 500 });
+	}
 
-  // update users plan
-  const { error: updateErr } = await adminSupabase
-    .from('user_plan')
-    .update({
-      plan: planData[0].id
-    })
-    .eq("user", typedBody.data.object.metadata!.userId)
+	// update users plan
+	const { error: updateErr } = await adminSupabase
+		.from('user_plan')
+		.update({
+			plan: planData[0].id
+		})
+		.eq('user', typedBody.data.object.metadata!.userId);
 
-    
-  if (updateErr) {
-    console.error({ updateErr })
-    return json(updateErr.message, { status: 500 })
-  }
-  
-  return json("Purchase Webhook successful.");
-}
+	if (updateErr) {
+		console.error({ updateErr });
+		return json(updateErr.message, { status: 500 });
+	}
+
+	return json('Purchase Webhook successful.');
+};
 
 // example body
 // {

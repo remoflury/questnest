@@ -56,6 +56,7 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
+	<!-- eslint-disable-next-line -->
 	{#each Array.from({ length: QUESTS_PER_BOARD }) as _, i}
 		<Form.Field {form} name="quests">
 			<Form.Control>

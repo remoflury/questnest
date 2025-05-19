@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HTMLInputAttributes, HTMLInputTypeAttribute } from 'svelte/elements';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { WithElementRef } from 'bits-ui';
 	import { cn } from '$lib/utils/utils';
 	import { Eye, EyeClosed } from 'lucide-svelte';
@@ -14,7 +14,11 @@
 	let type: 'password' | 'text' = $state('password');
 	let isHidden = $derived(type == 'password');
 	const toggle = () => {
-		type == 'password' ? (type = 'text') : (type = 'password');
+		if (type == 'password') {
+			type = 'text';
+		} else {
+			type = 'password';
+		}
 	};
 </script>
 

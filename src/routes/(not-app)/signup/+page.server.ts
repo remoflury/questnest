@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	}
 	return {
 		signUpForm: await superValidate(zod(signupSchema)),
-		seo: getSeo("/signup")
+		seo: getSeo('/signup')
 	};
 };
 
@@ -49,7 +49,7 @@ export const actions: Actions = {
 			password: form.data.password
 		});
 		if (signupErr) {
-			console.error({signupErr});
+			console.error({ signupErr });
 			if (signupErr?.code == 'user_already_exists') {
 				setError(form, 'email', 'User with this email already exists.');
 				return message(form, 'User with this email already exists.', { status: 400 });

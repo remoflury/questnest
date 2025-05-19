@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	return {
 		addGroupForm,
 		groups: groupData,
-		seo: getSeo("/groups")
+		seo: getSeo('/groups')
 	};
 };
 
@@ -40,12 +40,10 @@ export const actions: Actions = {
 			return message(form, 'Something went wrong. Try again.', { status: 400 });
 		}
 
-		const { error: groupErr } = await supabase
-			.from('group')
-			.insert({ name: form.data.name })
+		const { error: groupErr } = await supabase.from('group').insert({ name: form.data.name });
 
 		if (groupErr) {
-			console.error({groupErr});
+			console.error({ groupErr });
 			return message(form, 'Something went wrong. Try again.', { status: 500 });
 		}
 
@@ -53,12 +51,12 @@ export const actions: Actions = {
 			.from('group')
 			.select('id')
 			.order('id', { ascending: false })
-			.limit(1)
+			.limit(1);
 
-			if (selectErr) {
-				console.error({selectErr});
-				return message(form, 'Something went wrong. Try again.', { status: 500 });
-			}
+		if (selectErr) {
+			console.error({ selectErr });
+			return message(form, 'Something went wrong. Try again.', { status: 500 });
+		}
 
 		// n:m relationship of current user and newly created group will be inserted via trigger function in supabase
 		// ========

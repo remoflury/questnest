@@ -1,5 +1,15 @@
 import { z } from 'zod';
-import { emailSchema, groupIdSchema, imageSchema, passwordConfirmSchema, passwordSchema, questboardDescriptionSchema, questboardNameSchema, questsSchema, usernameSchema } from './generalSchema';
+import {
+	emailSchema,
+	groupIdSchema,
+	imageSchema,
+	passwordConfirmSchema,
+	passwordSchema,
+	questboardDescriptionSchema,
+	questboardNameSchema,
+	questsSchema,
+	usernameSchema
+} from './generalSchema';
 
 export const signupSchema = z
 	.object({
@@ -74,14 +84,13 @@ export const createQuestsSchema = z.object({
 export type CreateQuestsSchema = typeof createQuestsSchema;
 
 export const editQuestsSchema = z.object({
-	questboardId: z
-		.number({ required_error: 'Questboard ID is required' }).int().positive(),
+	questboardId: z.number({ required_error: 'Questboard ID is required' }).int().positive(),
 	name: questboardNameSchema,
 	description: questboardDescriptionSchema,
 	quests: questsSchema
-})
+});
 
-export type EditQuestsSchema = typeof editQuestsSchema
+export type EditQuestsSchema = typeof editQuestsSchema;
 
 export const toggleQuestSchema = z.object({
 	id: z.number({ required_error: 'ID is required' }).int().positive()
@@ -92,7 +101,7 @@ export type ToggleQuestSchema = typeof toggleQuestSchema;
 export const editProfileSchema = z.object({
 	email: emailSchema,
 	username: usernameSchema,
-	avatar: imageSchema.optional(),
+	avatar: imageSchema.optional()
 });
 
 export type EditProfileSchema = typeof editProfileSchema;
@@ -136,10 +145,7 @@ export const changePwSchema = z
 export type ChangePwSchema = typeof changePwSchema;
 
 export const deleteQuestboardSchema = z.object({
-	questboardId: z
-		.number({ required_error: 'Questboard ID is required' })
-		.int()
-		.positive(),
-})
+	questboardId: z.number({ required_error: 'Questboard ID is required' }).int().positive()
+});
 
-export type DeleteQuestboardSchema = typeof deleteQuestboardSchema
+export type DeleteQuestboardSchema = typeof deleteQuestboardSchema;

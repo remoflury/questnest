@@ -36,6 +36,7 @@
 
 {#await fetchResults()}
 	<div class="grid-spacing grid grid-cols-4" aria-busy="true">
+		<!-- eslint-disable-next-line -->
 		{#each Array.from({ length: countOtherMembers }) as _}
 			<div class="col-span-2 flex items-start gap-x-4" aria-busy="true" role="presentation">
 				<Skeleton class="h-4 w-20" />

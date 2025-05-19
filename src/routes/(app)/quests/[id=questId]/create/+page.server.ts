@@ -52,7 +52,7 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 	return {
 		questboard: questboardData,
 		createQuestsForm,
-		seo: getSeo("/quests/[id]/create")
+		seo: getSeo('/quests/[id]/create')
 	};
 };
 
@@ -60,7 +60,7 @@ export const actions: Actions = {
 	createquests: async ({ request, locals: { safeGetSession, supabase } }) => {
 		const { session } = await safeGetSession();
 		if (!session) {
-			console.error("not logged in")
+			console.error('not logged in');
 			return fail(401);
 		}
 

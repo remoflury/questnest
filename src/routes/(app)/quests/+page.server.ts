@@ -52,7 +52,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		addQuestboardForm,
 		groupsOfUser,
 		questboards,
-		seo: getSeo("/quests")
+		seo: getSeo('/quests')
 	};
 };
 
@@ -79,9 +79,11 @@ export const actions: Actions = {
 			.select('id');
 
 		if (insertErr) {
-			console.error({insertErr});
-			const errorCodes = ["P0001", "P0002", "P0003"]
-			const errorMsg = errorCodes.includes(insertErr.code) ? insertErr.message : 'Something went wrong. Try again later.'
+			console.error({ insertErr });
+			const errorCodes = ['P0001', 'P0002', 'P0003'];
+			const errorMsg = errorCodes.includes(insertErr.code)
+				? insertErr.message
+				: 'Something went wrong. Try again later.';
 			return message(form, errorMsg, { status: 500 });
 		}
 

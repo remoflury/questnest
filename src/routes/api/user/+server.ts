@@ -9,9 +9,7 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 
 	const q = url.searchParams.get('q') || null;
 
-	const sbQuery = supabase
-		.from('user')
-		.select('*');
+	const sbQuery = supabase.from('user').select('*');
 
 	if (q) {
 		sbQuery.or(`username.ilike.%${q}%, email.ilike.%${q}%`);
@@ -23,5 +21,5 @@ export const GET: RequestHandler = async ({ locals: { safeGetSession, supabase }
 		return genApiRes(undefined, usersErr.message, 500);
 	}
 
-	return genApiRes({users});
+	return genApiRes({ users });
 };

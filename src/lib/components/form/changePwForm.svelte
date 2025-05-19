@@ -3,7 +3,6 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
-	import { Input } from '$lib/components/ui/input';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import PasswordInput from '../ui/input/passwordInput.svelte';

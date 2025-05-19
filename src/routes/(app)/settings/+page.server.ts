@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ fetch, locals: { safeGetSession, su
 			.download(`${userData.avatar_path}`);
 
 		if (avatarErr) {
-			console.error({avatarErr});
+			console.error({ avatarErr });
 			return error(500);
 		}
 
@@ -46,26 +46,30 @@ export const load: PageServerLoad = async ({ fetch, locals: { safeGetSession, su
 		username: userData.username,
 		avatar: avatarBlob
 			? {
-					type: avatarBlob.type as typeof ACCEPTED_IMAGE_TYPES[number],
+					type: avatarBlob.type as (typeof ACCEPTED_IMAGE_TYPES)[number],
 					name: userData.avatar_path! as string,
 					fileBase64: encode(await avatarBlob.arrayBuffer())
 				}
-			: undefined,
-	}
+			: undefined
+	};
 
-	const getPricingPlan = async() => {
-		const res = await fetch('/api/pricing-plans')
-		const { payload, status, message }: ApiResponse<{
-			mergedPlans: PricingPlan[], 
-			usersPlanId: number
-		}> = await res.json()
+	const getPricingPlan = async () => {
+		const res = await fetch('/api/pricing-plans');
+		const {
+			payload,
+			status,
+			message
+		}: ApiResponse<{
+			mergedPlans: PricingPlan[];
+			usersPlanId: number;
+		}> = await res.json();
 
 		if (status >= 400) {
-			console.error({status, message })
-			error(status)
+			console.error({ status, message });
+			error(status);
 		}
-		return payload
-	}
+		return payload;
+	};
 
 	const [editProfileForm, editPasswordForm, pricingPlanData] = await Promise.all([
 		superValidate(populatedUserForm, zod(editProfileSchema)),
@@ -78,8 +82,8 @@ export const load: PageServerLoad = async ({ fetch, locals: { safeGetSession, su
 		editProfileForm,
 		editPasswordForm,
 		plans: pricingPlanData.mergedPlans,
-    usersPlanId: pricingPlanData.usersPlanId,
-		seo: getSeo("/settings")
+		usersPlanId: pricingPlanData.usersPlanId,
+		seo: getSeo('/settings')
 	};
 };
 
@@ -127,11 +131,11 @@ export const actions: Actions = {
 		const { data: prevAvatarData, error: prevAvatarErr } = await supabase
 			.from('user')
 			.select('avatar_path')
-			.eq('id', session.user.id)
+			.eq('id', session.user.id);
 
 		if (prevAvatarErr) {
-			console.error({ prevAvatarErr})
-			return message(form, 'Something went wrong. Try again later.', { status: 500 })
+			console.error({ prevAvatarErr });
+			return message(form, 'Something went wrong. Try again later.', { status: 500 });
 		}
 
 		// update user
@@ -145,23 +149,21 @@ export const actions: Actions = {
 
 		// delete the old avatar first
 		if (prevAvatarData.length && prevAvatarData[0].avatar_path) {
+			const { error: deleteErr } = await supabase.storage
+				.from('avatar')
+				.remove([prevAvatarData[0].avatar_path]);
 
-			const { error: deleteErr } = await supabase
-			.storage
-			.from('avatar')
-			.remove([prevAvatarData[0].avatar_path])
-			
 			if (deleteErr) {
-				console.error({deleteErr})
+				console.error({ deleteErr });
 				return message(form, 'Something went wrong. Try again later.', { status: 500 });
 			}
 		}
 
 		const createAvatarPath = (path: string | undefined | null, userId: string) => {
-			if (!path) return null
-			if (path.includes(userId)) return path
-			return `${userId}/${path}`
-		}
+			if (!path) return null;
+			if (path.includes(userId)) return path;
+			return `${userId}/${path}`;
+		};
 		const { error: userErr } = await supabase
 			.from('user')
 			.update({
@@ -176,8 +178,6 @@ export const actions: Actions = {
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
 		}
 
-		
-
 		// upload avatar
 		if (avatar) {
 			// avatar.name.includes(session.user.id) ? avatar.name.replace(`${session.user.id}/`, '') : avatar.name
@@ -189,7 +189,7 @@ export const actions: Actions = {
 				});
 
 			if (uploadErr) {
-				console.error({uploadErr});
+				console.error({ uploadErr });
 				return message(form, 'Something went wrong. Try again later.', { status: 500 });
 			}
 		}

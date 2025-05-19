@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	}
 	return {
 		signinForm: await superValidate(zod(signinSchema)),
-		seo: getSeo("/signin")
+		seo: getSeo('/signin')
 	};
 };
 

@@ -54,16 +54,14 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 
 	const [editQuestsForm, deleteQuestboardForm] = await Promise.all([
 		await superValidate(prepopulatedData, zod(editQuestsSchema)),
-		await superValidate({questboardId: parseInt(params.id)}, zod(deleteQuestboardSchema))
-	])
-
-
+		await superValidate({ questboardId: parseInt(params.id) }, zod(deleteQuestboardSchema))
+	]);
 
 	return {
 		questboard: questboardData,
 		editQuestsForm,
 		deleteQuestboardForm,
-		seo: getSeo("/quests/[id]/edit", `Edit: ${questboardData.name}`)
+		seo: getSeo('/quests/[id]/edit', `Edit: ${questboardData.name}`)
 	};
 };
 
@@ -89,10 +87,8 @@ export const actions: Actions = {
 			};
 		});
 
-		const { error: updateQuestsErr } = await supabase
-			.from('quest')
-			.upsert(updateQuestsData);
-		
+		const { error: updateQuestsErr } = await supabase.from('quest').upsert(updateQuestsData);
+
 		if (updateQuestsErr) {
 			console.error({ updateQuestsErr });
 			return message(form, 'Something went wrong. Try again later.', { status: 500 });
@@ -104,9 +100,8 @@ export const actions: Actions = {
 				name: form.data.name,
 				description: form.data.description ? form.data.description : null
 			})
-			.eq("id", form.data.questboardId)
-			.select('name, description')
-
+			.eq('id', form.data.questboardId)
+			.select('name, description');
 
 		if (updateQuestboardErr) {
 			console.error({ updateQuestboardErr });
@@ -115,15 +110,15 @@ export const actions: Actions = {
 
 		return message(form, 'Quests updated successfully.');
 	},
-	deletequestboard: async ({ request, locals: { safeGetSession, supabase }}) => {
-		const { session} = await safeGetSession()
+	deletequestboard: async ({ request, locals: { safeGetSession, supabase } }) => {
+		const { session } = await safeGetSession();
 		if (!session) {
 			return fail(401);
 		}
 
-		const form = await superValidate(request, zod(deleteQuestboardSchema))
+		const form = await superValidate(request, zod(deleteQuestboardSchema));
 
-		console.log(form)
+		console.log(form);
 		if (!form.valid) {
 			console.error(form);
 			return message(form, 'Something went wrong. Try again later.', { status: 400 });
@@ -132,13 +127,13 @@ export const actions: Actions = {
 		const { error: deleteErr } = await supabase
 			.from('questboard')
 			.delete()
-			.eq('id', form.data.questboardId)
+			.eq('id', form.data.questboardId);
 
 		if (deleteErr) {
-			console.error({deleteErr})
-			return message(form, "Something went wrong. Try again later.", {status: 500})
+			console.error({ deleteErr });
+			return message(form, 'Something went wrong. Try again later.', { status: 500 });
 		}
 
-		redirect(301, "/quests")
+		redirect(301, '/quests');
 	}
 };

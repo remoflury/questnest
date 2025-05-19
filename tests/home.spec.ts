@@ -14,8 +14,8 @@ test.describe('homepage', () => {
 
 	test('app btn', async ({ page }) => {
 		await page.goto('/');
-		await page.getByTestId("app-btn").click()
+		await page.getByTestId('app-btn').click();
 
-		await page.goto('/groups')
-	})
+		await page.goto('/groups');
+	});
 });

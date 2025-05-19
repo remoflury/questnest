@@ -6,7 +6,6 @@
 	import PageLoader from '$lib/components/general/pageLoader.svelte';
 	import { ModeWatcher } from 'mode-watcher';
 	import DevPopUp from '$lib/components/general/devPopUp.svelte';
-	import { browser } from '$app/environment';
 
 	let { children, data } = $props();
 	let supabase = $state(data.supabase);

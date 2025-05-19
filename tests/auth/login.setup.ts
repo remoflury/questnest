@@ -5,14 +5,14 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const authFile = path.join(__dirname, '../../playwright/.auth/user.json');
 
 setup('signin', async ({ page }) => {
-  // Perform authentication steps. Replace these actions with your own.
-  await page.goto('/signin')
+	// Perform authentication steps. Replace these actions with your own.
+	await page.goto('/signin');
 
-  await page.getByLabel('Email').fill(process.env.TEST_USER_EMAIL!);
-  await page.getByTestId('pw-input').fill(process.env.TEST_USER_PW!)
-  await page.getByTestId('signin-btn').click()
+	await page.getByLabel('Email').fill(process.env.TEST_USER_EMAIL!);
+	await page.getByTestId('pw-input').fill(process.env.TEST_USER_PW!);
+	await page.getByTestId('signin-btn').click();
 
-  await page.waitForURL('/quests');
+	await page.waitForURL('/quests');
 
-  await page.context().storageState({ path: authFile });
+	await page.context().storageState({ path: authFile });
 });
