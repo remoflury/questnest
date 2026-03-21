@@ -8,8 +8,8 @@
 	import DevPopUp from '$lib/components/general/devPopUp.svelte';
 
 	let { children, data } = $props();
-	let supabase = $state(data.supabase);
-	let session = $state(data.session);
+	let supabase = $derived(data.supabase);
+	let session = $derived(data.session);
 	let showDevPopUp = $state(true);
 
 	onMount(() => {

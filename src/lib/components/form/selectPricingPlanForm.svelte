@@ -12,19 +12,21 @@
 
 	let { data, action, planId }: Props = $props();
 
-	let form = superForm(data, {
-		// validators: zodClient(selectPricingPlanSchema),
-		id: crypto.randomUUID(),
-		onSubmit: ({ formData }) => {
-			formData.set('id', planId.toString());
-		},
-		onUpdate: async ({ result }) => {
-			if (result.type == 'failure') return toast.error(result.data.form.message);
-			toast.success(result.data.form.message);
-		}
-	});
+	let form = $derived(
+		superForm(data, {
+			// validators: zodClient(selectPricingPlanSchema),
+			id: crypto.randomUUID(),
+			onSubmit: ({ formData }) => {
+				formData.set('id', planId.toString());
+			},
+			onUpdate: async ({ result }) => {
+				if (result.type == 'failure') return toast.error(result.data.form.message);
+				toast.success(result.data.form.message);
+			}
+		})
+	);
 
-	let { enhance, delayed } = form;
+	let { enhance, delayed } = $derived(form);
 </script>
 
 <form method="POST" use:enhance {action}>

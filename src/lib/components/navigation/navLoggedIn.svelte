@@ -34,7 +34,7 @@
 	bind:clientHeight={navAppElemClientHeight}
 >
 	<div class="container flex items-center justify-around">
-		{#each navItems as item (crypto.randomUUID())}
+		{#each navItems as item, i (i)}
 			{@const current = $page.url.pathname.split('/')[1] === item.href.split('/')[1]}
 			<Button
 				class="aspect-square h-10 w-10 "

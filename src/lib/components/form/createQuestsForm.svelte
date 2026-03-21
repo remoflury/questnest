@@ -18,20 +18,22 @@
 
 	let { data, action, redirect, oncloseForm }: Props = $props();
 
-	let form = superForm(data, {
-		validators: zodClient(createQuestsSchema),
-		dataType: 'json',
-		taintedMessage: 'Are you sure you want to leave?',
-		onUpdate: async ({ result }) => {
-			if (result.type == 'failure') {
-				return toast.error(result.data.form.message ?? 'Something went wrong.');
+	let form = $derived(
+		superForm(data, {
+			validators: zodClient(createQuestsSchema),
+			dataType: 'json',
+			taintedMessage: 'Are you sure you want to leave?',
+			onUpdate: async ({ result }) => {
+				if (result.type == 'failure') {
+					return toast.error(result.data.form.message ?? 'Something went wrong.');
+				}
+				toast.success(result.data.form.message);
+				await goto(redirect);
 			}
-			toast.success(result.data.form.message);
-			await goto(redirect);
-		}
-	});
+		})
+	);
 
-	let { form: formData, enhance, delayed, errors, constraints } = form;
+	let { form: formData, enhance, delayed, errors, constraints } = $derived(form);
 </script>
 
 <form method="POST" use:enhance {action} class="space-y-3">

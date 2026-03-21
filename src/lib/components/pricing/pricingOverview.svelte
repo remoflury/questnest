@@ -15,7 +15,7 @@
 </script>
 
 <div class="grid-spacing grid sm:grid-cols-2">
-	{#each plans as plan (crypto.randomUUID())}
+	{#each plans as plan, i (i)}
 		<PricingCard {plan} {action} {form} {usersPlanId} />
 	{/each}
 </div>

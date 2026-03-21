@@ -14,16 +14,18 @@
 
 	let { data, action, showDialog = $bindable(false) }: Props = $props();
 
-	let form = superForm(data, {
-		validators: zodClient(deleteQuestboardSchema),
-		dataType: 'json',
-		onUpdate: async ({ result }) => {
-			if (result.type == 'failure') return toast.error(result.data.form.message);
-			toast.success(result.data.form.message);
-		}
-	});
+	let form = $derived(
+		superForm(data, {
+			validators: zodClient(deleteQuestboardSchema),
+			dataType: 'json',
+			onUpdate: async ({ result }) => {
+				if (result.type == 'failure') return toast.error(result.data.form.message);
+				toast.success(result.data.form.message);
+			}
+		})
+	);
 
-	let { enhance, delayed } = form;
+	let { enhance, delayed } = $derived(form);
 </script>
 
 <AlertDialog.Root bind:open={showDialog}>

@@ -14,16 +14,18 @@
 		action: string;
 	} = $props();
 
-	let form = superForm(data, {
-		validators: zodClient(addGroupSchema),
-		dataType: 'json',
-		onUpdate: ({ result }) => {
-			if (result.type == 'failure') return toast.error(result.data.form.message);
-			toast.success(result.data.form.message);
-		}
-	});
+	let form = $derived(
+		superForm(data, {
+			validators: zodClient(addGroupSchema),
+			dataType: 'json',
+			onUpdate: ({ result }) => {
+				if (result.type == 'failure') return toast.error(result.data.form.message);
+				toast.success(result.data.form.message);
+			}
+		})
+	);
 
-	let { form: formData, enhance, delayed, constraints } = form;
+	let { form: formData, enhance, delayed, constraints } = $derived(form);
 </script>
 
 <form method="POST" use:enhance {action}>

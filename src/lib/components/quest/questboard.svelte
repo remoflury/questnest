@@ -13,7 +13,7 @@
 </script>
 
 <article class="grid grid-cols-4">
-	{#each quests as quest, i (crypto.randomUUID())}
+	{#each quests as quest, i (quest.id)}
 		{@const completed = questIdsCompleted.includes(quest.id)}
 		<ToggleQuestForm data={formData} {action} index={i} {quest} {completed} />
 	{/each}

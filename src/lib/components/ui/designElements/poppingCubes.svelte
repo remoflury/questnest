@@ -58,7 +58,7 @@
 	data-parent
 	bind:this={ref}
 >
-	{#each squares as square (crypto.randomUUID())}
+	{#each squares as square, i (i)}
 		<!-- animate:flip={{ duration: 200 }} -->
 		<div
 			transition:scale={TRANSITION_CONFIG}

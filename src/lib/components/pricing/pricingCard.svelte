@@ -23,8 +23,6 @@
 	const renderPrice = (price: number | null, currency: string): string => {
 		return `${price ? price / 100 : 0} ${currency.toLocaleUpperCase()}`;
 	};
-
-	$inspect(isFreePlan);
 </script>
 
 <Card.Root class="w-full {!isFreePlan ? 'border-primary' : ''}">

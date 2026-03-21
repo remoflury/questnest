@@ -18,20 +18,22 @@
 
 	let { data, action, quest, completed, index }: Props = $props();
 
-	let form = superForm(data, {
-		id: crypto.randomUUID(),
-		validators: zodClient(toggleQuestSchema),
-		dataType: 'json',
-		onSubmit: () => {
-			$formData.id = quest.id;
-		},
-		onUpdate: async ({ result }) => {
-			if (result.type == 'failure') return toast.error(result.data.form.message);
-			toast.success(result.data.form.message);
-		}
-	});
+	let form = $derived(
+		superForm(data, {
+			id: crypto.randomUUID(),
+			validators: zodClient(toggleQuestSchema),
+			dataType: 'json',
+			onSubmit: () => {
+				$formData.id = quest.id;
+			},
+			onUpdate: async ({ result }) => {
+				if (result.type == 'failure') return toast.error(result.data.form.message);
+				toast.success(result.data.form.message);
+			}
+		})
+	);
 
-	let { form: formData, enhance, delayed } = form;
+	let { form: formData, enhance, delayed } = $derived(form);
 </script>
 
 <form

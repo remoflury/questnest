@@ -11,19 +11,21 @@
 
 	let { data, action }: { data: SuperValidated<Infer<SignupSchema>>; action: string } = $props();
 
-	let form = superForm(data, {
-		validators: zodClient(signupSchema),
-		dataType: 'json',
-		onUpdate: async ({ result }) => {
-			if (result.type == 'failure') return toast.error(result.data.form.message);
-			toast.success(result.data.form.message);
-			setTimeout(async () => {
-				await goto('/signin');
-			}, 1000);
-		}
-	});
+	let form = $derived(
+		superForm(data, {
+			validators: zodClient(signupSchema),
+			dataType: 'json',
+			onUpdate: async ({ result }) => {
+				if (result.type == 'failure') return toast.error(result.data.form.message);
+				toast.success(result.data.form.message);
+				setTimeout(async () => {
+					await goto('/signin');
+				}, 1000);
+			}
+		})
+	);
 
-	let { form: formData, enhance, delayed, constraints } = form;
+	let { form: formData, enhance, delayed, constraints } = $derived(form);
 </script>
 
 <form method="POST" use:enhance {action}>

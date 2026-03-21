@@ -20,19 +20,21 @@
 
 	let { user, groupId, isAlreadyInGroup, action, data }: Props = $props();
 
-	let form = superForm(data, {
-		id: crypto.randomUUID(),
-		onSubmit: ({ formData }) => {
-			formData.set('group', groupId.toString());
-			formData.set('user', user.id);
-		},
-		onUpdate: ({ result }) => {
-			if (result.type == 'failure') return toast.error(result.data.form.message);
-			toast.success(result.data.form.message);
-		}
-	});
+	let form = $derived(
+		superForm(data, {
+			id: crypto.randomUUID(),
+			onSubmit: ({ formData }) => {
+				formData.set('group', groupId.toString());
+				formData.set('user', user.id);
+			},
+			onUpdate: ({ result }) => {
+				if (result.type == 'failure') return toast.error(result.data.form.message);
+				toast.success(result.data.form.message);
+			}
+		})
+	);
 
-	let { enhance, delayed } = form;
+	let { enhance, delayed } = $derived(form);
 </script>
 
 {#snippet content(isAlreadyInGroup: boolean)}

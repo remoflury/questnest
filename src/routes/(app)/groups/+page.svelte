@@ -37,7 +37,7 @@
 </FadeInWrapper>
 
 <section class="grid-content grid-spacing section-b-spacing container">
-	{#each groups as group (crypto.randomUUID())}
+	{#each groups as group, i (i)}
 		<FadeInWrapper tag="a" href="/groups/{group.id}">
 			<Card.Root>
 				<Card.Header class="flex flex-row items-center justify-between gap-x-4 pb-6">

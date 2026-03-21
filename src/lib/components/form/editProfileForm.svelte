@@ -17,17 +17,19 @@
 	};
 	let { data, action, oncloseForm, userId }: Props = $props();
 
-	let form = superForm(data, {
-		validators: zodClient(editProfileSchema),
-		dataType: 'json',
-		onUpdate: async ({ result }) => {
-			if (result.type == 'failure') return toast.error(result.data.form.message);
-			toast.success(result.data.form.message);
-			oncloseForm?.();
-		}
-	});
+	let form = $derived(
+		superForm(data, {
+			validators: zodClient(editProfileSchema),
+			dataType: 'json',
+			onUpdate: async ({ result }) => {
+				if (result.type == 'failure') return toast.error(result.data.form.message);
+				toast.success(result.data.form.message);
+				oncloseForm?.();
+			}
+		})
+	);
 
-	let { form: formData, enhance, delayed, constraints } = form;
+	let { form: formData, enhance, delayed, constraints } = $derived(form);
 </script>
 
 <form method="POST" use:enhance {action} enctype="multipart/form-data">

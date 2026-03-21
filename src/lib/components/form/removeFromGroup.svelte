@@ -28,20 +28,22 @@
 		onsuccess
 	}: Props = $props();
 
-	let form = superForm(data, {
-		onSubmit: ({ formData }) => {
-			if (!userToRemove) return;
-			formData.set('user', userToRemove.id);
-			formData.set('group', groupId.toString());
-		},
-		onUpdate: ({ result }) => {
-			if (result.type == 'failure') return toast.error(result.data.form.message);
-			toast.success(result.data.form.message);
-			onsuccess?.();
-		}
-	});
+	let form = $derived(
+		superForm(data, {
+			onSubmit: ({ formData }) => {
+				if (!userToRemove) return;
+				formData.set('user', userToRemove.id);
+				formData.set('group', groupId.toString());
+			},
+			onUpdate: ({ result }) => {
+				if (result.type == 'failure') return toast.error(result.data.form.message);
+				toast.success(result.data.form.message);
+				onsuccess?.();
+			}
+		})
+	);
 
-	let { enhance, delayed } = form;
+	let { enhance, delayed } = $derived(form);
 </script>
 
 <Dialog.Root bind:open>
