@@ -64,12 +64,14 @@
 				data-testid="createquests-btn">Create Quests</Button
 			>
 		{:else}
-			<Questboard
-				quests={data.questboard.quest}
-				formData={data.toggleQuestForm}
-				questIdsCompleted={data.questIdsCompleted}
-				action="?/togglequest"
-			/>
+			{#key data}
+				<Questboard
+					quests={data.questboard.quest}
+					formData={data.toggleQuestForm}
+					questIdsCompleted={data.questIdsCompleted}
+					action="?/togglequest"
+				/>
+			{/key}
 		{/if}
 	</article>
 </FadeInWrapper>
