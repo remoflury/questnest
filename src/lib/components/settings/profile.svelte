@@ -15,6 +15,23 @@
 	};
 
 	let { user, edit = $bindable(false), editProfileForm, action }: Props = $props();
+
+	/**
+	 * @function parseEmail
+	 * @description
+	 * Encyrpts the first part of the email
+	 * and returns the encrypted email
+	 * @param email - The email to encrypt
+	 * @returns The encrypted email
+	 */
+	const parseEmail = (email: string): string => {
+		const [firstPart, secondPart] = email.split('@');
+		const fillFirst = '*'.repeat(firstPart.length - 1);
+		const tld = secondPart.split('.').pop();
+		const secondPartWithoutTld = secondPart.slice(0, secondPart.length - tld.length - 1);
+		const fillSecond = '*'.repeat(secondPartWithoutTld.length - 1);
+		return `${firstPart.slice(0, 1)}${fillFirst}@${secondPartWithoutTld.slice(0, 1)}${fillSecond}.${tld}`;
+	};
 </script>
 
 <article class="grid-content grid-spacing">
@@ -26,7 +43,7 @@
 				showAvatar={true}
 				className="col-span-full">{user.username}</ProfileInfos
 			>
-			<ProfileInfos title="Email" className="col-span-full">{user.email}</ProfileInfos>
+			<ProfileInfos title="Email" className="col-span-full">{parseEmail(user.email)}</ProfileInfos>
 		</div>
 	{:else}
 		<div in:fly={{ ...TRANSITION_CONFIG, y: 20 }}>
