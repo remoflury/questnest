@@ -26,9 +26,7 @@ export const POST: RequestHandler = async ({ request, locals: { adminSupabase } 
 	}
 
 	const typedBody = body as
-		| Stripe.ProductDeletedEvent
-		| Stripe.ProductCreatedEvent
-		| Stripe.ProductUpdatedEvent;
+		Stripe.ProductDeletedEvent | Stripe.ProductCreatedEvent | Stripe.ProductUpdatedEvent;
 
 	switch (typedBody.type) {
 		case 'product.created':
